@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boğaziçi Transkript Dönüştürücü</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+  <style>
+    :root {
+      --primary-color: #4a90e2;
+      --primary-dark: #357abd;
+      --secondary-color: #f8f9fa;
+      --text-main: #2c3e50;
+      --text-light: #7f8c8d;
+      --success-color: #27ae60;
+      --error-color: #e74c3c;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      --radius: 12px;
+    }
+
+    * { box_sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      color: var(--text-main);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* --- Navbar --- */
+    .navbar {
+      background-color: #fff;
+      padding: 15px 40px;
+      box-shadow: var(--shadow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .nav-btn {
+      text-decoration: none;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: background 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-btn:hover {
+      background-color: var(--primary-dark);
+    }
+
+    /* --- Main Container --- */
+    .container {
+      flex: 1;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: var(--text-main);
+    }
+
+    p.subtitle {
+      color: var(--text-light);
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    /* --- Upload Area --- */
+    .upload-card {
+      background: white;
+      padding: 40px;
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      margin-bottom: 50px;
+    }
+
+    .file-upload-wrapper {
+      position: relative;
+      margin-bottom: 25px;
+    }
+
+    .file-upload-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #fafbfc;
+      border: 2px dashed #cbd5e0;
+      border-radius: var(--radius);
+      padding: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .file-upload-label:hover {
+      background-color: #f0f7ff;
+      border-color: var(--primary-color);
+      transform: translateY(-2px);
+    }
+
+    .file-upload-icon {
+      font-size: 3rem;
+      color: var(--primary-color);
+      margin-bottom: 15px;
+    }
+
+    .file-upload-text {
+      font-size: 1.1rem;
+      color: var(--text-main);
+      font-weight: 500;
+    }
+    
+    .file-upload-subtext {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-top: 5px;
+    }
+
+    input[type="file"] { display: none; }
+
+    /* --- Action Buttons --- */
+    .btn-action {
+      background-color: var(--success-color);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: transform 0.2s, background 0.3s;
+      box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+    }
+
+    .btn-action:hover {
+      background-color: #219150;
+      transform: translateY(-2px);
+    }
+
+    /* --- Status Messages --- */
+    #status-message {
+      margin-top: 20px;
+      min-height: 20px;
+    }
+    .status-box {
+      padding: 12px 20px;
+      border-radius: 8px;
+      display: inline-block;
+      font-size: 0.95rem;
+    }
+    .status-loading { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+    .status-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .status-error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+    /* --- Features Grid (Bilgilendirme Alanı) --- */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      text-align: left;
+    }
+
+    .feature-item {
+      background: white;
+      padding: 25px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: transform 0.3s;
+    }
+    
+    .feature-item:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    .feature-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: var(--text-main);
+      font-size: 1.1rem;
+    }
+
+    .feature-desc {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+
+    /* --- Footer --- */
+    footer {
+      background-color: white;
+      padding: 20px;
+      text-align: center;
+      color: var(--text-light);
+      font-size: 0.9rem;
+      border-top: 1px solid #eee;
+      margin-top: 40px;
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="logo">
+      🎓 Transcript Parser
+    </div>
+    <div class="nav-buttons">
+      <a href="magnetic-grid.html" class="nav-btn">
+        📅 Grid Editörü ➔
+      </a>
+      <a href="statistics.html" class="nav-btn">
+        📊 İstatistikler ➔
+      </a>
+    </div>
+  </nav>
+
+  <div class="container">
+    
+    <h1>Transkriptinizi Saniyeler İçinde Dönüştürün</h1>
+    <p class="subtitle">
+      PDF formatındaki not döküm belgenizi yükleyin, yapay zeka destekli algoritmamız derslerinizi, notlarınızı ve dönemlerinizi otomatik olarak ayrıştırıp düzenlenebilir formata çevirsin.
+    </p>
+
+    <div class="upload-card">
+      <div class="file-upload-wrapper">
+        <label for="file-input" class="file-upload-label">
+          <div class="file-upload-icon">📄</div>
+          <span class="file-upload-text" id="file-label-text">PDF Dosyasını Buraya Sürükleyin</span>
+          <span class="file-upload-subtext">veya seçmek için tıklayın</span>
+          <input type="file" id="file-input" accept=".pdf">
+        </label>
+      </div>
+
+      <div id="status-message"></div>
+      
+      <div style="margin-top: 20px;">
+        <button id="download-json-btn" class="btn-action hidden">
+          <span>💾</span> JSON Dosyasını İndir
+        </button>
+      </div>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="feature-icon">⚡</span>
+        <div class="feature-title">Hızlı ve Otomatik</div>
+        <div class="feature-desc">
+          Manuel veri girişine son. PDF dosyanızdaki yüzlerce satır veri saniyeler içinde analiz edilir ve yapılandırılır.
+        </div>
+      </div>
+      
+      <div class="feature-item">
+        <span class="feature-icon">🔒</span>
+        <div class="feature-title">Güvenli İşlem</div>
+        <div class="feature-desc">
+          Dosyalarınız yerel sunucunuzda işlenir. Kişisel verileriniz üçüncü taraf sunuculara gönderilmez.
+        </div>
+      </div>
+
+      <div class="feature-item">
+        <span class="feature-icon">🧩</span>
+        <div class="feature-title">Akıllı Ayrıştırma</div>
+        <div class="feature-desc">
+          Withdraw (W), Tekrar (Repeat) ve Yaz Okulu gibi karmaşık akademik senaryoları otomatik algılar.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    &copy; 2025 Transcript Parser Tool. Tüm hakları saklıdır.
+  </footer>
+
+  <script>
+    const fileInput = document.getElementById('file-input');
+    const fileLabelText = document.getElementById('file-label-text');
+    const downloadBtn = document.getElementById('download-json-btn');
+    const statusDiv = document.getElementById('status-message');
+    
+    // Global variable to store extracted text
+    let globalPdfText = "";
+
+    fileInput.addEventListener('change', async function () {
+      const file = fileInput.files[0];
+      if (!file) return;
+
+      fileLabelText.textContent = `Seçilen: ${file.name}`;
+      fileLabelText.style.color = "#4a90e2";
+      
+      // Reset UI
+      downloadBtn.classList.add('hidden');
+      statusDiv.innerHTML = '<div class="status-box status-loading">PDF okunuyor, analiz ediliyor...</div>';
+
+      // PDF Worker
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+
+      const fileReader = new FileReader();
+
+      fileReader.onload = async function () {
+        try {
+          const typedArray = new Uint8Array(this.result);
+          const pdf = await pdfjsLib.getDocument({ data: typedArray }).promise;
+
+          let extractedText = '';
+          for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const content = await page.getTextContent();
+            const strings = content.items.map(item => item.str).join(' ');
+            extractedText += `\n--- Sayfa ${i} ---\n` + strings + '\n';
+          }
+
+          // Store text in global variable instead of textarea
+          globalPdfText = extractedText;
+          
+          statusDiv.innerHTML = '<div class="status-box status-success">✅ PDF başarıyla okundu! İndirme butonu hazır.</div>';
+          
+          // Show download button
+          downloadBtn.classList.remove('hidden');
+          downloadBtn.onclick = function() {
+            sendTextToPython(globalPdfText);
+          };
+          
+        } catch (e) {
+          console.error(e);
+          statusDiv.innerHTML = '<div class="status-box status-error">PDF okunamadı. Dosya formatını kontrol edin.</div>';
+        }
+      };
+      fileReader.readAsArrayBuffer(file);
+    });
+
+    async function sendTextToPython(text) {
+      statusDiv.innerHTML = '<div class="status-box status-loading">Python sunucusunda işleniyor...</div>';
+      
+      try {
+        const response = await fetch('/api/process', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: text })
+        });
+
+        if (!response.ok) {
+          let errorMessage = `Sunucu Hatası: ${response.status}`;
+          try {
+            const errorData = await response.json();
+            if (errorData.error) errorMessage = errorData.error;
+          } catch (e) {}
+          throw new Error(errorMessage);
+        }
+
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'lessons_and_grids.json';
+        document.body.appendChild(a);
+        a.click();
+        
+        setTimeout(() => {
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }, 0);
+        
+        statusDiv.innerHTML = `
+          <div class="status-box status-success">
+            🎉 İşlem Başarılı! JSON indirildi. 
+            <a href="magnetic-grid.html" style="margin-left:10px; color:#155724; font-weight:bold;">
+              Şimdi Editöre Git →
+            </a>
+          </div>`;
+          
+      } catch (error) {
+        statusDiv.innerHTML = `<div class="status-box status-error">❌ Hata: ${error.message} <br> Python sunucusunun (port 5000) açık olduğundan emin olun.</div>`;
+      }
+    }
+  </script>
+
+</body>
+</html>

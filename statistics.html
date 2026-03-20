@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Akademik İstatistikler</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root { 
+      --primary: #4a90e2; 
+      --primary-dark: #357abd;
+      --success: #27ae60; 
+      --danger: #e74c3c; 
+      --warning: #ffb300; 
+      --purple: #8e44ad;
+      --teal: #1abc9c;
+      --bg: #f0f2f5; 
+      --card-bg: #ffffff; 
+      --text: #2c3e50;
+      --text-light: #7f8c8d;
+      --primary-color: #4a90e2;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.08);
+      --radius: 12px;
+      --radius-lg: 24px;
+    }
+    
+    * { box-sizing: border-box; }
+    
+    body { 
+      background: var(--bg); 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      color: var(--text); 
+      margin: 0; 
+      padding: 0; 
+      min-height: 100vh;
+    }
+    
+    /* Navbar */
+    .navbar {
+      background-color: #fff;
+      padding: 15px 40px;
+      box-shadow: var(--shadow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      margin-bottom: 30px;
+    }
+
+    .logo {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-buttons { display: flex; gap: 12px; }
+
+    .nav-btn {
+      text-decoration: none;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: background 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .nav-btn:hover { background-color: var(--primary-dark); }
+    
+    .stats-container { 
+      max-width: 1400px; 
+      margin: 0 auto; 
+      background: var(--bg); 
+      padding: 40px 20px; 
+    }
+    
+    h1 { 
+      text-align: center; 
+      color: var(--text); 
+      margin-bottom: 10px; 
+      font-weight: 800; 
+      letter-spacing: -0.5px; 
+      font-size: 2.5rem; 
+    }
+    
+    p.subtitle {
+      text-align: center;
+      color: var(--text-light);
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+    
+    /* Upload Section */
+    .upload-section { 
+      background: var(--card-bg); 
+      text-align: center; 
+      margin-bottom: 40px; 
+      padding: 40px; 
+      border-radius: var(--radius-lg); 
+      box-shadow: var(--shadow-lg);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .upload-section:hover { box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12); }
+    .upload-section input[type="file"] { display: none; }
+    
+    .upload-section label { 
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); 
+      color: #fff; 
+      padding: 14px 36px; 
+      border-radius: 50px; 
+      cursor: pointer; 
+      font-size: 1.1em; 
+      font-weight: 600; 
+      box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4); 
+      transition: all 0.3s ease; 
+      display: inline-block; 
+    }
+    
+    .upload-section label:hover { 
+      transform: translateY(-2px); 
+      box-shadow: 0 6px 20px rgba(74, 144, 226, 0.5);
+    }
+    
+    #upload-info { 
+      display: block; 
+      margin-top: 15px; 
+      color: var(--text-light); 
+      font-size: 0.95em; 
+    }
+
+    /* Summary Cards */
+    .summary-grid { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+      gap: 24px; 
+      margin-bottom: 40px; 
+    }
+    
+    .summary-card { 
+      background: var(--card-bg); 
+      border-radius: var(--radius-lg); 
+      padding: 24px; 
+      box-shadow: var(--shadow); 
+      position: relative; 
+      overflow: hidden; 
+      transition: all 0.3s ease; 
+    }
+    
+    .summary-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+    
+    .summary-card::after { 
+      content: ''; 
+      position: absolute; 
+      bottom: 0; left: 0; width: 100%; height: 4px; 
+      background: var(--primary-color); 
+    }
+    
+    .summary-card.success::after { background: var(--success); }
+    .summary-card.danger::after { background: var(--danger); }
+    
+    .summary-card h3 { 
+      margin: 0 0 10px 0; 
+      font-size: 0.85rem; 
+      text-transform: uppercase; 
+      letter-spacing: 1px; 
+      color: var(--text-light); 
+    }
+    
+    .summary-card .value { font-size: 2rem; font-weight: 800; color: var(--text); }
+    .summary-card .desc { font-size: 0.9rem; color: var(--text-light); margin-top: 5px; }
+
+    /* --- SIMULATOR STYLES --- */
+    .simulator-section {
+      background: linear-gradient(135deg, #ffffff, #f8faff);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      box-shadow: var(--shadow);
+      margin-top: 40px; 
+      margin-bottom: 40px;
+      border: 1px solid #eef2f7;
+    }
+
+    .simulator-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+      color: var(--text);
+    }
+    
+    .sim-icon { font-size: 1.5rem; background: #eef2f7; padding: 10px; border-radius: 50%; }
+
+    .simulator-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .sim-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sim-input-group label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-light);
+    }
+
+    .sim-input-group input, .sim-input-group select {
+      padding: 12px;
+      border: 1px solid #dde1e7;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .sim-input-group input:focus, .sim-input-group select:focus {
+      border-color: var(--primary);
+    }
+
+    .sim-result {
+      background: var(--primary);
+      color: white;
+      padding: 20px;
+      border-radius: var(--radius);
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
+    }
+
+    .sim-result-value { font-size: 2.2rem; font-weight: 800; }
+    .sim-result-label { font-size: 0.9rem; opacity: 0.9; }
+
+
+    /* Charts Grid */
+    .charts-grid { 
+      display: grid; 
+      grid-template-columns: repeat(2, 1fr); 
+      gap: 24px; 
+    }
+    
+    .full-width { grid-column: 1 / -1; }
+    
+    .stat-graph { 
+      background: var(--card-bg); 
+      border-radius: var(--radius-lg); 
+      padding: 25px; 
+      box-shadow: var(--shadow); 
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .stat-graph:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+    
+    .stat-graph-title { 
+      font-size: 1.1em; 
+      font-weight: 700; 
+      color: var(--text); 
+      margin-bottom: 20px; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+    }
+    
+    /* --- CHART SIZING FIX --- */
+    /* Canvas boyutunu kısıtlayarak grafiğin aşırı büyümesini engelliyoruz */
+    .stat-graph canvas {
+        max-height: 250px !important; /* Grafiği dikeyde sınırlar */
+        width: 100% !important;
+    }
+    
+    /* Full width olanlar biraz daha uzun olabilir */
+    .full-width canvas {
+        max-height: 300px !important;
+    }
+
+    .badge { 
+      font-size: 0.75em; 
+      background: #eef2f7; 
+      padding: 5px 10px; 
+      border-radius: var(--radius); 
+      color: var(--text-light); 
+      font-weight: 600; 
+    }
+
+    .analysis-text { 
+      background: #fffcf0; 
+      border-left: 4px solid var(--warning); 
+      padding: 12px; 
+      margin-top: 15px; /* Grafikten uzaklaştır */
+      font-size: 0.9em; 
+      color: var(--text); 
+      border-radius: 0 var(--radius) var(--radius) 0; 
+      line-height: 1.4; 
+    }
+    
+    .analysis-text.info {
+      background: #f0f8ff;
+      border-left-color: var(--primary);
+      color: #34495e;
+    }
+
+    @media (max-width: 900px) { 
+      .charts-grid { grid-template-columns: 1fr; }
+      .simulator-grid { grid-template-columns: 1fr; gap: 15px; }
+      .stats-container { padding: 20px 15px; }
+      h1 { font-size: 2rem; }
+      .navbar { padding: 12px 20px; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="logo">📊 Akademik İstatistikler</div>
+    <div class="nav-buttons">
+      <a href="magnetic-grid.html" class="nav-btn">📅 Grid Editörü ➔</a>
+      <a href="pdf_upload.html" class="nav-btn">📄 PDF Dönüştürücü ➔</a>
+    </div>
+  </nav>
+
+<div class="stats-container">
+  <h1>Akademik Analitik Paneli</h1>
+  <p class="subtitle">Notlarınızı analiz edin, performans trendlerinizi görün ve akademik gelişiminizi takip edin.</p>
+  
+  <div class="upload-section">
+    <label for="stats-upload">📂 JSON Dosyası Yükle</label>
+    <input type="file" id="stats-upload" accept="application/json">
+    <span id="upload-info">Rapor oluşturmak için 'cards-data.json' dosyanızı yükleyin.</span>
+  </div>
+
+  <div class="summary-grid" id="summary-cards"></div>
+
+  <div class="charts-grid">
+    
+    <div class="stat-graph full-width">
+      <div class="stat-graph-title">Akademik Performans Trendi (SPA vs Kümülatif GPA) <span class="badge">Zaman Serisi</span></div>
+      <canvas id="gpaChart"></canvas>
+      <div id="trend-analysis" class="analysis-text">Veri bekleniyor...</div>
+    </div>
+
+    <div class="stat-graph full-width">
+      <div class="stat-graph-title">Dönemlere Göre Not Dağılımı <span class="badge">Performans Haritası</span></div>
+      <canvas id="gradeDistBySemChart"></canvas>
+      <div class="analysis-text info">
+        Dönem başına aldığınız harf notlarının (AA, BB, FF vb.) dağılımını gösterir. Hangi dönemlerde belirli notların yığıldığını analiz etmenizi sağlar.
+      </div>
+    </div>
+
+    <div class="stat-graph">
+      <div class="stat-graph-title">Dönemler Arası Değişim <span class="badge">Momentum</span></div>
+      <canvas id="improvementChart"></canvas>
+      <div class="analysis-text info">
+        Bir önceki döneme göre not ortalamanızdaki (SPA) artış veya azalışı gösterir. Yeşil çubuklar iyileşmeyi, kırmızılar düşüşü temsil eder.
+      </div>
+    </div>
+
+    <div class="stat-graph">
+      <div class="stat-graph-title">Performans Stabilitesi <span class="badge">Risk Analizi</span></div>
+      <canvas id="volatilityChart"></canvas>
+      <div class="analysis-text info">
+        Notlarınızın standart sapmasıdır (Volatilite). Yüksek çubuklar, aynı dönem içinde hem çok yüksek hem çok düşük notlar aldığınızı (dengesiz performans) gösterir.
+      </div>
+    </div>
+
+    <div class="stat-graph">
+      <div class="stat-graph-title">En Çok Tekrar Edilen Dersler <span class="badge">Tekrar Sayısı</span></div>
+      <canvas id="topRepeatedLessonsChart"></canvas>
+      <div class="analysis-text info">
+        Eğitim hayatınız boyunca birden fazla kez aldığınız dersleri ve kaç kez tekrar ettiğinizi listeler.
+      </div>
+    </div>
+
+    <div class="stat-graph">
+      <div class="stat-graph-title">Dönemlere Göre Çekilen Dersler <span class="badge">Bırakılanlar</span></div>
+      <canvas id="mostWithdrawalsChart"></canvas>
+      <div class="analysis-text info">
+        Her dönem kaç dersten çekildiğinizi (W) veya 'Not Taken' durumuna düştüğünü gösterir. Akademik planlamadaki sapmaları işaret eder.
+      </div>
+    </div>
+
+    <div class="stat-graph">
+      <div class="stat-graph-title">En Zor Dersler (Min. Avg) <span class="badge">Zorluk</span></div>
+      <canvas id="difficultyChart"></canvas>
+      <div class="analysis-text info">
+        Tekrar edilen dersler dahil, ortalama notunuzun en düşük olduğu derslerdir. Akademik olarak en çok zorlandığınız alanları gösterir.
+      </div>
+    </div>
+
+    <div class="stat-graph">
+      <div class="stat-graph-title">En Güçlü Dersler (Max. Avg) <span class="badge">Ustalık</span></div>
+      <canvas id="masteryChart"></canvas>
+      <div class="analysis-text info">
+        Ortalama notunuzun en yüksek olduğu derslerdir. En başarılı olduğunuz ve yetkinlik kazandığınız konuları yansıtır.
+      </div>
+    </div>
+
+    <div class="stat-graph">
+      <div class="stat-graph-title">Genel Not Dağılımı <span class="badge">Toplam</span></div>
+      <canvas id="gradeDistChart"></canvas>
+      <div class="analysis-text info">
+        Tüm eğitim hayatınız boyunca aldığınız tüm harf notlarının genel oransal dağılımını gösteren pasta grafiği.
+      </div>
+    </div>
+
+    <div class="stat-graph">
+      <div class="stat-graph-title">Duruma Göre Krediler <span class="badge">Genel Bakış</span></div>
+      <canvas id="creditByStatusChart"></canvas>
+      <div class="analysis-text info">
+        Toplam kredi yükünüzün ne kadarının başarılı (Taken), tekrar edilen (Repeated) veya çekilen (Withdraw) derslerden oluştuğunu gösterir.
+      </div>
+    </div>
+    
+    <div class="stat-graph">
+      <div class="stat-graph-title">Kredi Yükü vs Başarı Korelasyonu <span class="badge">Regresyon</span></div>
+      <canvas id="correlationChart"></canvas>
+      <div id="corr-analysis" class="analysis-text">Veri bekleniyor...</div>
+    </div>
+
+    <div class="stat-graph full-width">
+        <div class="stat-graph-title">Mevsimsel Performans ve Yük Analizi <span class="badge">Sezonluk Trend</span></div>
+        <canvas id="seasonalChart"></canvas>
+        <div id="seasonal-analysis" class="analysis-text info">Veri bekleniyor...</div>
+    </div>
+
+  </div> <div class="simulator-section" id="sim-section" style="display:none;">
+    <div class="simulator-header">
+        <span class="sim-icon">🎓</span>
+        <h2 style="margin:0; font-size:1.3rem;">Mezuniyet Ortalaması Simülatörü</h2>
+    </div>
+    <div class="simulator-grid">
+        <div class="sim-input-group">
+            <label>Mezuniyet İçin Gerekli Toplam Kredi</label>
+            <input type="number" id="grad-credits" value="146" placeholder="Örn: 146 (MIS)">
+        </div>
+        <div class="sim-input-group">
+            <label>Kalan Dersler İçin Hedef Not</label>
+            <select id="future-grade">
+                <option value="AA">AA (4.00)</option>
+                <option value="BA">BA (3.50)</option>
+                <option value="BB">BB (3.00)</option>
+                <option value="CB">CB (2.50)</option>
+                <option value="CC">CC (2.00)</option>
+                <option value="DC">DC (1.50)</option>
+                <option value="DD">DD (1.00)</option>
+                <option value="FF">FF (0.00)</option>
+            </select>
+        </div>
+        <div class="sim-result">
+            <div class="sim-result-value" id="projected-gpa">--</div>
+            <div class="sim-result-label">Tahmini Mezuniyet Ortalaması</div>
+            <div id="sim-info" style="font-size: 0.8rem; margin-top:5px; opacity:0.8;">Kalan Kredi: --</div>
+        </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+    // --- Configuration ---
+    const gradeMap = { 'AA': 4.0, 'BA': 3.5, 'BB': 3.0, 'CB': 2.5, 'CC': 2.0, 'DC': 1.5, 'DD': 1.0, 'FF': 0.0 };
+    const gradeOrder = ['AA','BA','BB','CB','CC','DC','DD','FF'];
+    const statusOrder = ['taken','repeated with','withdrawed', 'not taken']; 
+    
+    // Global vars for simulator
+    let globalTotalPoints = 0;
+    let globalTotalCredits = 0;
+
+    // --- Statistical Helpers ---
+    const mean = arr => arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : 0;
+    const stdDev = (arr) => {
+        if(arr.length < 2) return 0;
+        const mu = mean(arr);
+        return Math.sqrt(mean(arr.map(a => (a - mu) ** 2)));
+    };
+    const linearRegression = (x, y) => {
+        const n = x.length;
+        const xm = mean(x), ym = mean(y);
+        let num = 0, den = 0;
+        for (let i = 0; i < n; i++) {
+            num += (x[i] - xm) * (y[i] - ym);
+            den += (x[i] - xm) ** 2;
+        }
+        const m = num / den;
+        return { m, c: ym - m * xm, predict: (val) => m * val + (ym - m * xm) };
+    };
+    const correlationCoefficient = (x, y) => {
+        if(x.length < 2) return 0;
+        const xm = mean(x), ym = mean(y);
+        let num = 0, den1 = 0, den2 = 0;
+        for (let i = 0; i < x.length; i++) {
+            num += (x[i] - xm) * (y[i] - ym);
+            den1 += (x[i] - xm) ** 2;
+            den2 += (y[i] - ym) ** 2;
+        }
+        return num / Math.sqrt(den1 * den2);
+    };
+
+    function getSeasonFromText(text) {
+        const t = text.toLowerCase();
+        if (t.includes('fall') || t.includes('güz')) return 'Güz / Fall';
+        if (t.includes('spring') || t.includes('bahar')) return 'Bahar / Spring';
+        if (t.includes('summer') || t.includes('yaz')) return 'Yaz / Summer';
+        return 'Diğer / Other';
+    }
+
+    // --- Main Logic ---
+    document.getElementById('stats-upload').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+            try {
+                let json = JSON.parse(evt.target.result);
+                let cards = [], semesters = [], semNames = [];
+                
+                if (json.cards && json.semesters) {
+                    cards = json.cards;
+                    const validSemesters = json.semesters.filter(s => Array.isArray(s.cards) && s.cards.length > 0);
+                    semNames = validSemesters.map(s => s.name);
+                    let idToCard = {};
+                    cards.forEach(c => idToCard[c.id] = c);
+                    semesters = validSemesters.map(s => s.cards.map(cid => idToCard[cid]).filter(Boolean));
+                } else {
+                    cards = Array.isArray(json) ? json : json.cards;
+                    const semSize = 6;
+                    for(let i=0; i<cards.length; i+=semSize) {
+                        const group = cards.slice(i, i+semSize);
+                        if(group.length) semesters.push(group);
+                    }
+                    semNames = semesters.map((_, i) => `Semester ${i+1}`);
+                }
+                
+                document.getElementById('upload-info').textContent = `${semesters.length} dönem, ${cards.length} ders yüklendi. Analiz başlatıldı...`;
+                document.getElementById('sim-section').style.display = 'block'; // Show simulator
+                runAnalysis(semesters, semNames, cards);
+            } catch (err) { alert('Hata: ' + err.message); }
+        };
+        reader.readAsText(file);
+    });
+
+    // --- SIMULATOR LOGIC ---
+    function updateSimulation() {
+        if (globalTotalCredits === 0) return;
+
+        const targetCredits = parseFloat(document.getElementById('grad-credits').value) || 146;
+        const futureGrade = document.getElementById('future-grade').value;
+        const futurePoints = gradeMap[futureGrade];
+
+        const remainingCredits = targetCredits - globalTotalCredits;
+        
+        const infoDiv = document.getElementById('sim-info');
+        const resDiv = document.getElementById('projected-gpa');
+
+        if (remainingCredits <= 0) {
+            resDiv.innerText = (globalTotalPoints / globalTotalCredits).toFixed(2);
+            infoDiv.innerText = "Tebrikler! Mezuniyet kredisini zaten tamamladınız.";
+        } else {
+            const projectedTotalPoints = globalTotalPoints + (remainingCredits * futurePoints);
+            const projectedGPA = projectedTotalPoints / targetCredits;
+            resDiv.innerText = projectedGPA.toFixed(2);
+            infoDiv.innerText = `Kalan ${remainingCredits} kredinin hepsini ${futureGrade} alırsanız.`;
+        }
+    }
+
+    document.getElementById('grad-credits').addEventListener('input', updateSimulation);
+    document.getElementById('future-grade').addEventListener('change', updateSimulation);
+
+    function runAnalysis(semesters, semNames, allCards) {
+        // --- Calculate Global Totals for Simulator ---
+        globalTotalPoints = 0;
+        globalTotalCredits = 0;
+        
+        // --- 1. Basic Semester Metrics ---
+        const semesterMetrics = semesters.map(sem => {
+            let totalPts = 0, totalCr = 0, attemptCr = 0;
+            let grades = [];
+            let withdrawals = 0;
+            let gradeDist = {};
+            gradeOrder.forEach(g => gradeDist[g] = 0);
+
+            sem.forEach(c => {
+                const cr = parseFloat(c.credit);
+                if (isNaN(cr) || cr <= 0) return;
+                
+                let status = c.status;
+                if(status === 'withdrawed' || status === 'not taken') {
+                    withdrawals++;
+                    status = 'withdrawed';
+                } else {
+                    attemptCr += cr; 
+                }
+
+                let gVal = gradeMap[c.grade];
+                if (gVal === undefined) gVal = parseFloat(c.grade);
+
+                if ((status === 'taken' || status === 'repeated with') && !isNaN(gVal)) {
+                    totalPts += gVal * cr;
+                    totalCr += cr;
+                    grades.push(gVal);
+                    if(gradeDist.hasOwnProperty(c.grade)) gradeDist[c.grade]++;
+                }
+            });
+
+            return {
+                spa: totalCr > 0 ? totalPts / totalCr : 0,
+                creditsTaken: totalCr,
+                creditsAttempted: attemptCr, 
+                volatility: stdDev(grades),
+                withdrawals: withdrawals,
+                gradeDist: gradeDist
+            };
+        });
+
+        // --- 2. Calculate Cumulative GPA & Global Totals Logic ---
+        const cumulativeGPA = semesters.map((_, endIdx) => {
+            const courseAttempts = new Map();
+            for (let i = 0; i <= endIdx; i++) {
+                semesters[i].forEach(card => {
+                    let name = (card.status === 'repeated with' ? card.repeatedLesson : card.lesson) || card.lesson;
+                    if(!name) return;
+                    if (!courseAttempts.has(name)) courseAttempts.set(name, []);
+                    courseAttempts.get(name).push({ card, semIdx: i });
+                });
+            }
+            let cumTotal = 0, cumCr = 0;
+            courseAttempts.forEach(attempts => {
+                const latest = attempts.reduce((p, c) => (c.semIdx >= p.semIdx ? c : p));
+                const c = latest.card;
+                const cr = parseFloat(c.credit);
+                let gVal = gradeMap[c.grade] ?? parseFloat(c.grade);
+                if ((c.status === 'taken' || c.status === 'repeated with') && !isNaN(cr) && !isNaN(gVal)) {
+                    cumTotal += gVal * cr;
+                    cumCr += cr;
+                }
+            });
+            
+            // Update global vars on the last iteration
+            if (endIdx === semesters.length - 1) {
+                globalTotalPoints = cumTotal;
+                globalTotalCredits = cumCr;
+                updateSimulation(); 
+            }
+
+            return cumCr > 0 ? cumTotal / cumCr : 0;
+        });
+
+        // --- 3. Seasonal Logic ---
+        const seasons = ['Güz / Fall', 'Bahar / Spring', 'Yaz / Summer'];
+        const seasonalStats = {
+            'Güz / Fall': { totalSpa: 0, totalLoad: 0, count: 0 },
+            'Bahar / Spring': { totalSpa: 0, totalLoad: 0, count: 0 },
+            'Yaz / Summer': { totalSpa: 0, totalLoad: 0, count: 0 },
+            'Diğer / Other': { totalSpa: 0, totalLoad: 0, count: 0 }
+        };
+
+        semNames.forEach((name, idx) => {
+            const seasonKey = getSeasonFromText(name);
+            const metrics = semesterMetrics[idx];
+            if (metrics.creditsAttempted > 0) {
+                seasonalStats[seasonKey].totalSpa += metrics.spa;
+                seasonalStats[seasonKey].totalLoad += metrics.creditsAttempted;
+                seasonalStats[seasonKey].count++;
+            }
+        });
+
+        const seasonalAverages = seasons.map(s => {
+            const data = seasonalStats[s];
+            return {
+                season: s,
+                avgSpa: data.count ? (data.totalSpa / data.count) : 0,
+                avgLoad: data.count ? (data.totalLoad / data.count) : 0,
+                count: data.count
+            };
+        });
+
+        // --- 4. Other Data Prep ---
+        const reg = linearRegression(semesterMetrics.map((_,i)=>i), semesterMetrics.map(m=>m.spa));
+        const spaDiffs = semesterMetrics.map((m, i) => i === 0 ? 0 : m.spa - semesterMetrics[i-1].spa);
+        
+        // Correlation Data
+        const loads = semesterMetrics.map(m=>m.creditsAttempted);
+        const spas = semesterMetrics.map(m=>m.spa);
+        
+        // Repeated
+        const lessonCounts = {};
+        allCards.forEach(c => {
+            let name = c.lesson;
+            if(name) {
+                if(!lessonCounts[name]) lessonCounts[name] = 0;
+                lessonCounts[name]++;
+            }
+        });
+        const topRepeated = Object.entries(lessonCounts).filter(([_, c]) => c > 1).sort((a,b) => b[1] - a[1]).slice(0, 5);
+
+        // Status
+        const statusCounts = {};
+        statusOrder.forEach(s => statusCounts[s] = 0);
+        allCards.forEach(c => {
+            let s = c.status === 'not taken' ? 'withdrawed' : c.status; 
+            if(statusCounts.hasOwnProperty(s)) statusCounts[s] += parseFloat(c.credit) || 0;
+        });
+
+        // Hardest/Easiest
+        const courseStats = {};
+        allCards.forEach(c => {
+             let name = (c.status === 'repeated with' ? c.repeatedLesson : c.lesson) || c.lesson;
+             if(!name) return;
+             if(!courseStats[name]) courseStats[name] = { total: 0, count: 0 };
+             let g = gradeMap[c.grade] ?? parseFloat(c.grade);
+             if(!isNaN(g)) { courseStats[name].total += g; courseStats[name].count++; }
+        });
+        const courseAvg = Object.entries(courseStats).map(([n, s]) => ({ name: n, avg: s.count ? s.total/s.count : 0 }));
+        courseAvg.sort((a,b) => a.avg - b.avg);
+        const hardest = courseAvg.slice(0, 5);
+        const easiest = [...courseAvg].reverse().slice(0, 5);
+
+        // --- 5. Render Functions ---
+        renderSummaryCards(semesterMetrics, cumulativeGPA, reg);
+        renderCharts(semNames, semesterMetrics, cumulativeGPA, reg, spaDiffs, topRepeated, statusCounts, hardest, easiest, allCards, seasonalAverages, loads, spas);
+    }
+
+    function renderSummaryCards(metrics, cumGPA, reg) {
+        const current = cumGPA[cumGPA.length-1] || 0;
+        const nextPred = reg.predict(metrics.length).toFixed(2);
+        const best = Math.max(...metrics.map(m=>m.spa));
+        const totalW = metrics.reduce((a,b) => a + b.withdrawals, 0);
+        
+        document.getElementById('summary-cards').innerHTML = `
+            <div class="summary-card"><h3>Kümülatif GPA</h3><div class="value">${current.toFixed(2)}</div><div class="desc">Mevcut Durum</div></div>
+            <div class="summary-card ${parseFloat(nextPred) > current ? 'success':'danger'}"><h3>Tahmini Sonraki SPA</h3><div class="value">${nextPred}</div><div class="desc">Trend Bazlı Tahmin</div></div>
+            <div class="summary-card success"><h3>En Yüksek SPA</h3><div class="value">${best.toFixed(2)}</div><div class="desc">Kişisel Rekor</div></div>
+            <div class="summary-card ${totalW > 0 ? 'danger':''}"><h3>Toplam Çekilen Ders</h3><div class="value">${totalW}</div><div class="desc">Bırakılan (Withdraw)</div></div>
+        `;
+    }
+
+    function renderCharts(labels, metrics, cumGPA, reg, diffs, repeated, statusData, hardest, easiest, allCards, seasonalAvg, loads, spas) {
+        
+        // 1. Seasonal
+        const seasonLabels = seasonalAvg.map(s => s.season);
+        const seasonSpa = seasonalAvg.map(s => s.avgSpa);
+        const seasonLoad = seasonalAvg.map(s => s.avgLoad);
+
+        let insightMsg = "Veri yeterli değil.";
+        if (seasonalAvg.length > 0) {
+            const maxSpaSeason = seasonalAvg.reduce((p, c) => p.avgSpa > c.avgSpa ? p : c);
+            const maxLoadSeason = seasonalAvg.reduce((p, c) => p.avgLoad > c.avgLoad ? p : c);
+            
+            insightMsg = `<strong>Başarı Analizi:</strong> En yüksek not ortalamasına (Ort. ${maxSpaSeason.avgSpa.toFixed(2)}) 
+                          genellikle <strong>${maxSpaSeason.season}</strong> dönemlerinde ulaşıyorsunuz.<br>
+                          <strong>Yük Analizi:</strong> En yoğun kredi yükünü (Ort. ${maxLoadSeason.avgLoad.toFixed(1)} kredi) 
+                          <strong>${maxLoadSeason.season}</strong> dönemlerinde alıyorsunuz.`;
+        }
+        document.getElementById('seasonal-analysis').innerHTML = insightMsg;
+
+        new Chart(document.getElementById('seasonalChart'), {
+            type: 'bar',
+            data: {
+                labels: seasonLabels,
+                datasets: [
+                    { label: 'Ortalama SPA', data: seasonSpa, backgroundColor: '#4a90e2', yAxisID: 'y' },
+                    { label: 'Ortalama Kredi Yükü', data: seasonLoad, type: 'line', borderColor: '#e74c3c', borderWidth: 3, pointRadius: 5, pointBackgroundColor: '#fff', yAxisID: 'y1' }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, // Yükseklik CSS'ten gelecek
+                scales: {
+                    y: { type: 'linear', display: true, position: 'left', title: { display: true, text: 'Not Ortalaması (SPA)' }, min: 0, max: 4 },
+                    y1: { type: 'linear', display: true, position: 'right', title: { display: true, text: 'Kredi Yükü' }, grid: { drawOnChartArea: false } }
+                }
+            }
+        });
+
+        // 2. Trend
+        const trendData = labels.map((_, i) => reg.predict(i));
+        const currentGPA = cumGPA[cumGPA.length-1];
+        const nextPred = reg.predict(metrics.length);
+        const trendMsg = `Trend Eğimi: ${reg.m.toFixed(3)} puan/dönem.`;
+        document.getElementById('trend-analysis').textContent = nextPred > currentGPA 
+            ? `Pozitif Momentum! ${trendMsg}` 
+            : `Stabilize veya Düşüş Eğilimi. ${trendMsg}`;
+
+        new Chart(document.getElementById('gpaChart'), {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    { label: 'Dönemlik SPA', data: metrics.map(m=>m.spa), borderColor: '#4f8cff', backgroundColor: '#4f8cff', tension: 0.3 },
+                    { label: 'Kümülatif GPA', data: cumGPA, borderColor: '#2ecc40', borderDash: [5,5], tension: 0.1 },
+                    { label: 'Trend', data: trendData, borderColor: '#ffb300', borderWidth: 2, pointRadius: 0, fill: false }
+                ]
+            },
+            options: { 
+                maintainAspectRatio: false,
+                scales: { y: { min: 0, max: 4 } } 
+            }
+        });
+
+        // 3. Grade Dist By Sem
+        new Chart(document.getElementById('gradeDistBySemChart'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: gradeOrder.map((g, i) => ({ label: g, data: metrics.map(m => m.gradeDist[g]), backgroundColor: `rgba(79, 140, 255, ${1 - i * 0.1})` }))
+            },
+            options: { 
+                maintainAspectRatio: false,
+                scales: { x: { stacked: true }, y: { stacked: true } } 
+            }
+        });
+
+        // 4. Improvement
+        new Chart(document.getElementById('improvementChart'), {
+            type: 'bar',
+            data: { labels: labels, datasets: [{ label: 'SPA Değişimi', data: diffs, backgroundColor: diffs.map(d => d >= 0 ? '#2ecc40' : '#ff4f4f') }] },
+            options: { maintainAspectRatio: false }
+        });
+
+        // 5. Volatility
+        new Chart(document.getElementById('volatilityChart'), {
+            type: 'bar',
+            data: { labels: labels, datasets: [{ label: 'Std Sapma (Not Dalgalanması)', data: metrics.map(m=>m.volatility), backgroundColor: '#8e44ad' }] },
+            options: { maintainAspectRatio: false }
+        });
+
+        // 6. Repeated
+        new Chart(document.getElementById('topRepeatedLessonsChart'), {
+            type: 'bar',
+            data: { labels: repeated.map(r => r[0]), datasets: [{ label: 'Tekrar Sayısı', data: repeated.map(r => r[1]), backgroundColor: '#ffb300' }] },
+            options: { indexAxis: 'y', maintainAspectRatio: false }
+        });
+
+        // 7. Withdrawals
+        new Chart(document.getElementById('mostWithdrawalsChart'), {
+            type: 'bar',
+            data: { labels: labels, datasets: [{ label: 'Çekilen Ders Sayısı', data: metrics.map(m=>m.withdrawals), backgroundColor: '#ff4f4f' }] },
+            options: { maintainAspectRatio: false }
+        });
+
+        // 8. Difficulty
+        new Chart(document.getElementById('difficultyChart'), {
+            type: 'bar',
+            data: { labels: hardest.map(c=>c.name), datasets: [{ label: 'Ortalama Not', data: hardest.map(c=>c.avg), backgroundColor: '#e74c3c' }] },
+            options: { indexAxis: 'y', maintainAspectRatio: false, scales: { x: { min: 0, max: 4 } } }
+        });
+
+        // 9. Mastery
+        new Chart(document.getElementById('masteryChart'), {
+            type: 'bar',
+            data: { labels: easiest.map(c=>c.name), datasets: [{ label: 'Ortalama Not', data: easiest.map(c=>c.avg), backgroundColor: '#27ae60' }] },
+            options: { indexAxis: 'y', maintainAspectRatio: false, scales: { x: { min: 0, max: 4 } } }
+        });
+
+        // 10. Global Grade Dist
+        const globalDist = {};
+        gradeOrder.forEach(g=>globalDist[g]=0);
+        allCards.forEach(c=>{ if(globalDist.hasOwnProperty(c.grade)) globalDist[c.grade]++; });
+        new Chart(document.getElementById('gradeDistChart'), {
+            type: 'doughnut',
+            data: {
+                labels: gradeOrder,
+                datasets: [{ data: gradeOrder.map(g=>globalDist[g]), backgroundColor: ['#3498db','#2ecc71','#f1c40f','#9b59b6','#e67e22','#e74c3c','#95a5a6','#34495e'] }]
+            },
+            options: { maintainAspectRatio: false }
+        });
+
+        // 11. Status
+        new Chart(document.getElementById('creditByStatusChart'), {
+            type: 'pie',
+            data: { labels: statusOrder, datasets: [{ data: statusOrder.map(s=>statusData[s]), backgroundColor: ['#3498db','#f39c12','#e74c3c','#95a5a6'] }] },
+            options: { maintainAspectRatio: false }
+        });
+
+        // 12. Correlation
+        const corr = correlationCoefficient(loads, spas);
+        let corrMsg = '';
+        if (Math.abs(corr) < 0.3) corrMsg = 'Kredi yükü ile notlar arasında anlamlı bir bağlantı yok.';
+        else if (corr < 0) corrMsg = 'Dikkat: Daha fazla kredi almak SPA\'nızı düşürme eğiliminde.';
+        else corrMsg = 'Daha yüksek kredi yüklerinde daha iyi performans gösteriyorsunuz.';
+        
+        document.getElementById('corr-analysis').innerText = `Korelasyon Katsayısı: ${corr.toFixed(2)}. ${corrMsg}`;
+        
+        new Chart(document.getElementById('correlationChart'), {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Dönemler (Yük vs Başarı)',
+                    data: loads.map((l,i)=>({x:l, y:spas[i]})),
+                    backgroundColor: '#34495e',
+                    pointRadius: 6
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    x: { title: {display:true, text:'Alınan Kredi (Load)'} },
+                    y: { title: {display:true, text:'Dönem Ortalaması (SPA)'}, min: 0, max: 4 }
+                }
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

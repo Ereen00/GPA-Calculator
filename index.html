@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GPA Hesaplayıcı - Grid Editörü</title>
+  <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">
+      🎓 GPA Hesaplayıcı
+    </div>
+    <div class="nav-buttons">
+      <a href="statistics.html" class="nav-btn">
+        📊 İstatistikler ➔
+      </a>
+      <a href="pdf_upload.html" class="nav-btn">
+        📄 PDF Dönüştürücü ➔
+      </a>
+    </div>
+  </nav>
+
+  <div class="main-container">
+    <div id="grid-container">
+    <div class="grid-cell">
+      <div class="grid-cell-header">
+        <button class="delete-grid-btn" title="Dönemi Sil" style="margin-right: 16px; background: #e74c3c; color: #fff; border: none; border-radius: 8px; font-size: 1.1em; font-weight: bold; padding: 6px 14px; cursor: pointer; box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);">&times;</button>
+        <input type="text" class="semester-name-input" value="Dönem 1" style="margin-right: 12px; width: 140px; font-weight: bold;">
+        <span class="spa-display" id="spa-display-0">SPA: 0.00</span>
+        <span class="semester-attempted-display" id="semester-attempted-display-0">Dönem Denenen: 0</span>
+        <span class="semester-completed-display" id="semester-completed-display-0">Dönem Tamamlanan: 0</span>
+        <span class="overall-attempted-display" id="overall-attempted-display-0">Toplam Denenen: 0</span>
+        <span class="overall-completed-display" id="overall-completed-display-0">Toplam Tamamlanan: 0</span>
+        <span class="gpa-display" id="gpa-display-0">GPA: 0.00</span>
+      </div>
+      <div class="magnets-container"></div>
+    </div>
+    </div>
+    <div id="cards-container">
+    
+    </div>
+  </div>
+  <div id="fixed-bar">
+    <div id="gpa-display">GPA: 0.00</div>
+    <div id="total-credit-display">Total Credit: 0</div>
+    <button id="add-card-btn">➕ Ders Ekle</button>
+    <button id="save-btn">💾 Kaydet</button>
+    <button id="load-btn">📂 Yükle</button>
+    <button id="add-grid-btn">📅 Dönem Ekle</button>
+    <input type="file" id="load-input" accept="application/json" style="display:none;" />
+  </div>
+  <script src="app.js"></script>
+</body>
+</html> 
