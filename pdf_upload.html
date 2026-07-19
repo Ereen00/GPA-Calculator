@@ -19,7 +19,7 @@
       --radius: 12px;
     }
 
-    * { box_sizing: border-box; }
+    * { box-sizing: border-box; }
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -247,8 +247,8 @@
       🎓 Transcript Parser
     </div>
     <div class="nav-buttons">
-      <a href="magnetic-grid.html" class="nav-btn">
-        📅 Grid Editörü ➔
+      <a href="index.html" class="nav-btn">
+        📅 Ders Planlayıcı ➔
       </a>
       <a href="statistics.html" class="nav-btn">
         📊 İstatistikler ➔
@@ -258,9 +258,10 @@
 
   <div class="container">
     
-    <h1>Transkriptinizi Saniyeler İçinde Dönüştürün</h1>
+    <h1>Transkriptinizi Saniyeler İçinde Aktarın</h1>
     <p class="subtitle">
-      PDF formatındaki not döküm belgenizi yükleyin, yapay zeka destekli algoritmamız derslerinizi, notlarınızı ve dönemlerinizi otomatik olarak ayrıştırıp düzenlenebilir formata çevirsin.
+      PDF formatındaki not döküm belgenizi yükleyin; akıllı ayrıştırma motorumuz derslerinizi, notlarınızı ve dönemlerinizi
+      otomatik olarak tanısın ve doğrudan Ders Planlayıcı'ya aktarsın. Dosya indirip yükleme derdi yok.
     </p>
 
     <div class="upload-card">
@@ -277,7 +278,7 @@
       
       <div style="margin-top: 20px;">
         <button id="download-json-btn" class="btn-action hidden">
-          <span>💾</span> JSON Dosyasını İndir
+          <span>🚀</span> Dönüştür ve Planlayıcıya Aktar
         </button>
       </div>
     </div>
@@ -295,7 +296,7 @@
         <span class="feature-icon">🔒</span>
         <div class="feature-title">Güvenli İşlem</div>
         <div class="feature-desc">
-          Dosyalarınız yerel sunucunuzda işlenir. Kişisel verileriniz üçüncü taraf sunuculara gönderilmez.
+          Dosyanız yalnızca dönüştürme anında işlenir, hiçbir yerde saklanmaz. Sonuçlar sadece sizin tarayıcınızda tutulur.
         </div>
       </div>
 
@@ -311,9 +312,10 @@
   </div>
 
   <footer>
-    &copy; 2025 Transcript Parser Tool. Tüm hakları saklıdır.
+    &copy; 2026 GPA Hesaplayıcı. Tüm hakları saklıdır.
   </footer>
 
+  <script src="storage.js"></script>
   <script>
     const fileInput = document.getElementById('file-input');
     const fileLabelText = document.getElementById('file-label-text');
@@ -355,7 +357,7 @@
           // Store text in global variable instead of textarea
           globalPdfText = extractedText;
           
-          statusDiv.innerHTML = '<div class="status-box status-success">✅ PDF başarıyla okundu! İndirme butonu hazır.</div>';
+          statusDiv.innerHTML = '<div class="status-box status-success">✅ PDF başarıyla okundu! Şimdi aktarım butonuna basın.</div>';
           
           // Show download button
           downloadBtn.classList.remove('hidden');
@@ -371,9 +373,18 @@
       fileReader.readAsArrayBuffer(file);
     });
 
+    // Son başarılı dönüştürme sonucu (isteğe bağlı yedek indirme için)
+    let lastResult = null;
+
+    function downloadBackup() {
+      if (lastResult && window.GPAStorage) {
+        GPAStorage.exportDownload(lastResult);
+      }
+    }
+
     async function sendTextToPython(text) {
-      statusDiv.innerHTML = '<div class="status-box status-loading">Python sunucusunda işleniyor...</div>';
-      
+      statusDiv.innerHTML = '<div class="status-box status-loading">Transkript analiz ediliyor...</div>';
+
       try {
         const response = await fetch('/api/process', {
             method: 'POST',
@@ -390,29 +401,46 @@
           throw new Error(errorMessage);
         }
 
-        const blob = await response.blob();
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'lessons_and_grids.json';
-        document.body.appendChild(a);
-        a.click();
-        
-        setTimeout(() => {
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
-        }, 0);
-        
-        statusDiv.innerHTML = `
-          <div class="status-box status-success">
-            🎉 İşlem Başarılı! JSON indirildi. 
-            <a href="magnetic-grid.html" style="margin-left:10px; color:#155724; font-weight:bold;">
-              Şimdi Editöre Git →
-            </a>
-          </div>`;
-          
+        const raw = await response.text();
+        const data = JSON.parse(raw);
+        if (!window.GPAStorage || !GPAStorage.isValidData(data)) {
+          throw new Error('Dönüştürücü geçersiz veri döndürdü');
+        }
+
+        // Mevcut plan varsa üzerine yazmadan önce onay al
+        if (GPAStorage.hasData() &&
+            !confirm('Kayıtlı bir planınız zaten var. Yeni transkript verisiyle üzerine yazılsın mı?')) {
+          statusDiv.innerHTML = '<div class="status-box status-error">İşlem iptal edildi. Mevcut verileriniz korundu.</div>';
+          return;
+        }
+
+        lastResult = data;
+        const saved = GPAStorage.save(data, 'pdf');
+
+        if (saved) {
+          statusDiv.innerHTML = `
+            <div class="status-box status-success">
+              🎉 ${data.cards.length} ders, ${data.semesters.length} dönem aktarıldı ve tarayıcınıza kaydedildi!<br>
+              <div style="margin-top:12px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+                <a href="index.html" class="btn-action" style="text-decoration:none;">📅 Planlayıcıyı Aç</a>
+                <a href="statistics.html" class="btn-action" style="text-decoration:none; background-color:#4a90e2; box-shadow:0 4px 15px rgba(74,144,226,0.3);">📊 İstatistikleri Gör</a>
+              </div>
+              <a href="#" onclick="downloadBackup(); return false;" style="display:inline-block; margin-top:10px; color:#155724; font-size:0.85em;">
+                💾 Ayrıca JSON yedeği indirmek isterseniz tıklayın
+              </a>
+            </div>`;
+        } else {
+          // localStorage kullanılamıyorsa (ör. gizli mod) yedek dosyası tek seçenek
+          downloadBackup();
+          statusDiv.innerHTML = `
+            <div class="status-box status-error">
+              ⚠ Tarayıcı kaydı yapılamadı (gizli mod olabilir). JSON yedeği indirildi;
+              Planlayıcı'daki "📂 Yedekten Yükle" butonuyla açabilirsiniz.
+            </div>`;
+        }
+
       } catch (error) {
-        statusDiv.innerHTML = `<div class="status-box status-error">❌ Hata: ${error.message} <br> Python sunucusunun (port 5000) açık olduğundan emin olun.</div>`;
+        statusDiv.innerHTML = `<div class="status-box status-error">❌ Hata: ${error.message}<br>Bağlantınızı kontrol edip tekrar deneyin.</div>`;
       }
     }
   </script>

@@ -3,53 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GPA Hesaplayıcı - Grid Editörü</title>
-  <link rel="stylesheet" href="style.css"> 
+  <title>GPA Planlayıcı</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <nav class="navbar">
     <div class="logo">
-      🎓 GPA Hesaplayıcı
+      🎓 <span>GPA Planlayıcı</span>
     </div>
     <div class="nav-buttons">
-      <a href="statistics.html" class="nav-btn">
-        📊 İstatistikler ➔
-      </a>
-      <a href="pdf_upload.html" class="nav-btn">
-        📄 PDF Dönüştürücü ➔
-      </a>
+      <a href="statistics.html" class="nav-btn">📊 İstatistikler</a>
+      <a href="pdf_upload.html" class="nav-btn">📄 PDF Dönüştürücü</a>
     </div>
   </nav>
 
-  <div class="main-container">
-    <div id="grid-container">
-    <div class="grid-cell">
-      <div class="grid-cell-header">
-        <button class="delete-grid-btn" title="Dönemi Sil" style="margin-right: 16px; background: #e74c3c; color: #fff; border: none; border-radius: 8px; font-size: 1.1em; font-weight: bold; padding: 6px 14px; cursor: pointer; box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);">&times;</button>
-        <input type="text" class="semester-name-input" value="Dönem 1" style="margin-right: 12px; width: 140px; font-weight: bold;">
-        <span class="spa-display" id="spa-display-0">SPA: 0.00</span>
-        <span class="semester-attempted-display" id="semester-attempted-display-0">Dönem Denenen: 0</span>
-        <span class="semester-completed-display" id="semester-completed-display-0">Dönem Tamamlanan: 0</span>
-        <span class="overall-attempted-display" id="overall-attempted-display-0">Toplam Denenen: 0</span>
-        <span class="overall-completed-display" id="overall-completed-display-0">Toplam Tamamlanan: 0</span>
-        <span class="gpa-display" id="gpa-display-0">GPA: 0.00</span>
+  <main class="main-container">
+    <div id="empty-state" class="empty-state" hidden>
+      <div class="empty-state-icon">👋</div>
+      <div class="empty-state-text">
+        <strong>Henüz ders eklenmemiş.</strong><br>
+        Transkript PDF'inizi dönüştürerek tüm derslerinizi tek seferde aktarabilir
+        ya da dönem kartındaki <em>"➕ Ders Ekle"</em> butonuyla elle başlayabilirsiniz.
+        Yaptığınız her değişiklik tarayıcınıza otomatik kaydedilir.
       </div>
-      <div class="magnets-container"></div>
+      <a href="pdf_upload.html" class="nav-btn">📄 PDF'den Aktar</a>
     </div>
+
+    <div id="semesters-container"></div>
+
+    <button id="add-semester-btn" type="button">📅 Dönem Ekle</button>
+  </main>
+
+  <footer id="fixed-bar">
+    <div class="totals">
+      <div class="gpa-box" title="Kümülatif genel not ortalaması">
+        <span class="gpa-label">GPA</span>
+        <strong id="gpa-value">0.00</strong>
+      </div>
+      <div class="total-stats">
+        <span id="total-credit-display" title="Ortalamaya giren toplam kredi">Toplam Kredi: 0</span>
+        <span id="overall-attempted" title="Denenen toplam kredi (çekilen ve kredisiz dersler hariç)">Denenen: 0</span>
+        <span id="overall-completed" title="Başarıyla tamamlanan toplam kredi">Tamamlanan: 0</span>
+      </div>
     </div>
-    <div id="cards-container">
-    
+    <div class="bar-actions">
+      <span id="autosave-status" title="Değişiklikleriniz tarayıcınıza otomatik kaydedilir"></span>
+      <button id="save-btn" type="button" title="Verileriniz zaten otomatik kaydedilir; bu buton bir JSON yedeği indirir">💾 Yedek İndir</button>
+      <button id="load-btn" type="button" title="Daha önce indirdiğiniz bir JSON yedeğini geri yükler">📂 Yedekten Yükle</button>
     </div>
-  </div>
-  <div id="fixed-bar">
-    <div id="gpa-display">GPA: 0.00</div>
-    <div id="total-credit-display">Total Credit: 0</div>
-    <button id="add-card-btn">➕ Ders Ekle</button>
-    <button id="save-btn">💾 Kaydet</button>
-    <button id="load-btn">📂 Yükle</button>
-    <button id="add-grid-btn">📅 Dönem Ekle</button>
-    <input type="file" id="load-input" accept="application/json" style="display:none;" />
-  </div>
+    <input type="file" id="load-input" accept="application/json" style="display:none;">
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
+  <script src="storage.js"></script>
+  <script src="gpa.js"></script>
   <script src="app.js"></script>
 </body>
-</html> 
+</html>

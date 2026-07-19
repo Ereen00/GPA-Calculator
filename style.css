@@ -1,497 +1,556 @@
+/* ============================================================
+   GPA Planlayıcı — Editör Stilleri
+   Tasarım belirteçleri (tokens) + bileşenler
+   ============================================================ */
+
 :root {
-    --primary-color: #4a90e2;
-    --primary-dark: #357abd;
-    --secondary-color: #f8f9fa;
-    --text-main: #2c3e50;
-    --text-light: #7f8c8d;
-    --success-color: #27ae60;
-    --error-color: #e74c3c;
-    --warning-color: #ffb300;
-    --purple-color: #8e44ad;
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.08);
-    --radius: 12px;
-    --radius-lg: 24px;
-  }
+  --bg: #eef2f7;
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+  --border: #e2e8f0;
+  --text: #0f172a;
+  --text-muted: #64748b;
 
-  * {
-    box-sizing: border-box;
-  }
+  --primary: #4f46e5;
+  --primary-dark: #4338ca;
+  --primary-soft: #eef2ff;
+  --primary-border: #c7d2fe;
 
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f0f2f5;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: var(--text-main);
-    min-height: 100vh;
-  }
-  /* Navbar */
-  .navbar {
-    background-color: #fff;
-    padding: 15px 40px;
-    box-shadow: var(--shadow);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  --success: #059669;
+  --success-soft: #ecfdf5;
+  --danger: #e11d48;
+  --danger-soft: #fff1f2;
+  --danger-border: #fecdd3;
+  --warning: #d97706;
+  --warning-soft: #fffbeb;
+  --warning-border: #fde68a;
+
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
+
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 18px;
+
+  --font: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* ---------- Navbar ---------- */
+.navbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: -0.02em;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.nav-btn {
+  text-decoration: none;
+  background: var(--primary);
+  color: #fff;
+  padding: 9px 18px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.88rem;
+  transition: background 0.2s, transform 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+/* ---------- Ana kapsayıcı ---------- */
+.main-container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 28px 20px 150px 20px;
+}
+
+/* ---------- Boş durum kartı ---------- */
+.empty-state {
+  background: var(--surface);
+  border: 2px dashed var(--primary-border);
+  border-radius: var(--radius-lg);
+  padding: 28px 32px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.empty-state-icon {
+  font-size: 2.4rem;
+}
+
+.empty-state-text {
+  flex: 1;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+/* ---------- Dönem kartı ---------- */
+#semesters-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sem-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 16px 18px;
+  transition: box-shadow 0.2s;
+}
+
+.sem-card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.sem-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.sem-drag-handle,
+.drag-handle {
+  cursor: grab;
+  color: var(--text-muted);
+  font-size: 1rem;
+  padding: 2px 4px;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.sem-drag-handle:active,
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.sem-name {
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 1.02rem;
+  color: var(--text);
+  border: 1px solid transparent;
+  background: transparent;
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  width: 240px;
+  outline: none;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+}
+
+.sem-name:hover {
+  background: var(--surface-2);
+}
+
+.sem-name:focus {
+  border-color: var(--primary);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+.sem-chips {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-left: auto;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.chip-label {
+  opacity: 0.75;
+  font-weight: 600;
+}
+
+.chip-spa {
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+}
+
+.chip-gpa {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.chip-detail {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.sem-delete {
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.sem-delete:hover {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+/* ---------- Ders satırları ---------- */
+.course-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 14px; /* boş listeye de sürükleyip bırakılabilsin */
+}
+
+.course-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.2s;
+}
+
+.course-row:hover {
+  border-color: var(--primary-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.course-row input,
+.course-row select {
+  font-family: var(--font);
+  font-size: 0.88rem;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 7px 9px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.course-row input:focus,
+.course-row select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+.course-lesson {
+  flex: 1;
+  min-width: 110px;
+}
+
+.course-status {
+  width: 138px;
+  flex-shrink: 0;
+}
+
+.course-repeat {
+  width: 170px;
+  flex-shrink: 0;
+}
+
+.course-grade {
+  width: 70px;
+  flex-shrink: 0;
+}
+
+.course-credit {
+  width: 68px;
+  flex-shrink: 0;
+}
+
+.course-delete {
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  padding: 6px 9px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.course-delete:hover {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+/* Durum renklendirmeleri */
+.course-row.tint-red {
+  background: var(--danger-soft);
+  border-color: var(--danger-border);
+}
+
+.course-row.tint-orange {
+  background: var(--warning-soft);
+  border-color: var(--warning-border);
+}
+
+/* Sürükleme görselleri */
+.course-ghost {
+  opacity: 0.4;
+  background: var(--primary-soft);
+  border-style: dashed;
+}
+
+.sortable-chosen {
+  box-shadow: var(--shadow-lg);
+}
+
+/* ---------- Ders / dönem ekleme butonları ---------- */
+.sem-footer {
+  margin-top: 8px;
+}
+
+.add-course-btn {
+  background: transparent;
+  color: var(--primary);
+  border: 1px dashed var(--primary-border);
+  border-radius: var(--radius);
+  padding: 8px 16px;
+  font-family: var(--font);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.add-course-btn:hover {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+}
+
+#add-semester-btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 15px;
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+  border: 2px dashed var(--primary-border);
+  border-radius: var(--radius-lg);
+  font-family: var(--font);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+#add-semester-btn:hover {
+  background: #e0e7ff;
+  border-color: var(--primary);
+}
+
+/* ---------- Alt bar ---------- */
+#fixed-bar {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 28px;
+  z-index: 100;
+  flex-wrap: wrap;
+}
+
+.totals {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.gpa-box {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.gpa-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+
+#gpa-value {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: -0.02em;
+}
+
+.total-stats {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#autosave-status {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+#autosave-status.error {
+  color: var(--danger);
+  font-weight: 700;
+}
+
+#fixed-bar button {
+  font-family: var(--font);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 9px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.15s;
+}
+
+#fixed-bar button:hover {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  transform: translateY(-1px);
+}
+
+/* ---------- Duyarlı tasarım ---------- */
+@media (max-width: 860px) {
+  .sem-chips {
+    margin-left: 0;
     width: 100%;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    margin-bottom: 30px;
+    order: 3;
   }
 
-  .logo {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--primary-color);
-    display: flex;
-    align-items: center;
+  .sem-name {
+    flex: 1;
+    width: auto;
+  }
+}
+
+@media (max-width: 760px) {
+  .navbar {
+    padding: 12px 16px;
+    flex-wrap: wrap;
     gap: 10px;
   }
 
-  .nav-buttons {
-    display: flex;
-    gap: 12px;
-  }
-
-  .nav-btn {
-    text-decoration: none;
-    background-color: var(--primary-color);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 500;
-    font-size: 0.9rem;
-    transition: background 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border: none;
-    cursor: pointer;
-  }
-
-  .nav-btn:hover {
-    background-color: var(--primary-dark);
-  }
-
-  /* Main Content Container */
   .main-container {
-    width: 100%;
-    max-width: 1600px;
-    padding: 0 40px 120px 40px;
-    margin: 0 auto;
+    padding: 20px 12px 190px 12px;
   }
 
-  #grid-container {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(auto-fill, 480px);
-    gap: 32px;
-    width: 100%;
-    margin-bottom: 40px;
-  }
-  .grid-cell {
-    background: #fff;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg);
-    position: relative;
-    width: 100%;
-    height: 480px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: visible;
-  }
-  .magnets-container {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-  }
-  .magnet {
-    position: absolute;
-    width: 650px;
-    height: 60px;
-    transform: translate(-50%, -50%);
-    border: 2px dashed var(--error-color);
-    background: rgba(231, 76, 60, 0.1);
-    border-radius: var(--radius);
-    pointer-events: none;
-  }
-  .card {
-    width: 600px;
-    height: 40px;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-    color: #fff;
-    border-radius: var(--radius);
-    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    font-size: 0.98em;
-    position: absolute;
-    cursor: grab;
-    z-index: 10;
-    user-select: none;
-    transition: box-shadow 0.2s ease;
-    padding: 0 18px;
-    gap: 12px;
-    overflow: hidden;
+  .sem-card {
+    padding: 12px;
   }
 
-  .card:hover {
-    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
-  }
-
-  .card.dragging {
-    box-shadow: 0 8px 32px rgba(74, 144, 226, 0.5);
-    opacity: 0.9;
-    transform: scale(1.05);
-    transition: none !important;
-  }
-  .card-content {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
-  }
-  .card input[type="text"], .card input[type="number"], .card select {
-    border: none;
-    border-radius: 6px;
-    padding: 6px 10px;
-    font-size: 1em;
-    margin-left: 4px;
-    outline: none;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .card input[type="text"] {
-    width: 120px;
-    max-width: 120px;
-  }
-  .card input[type="number"] {
-    width: 60px;
-    max-width: 60px;
-    min-width: 60px;
-  }
-  .card select {
-    max-width: 90px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .card label {
-    font-weight: 500;
-    color: #e0eaff;
-    margin-right: 2px;
-    max-width: 80px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .card .lesson-select {
-    width: 120px;
-    max-width: 120px;
-  }
-  .grid-cell-header {
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 24px;
-    padding: 20px 32px 0 32px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 2;
-    background: transparent;
+  .course-row {
     flex-wrap: wrap;
-  }
-  .spa-display {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: var(--error-color);
-    margin-right: 18px;
-  }
-  .cell-credit-display {
-    font-size: 1.1em;
-    font-weight: bold;
-    color: #888;
-  }
-  .gpa-display {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: var(--success-color);
-    margin-left: 18px;
-  }
-  .semester-attempted-display,
-  .semester-completed-display,
-  .overall-attempted-display,
-  .overall-completed-display {
-    font-size: 1em;
-    font-weight: bold;
-    color: #888;
-  }
-  #fixed-bar {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background: #fff;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 18px;
-    padding: 20px 0;
-    z-index: 100;
-    border-top: 1px solid #e0e0e0;
+    row-gap: 8px;
   }
 
-  #fixed-bar #gpa-display {
-    font-size: 2em;
-    font-weight: bold;
-    color: var(--primary-color);
-    margin: 0 18px 0 0;
-    text-shadow: 0 2px 4px rgba(74, 144, 226, 0.2);
-  }
+  .drag-handle { order: 0; }
+  .course-lesson { order: 1; flex: 1 1 auto; }
+  .course-delete { order: 2; margin-left: auto; }
+  .course-status { order: 3; flex: 1 1 42%; width: auto; }
+  .course-repeat { order: 4; flex: 1 1 50%; width: auto; }
+  .course-grade { order: 5; flex: 1 1 24%; width: auto; }
+  .course-credit { order: 6; flex: 1 1 24%; width: auto; }
 
-  #fixed-bar #total-credit-display {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: var(--text-light);
-    margin: 0 18px 0 0;
-  }
-
-  #fixed-bar button {
-    padding: 12px 24px;
-    font-size: 1em;
-    font-weight: 600;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-left: 10px;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  #fixed-bar button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
-
-  #fixed-bar button:active {
-    transform: translateY(0);
-  }
-
-  #fixed-bar #add-card-btn {
-    background: var(--primary-color);
-    color: #fff;
-  }
-
-  #fixed-bar #add-card-btn:hover {
-    background: var(--primary-dark);
-  }
-
-  #fixed-bar #save-btn {
-    background: var(--success-color);
-    color: #fff;
-  }
-
-  #fixed-bar #save-btn:hover {
-    background: #219150;
-  }
-
-  #fixed-bar #load-btn {
-    background: var(--warning-color);
-    color: #fff;
-  }
-
-  #fixed-bar #load-btn:hover {
-    background: #e6a200;
-  }
-
-  #fixed-bar #add-grid-btn {
-    background: var(--purple-color);
-    color: #fff;
-  }
-
-  #fixed-bar #add-grid-btn:hover {
-    background: #7d3c98;
-  }
-
-  #fixed-bar #stats-btn {
-    background: var(--text-main);
-    color: #fff;
-  }
-
-  #fixed-bar #stats-btn:hover {
-    background: #1a252f;
-  }
-
-  #fixed-bar #pdf-upload-link button {
-    background: var(--primary-color);
-    color: #fff;
-    margin-left: 0;
-  }
-
-  #fixed-bar #pdf-upload-link button:hover {
-    background: var(--primary-dark);
-  }
-  .semester-name-input {
-    border: none;
-    border-bottom: 2px solid #e0e0e0;
-    background: transparent;
-    font-size: 1.3em;
-    font-weight: bold;
-    color: var(--text-main);
-    padding: 2px 8px 2px 8px;
-    margin-right: 12px;
-    width: 220px;
-    min-width: 220px;
-    outline: none;
-    transition: all 0.3s ease;
+  .empty-state {
+    flex-direction: column;
     text-align: center;
+    padding: 24px 16px;
   }
 
-  .semester-name-input:focus {
-    border-bottom: 3px solid var(--primary-color);
-    color: var(--primary-color);
-    background: transparent;
+  #fixed-bar {
+    padding: 10px 14px;
+    justify-content: center;
   }
 
-  .delete-grid-btn {
-    transition: all 0.3s ease;
+  #gpa-value {
+    font-size: 1.5rem;
   }
-
-  .delete-grid-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(255, 79, 79, 0.4);
-  }
-
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .navbar {
-      padding: 12px 20px;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .logo {
-      font-size: 1rem;
-    }
-
-    .main-container {
-      padding: 0 20px 140px 20px;
-    }
-
-    #grid-container {
-      gap: 24px;
-    }
-
-    .grid-cell {
-      height: 420px;
-    }
-
-    .grid-cell-header {
-      padding: 16px 20px 0 20px;
-      gap: 12px;
-      font-size: 0.9em;
-    }
-
-    .semester-name-input {
-      width: 160px;
-      min-width: 160px;
-      font-size: 1.1em;
-    }
-
-    .spa-display,
-    .gpa-display {
-      font-size: 1em;
-    }
-
-    .semester-attempted-display,
-    .semester-completed-display,
-    .overall-attempted-display,
-    .overall-completed-display {
-      font-size: 0.85em;
-    }
-
-    #fixed-bar {
-      flex-wrap: wrap;
-      padding: 15px 10px;
-      gap: 10px;
-    }
-
-    #fixed-bar #gpa-display {
-      font-size: 1.5em;
-      margin: 0 10px 0 0;
-    }
-
-    #fixed-bar #total-credit-display {
-      font-size: 1em;
-      margin: 0 10px 0 0;
-    }
-
-    #fixed-bar button {
-      padding: 10px 16px;
-      font-size: 0.9em;
-      margin-left: 5px;
-    }
-
-    .card {
-      width: 550px;
-    }
-
-    .magnet {
-      width: 550px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .navbar {
-      padding: 10px 15px;
-    }
-
-    .main-container {
-      padding: 0 15px 160px 15px;
-    }
-
-    .grid-cell-header {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 8px;
-      padding: 12px 15px 0 15px;
-    }
-
-    #fixed-bar {
-      flex-direction: column;
-      padding: 12px 10px;
-      max-height: 200px;
-      overflow-y: auto;
-    }
-
-    #fixed-bar #gpa-display,
-    #fixed-bar #total-credit-display {
-      margin: 0;
-    }
-
-    .card {
-      width: 90%;
-      max-width: 500px;
-    }
-
-    .magnet {
-      width: 90%;
-      max-width: 500px;
-    }
-  }
+}

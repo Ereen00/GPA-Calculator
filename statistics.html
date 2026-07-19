@@ -333,7 +333,7 @@
   <nav class="navbar">
     <div class="logo">📊 Akademik İstatistikler</div>
     <div class="nav-buttons">
-      <a href="magnetic-grid.html" class="nav-btn">📅 Grid Editörü ➔</a>
+      <a href="index.html" class="nav-btn">📅 Ders Planlayıcı ➔</a>
       <a href="pdf_upload.html" class="nav-btn">📄 PDF Dönüştürücü ➔</a>
     </div>
   </nav>
@@ -343,9 +343,9 @@
   <p class="subtitle">Notlarınızı analiz edin, performans trendlerinizi görün ve akademik gelişiminizi takip edin.</p>
   
   <div class="upload-section">
-    <label for="stats-upload">📂 JSON Dosyası Yükle</label>
+    <label for="stats-upload">📂 JSON Yedeği Yükle</label>
     <input type="file" id="stats-upload" accept="application/json">
-    <span id="upload-info">Rapor oluşturmak için 'cards-data.json' dosyanızı yükleyin.</span>
+    <span id="upload-info">Verileriniz Ders Planlayıcı'dan otomatik yüklenir; dilerseniz bir JSON yedeğini de analiz edebilirsiniz.</span>
   </div>
 
   <div class="summary-grid" id="summary-cards"></div>
@@ -475,6 +475,7 @@
 
 </div>
 
+<script src="storage.js"></script>
 <script>
     // --- Configuration ---
     const gradeMap = { 'AA': 4.0, 'BA': 3.5, 'BB': 3.0, 'CB': 2.5, 'CC': 2.0, 'DC': 1.5, 'DD': 1.0, 'FF': 0.0 };
@@ -524,39 +525,56 @@
     }
 
     // --- Main Logic ---
+    // Veriyi çözümleyip tüm panelleri oluşturur (kaynak: 'auto' = tarayıcı kaydı, 'file' = JSON yedeği)
+    function analyzeData(json, sourceLabel) {
+        let cards = [], semesters = [], semNames = [];
+
+        if (json.cards && json.semesters) {
+            cards = json.cards;
+            const validSemesters = json.semesters.filter(s => Array.isArray(s.cards) && s.cards.length > 0);
+            semNames = validSemesters.map(s => s.name);
+            let idToCard = {};
+            cards.forEach(c => idToCard[c.id] = c);
+            semesters = validSemesters.map(s => s.cards.map(cid => idToCard[cid]).filter(Boolean));
+        } else {
+            cards = Array.isArray(json) ? json : json.cards;
+            const semSize = 6;
+            for(let i=0; i<cards.length; i+=semSize) {
+                const group = cards.slice(i, i+semSize);
+                if(group.length) semesters.push(group);
+            }
+            semNames = semesters.map((_, i) => `Dönem ${i+1}`);
+        }
+
+        document.getElementById('upload-info').textContent = sourceLabel === 'auto'
+            ? `✅ Kayıtlı verileriniz otomatik yüklendi (${semesters.length} dönem, ${cards.length} ders). Planlayıcı'daki değişiklikler buraya otomatik yansır.`
+            : `${semesters.length} dönem, ${cards.length} ders yüklendi. Analiz başlatıldı...`;
+        document.getElementById('sim-section').style.display = 'block'; // Show simulator
+        runAnalysis(semesters, semNames, cards);
+    }
+
     document.getElementById('stats-upload').addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (!file) return;
         const reader = new FileReader();
         reader.onload = function(evt) {
             try {
-                let json = JSON.parse(evt.target.result);
-                let cards = [], semesters = [], semNames = [];
-                
-                if (json.cards && json.semesters) {
-                    cards = json.cards;
-                    const validSemesters = json.semesters.filter(s => Array.isArray(s.cards) && s.cards.length > 0);
-                    semNames = validSemesters.map(s => s.name);
-                    let idToCard = {};
-                    cards.forEach(c => idToCard[c.id] = c);
-                    semesters = validSemesters.map(s => s.cards.map(cid => idToCard[cid]).filter(Boolean));
-                } else {
-                    cards = Array.isArray(json) ? json : json.cards;
-                    const semSize = 6;
-                    for(let i=0; i<cards.length; i+=semSize) {
-                        const group = cards.slice(i, i+semSize);
-                        if(group.length) semesters.push(group);
-                    }
-                    semNames = semesters.map((_, i) => `Semester ${i+1}`);
-                }
-                
-                document.getElementById('upload-info').textContent = `${semesters.length} dönem, ${cards.length} ders yüklendi. Analiz başlatıldı...`;
-                document.getElementById('sim-section').style.display = 'block'; // Show simulator
-                runAnalysis(semesters, semNames, cards);
+                analyzeData(JSON.parse(evt.target.result), 'file');
             } catch (err) { alert('Hata: ' + err.message); }
         };
         reader.readAsText(file);
+        e.target.value = '';
     });
+
+    // --- Chart yönetimi ---
+    // Aynı canvas'a ikinci kez çizim yapmadan önce eski grafiği yok eder
+    // (aksi halde Chart.js "Canvas is already in use" hatası verir)
+    const chartRegistry = {};
+    function makeChart(id, config) {
+        if (chartRegistry[id]) chartRegistry[id].destroy();
+        chartRegistry[id] = new Chart(document.getElementById(id), config);
+        return chartRegistry[id];
+    }
 
     // --- SIMULATOR LOGIC ---
     function updateSimulation() {
@@ -772,7 +790,7 @@
         }
         document.getElementById('seasonal-analysis').innerHTML = insightMsg;
 
-        new Chart(document.getElementById('seasonalChart'), {
+        makeChart('seasonalChart', {
             type: 'bar',
             data: {
                 labels: seasonLabels,
@@ -800,7 +818,7 @@
             ? `Pozitif Momentum! ${trendMsg}` 
             : `Stabilize veya Düşüş Eğilimi. ${trendMsg}`;
 
-        new Chart(document.getElementById('gpaChart'), {
+        makeChart('gpaChart', {
             type: 'line',
             data: {
                 labels: labels,
@@ -817,7 +835,7 @@
         });
 
         // 3. Grade Dist By Sem
-        new Chart(document.getElementById('gradeDistBySemChart'), {
+        makeChart('gradeDistBySemChart', {
             type: 'bar',
             data: {
                 labels: labels,
@@ -830,42 +848,42 @@
         });
 
         // 4. Improvement
-        new Chart(document.getElementById('improvementChart'), {
+        makeChart('improvementChart', {
             type: 'bar',
             data: { labels: labels, datasets: [{ label: 'SPA Değişimi', data: diffs, backgroundColor: diffs.map(d => d >= 0 ? '#2ecc40' : '#ff4f4f') }] },
             options: { maintainAspectRatio: false }
         });
 
         // 5. Volatility
-        new Chart(document.getElementById('volatilityChart'), {
+        makeChart('volatilityChart', {
             type: 'bar',
             data: { labels: labels, datasets: [{ label: 'Std Sapma (Not Dalgalanması)', data: metrics.map(m=>m.volatility), backgroundColor: '#8e44ad' }] },
             options: { maintainAspectRatio: false }
         });
 
         // 6. Repeated
-        new Chart(document.getElementById('topRepeatedLessonsChart'), {
+        makeChart('topRepeatedLessonsChart', {
             type: 'bar',
             data: { labels: repeated.map(r => r[0]), datasets: [{ label: 'Tekrar Sayısı', data: repeated.map(r => r[1]), backgroundColor: '#ffb300' }] },
             options: { indexAxis: 'y', maintainAspectRatio: false }
         });
 
         // 7. Withdrawals
-        new Chart(document.getElementById('mostWithdrawalsChart'), {
+        makeChart('mostWithdrawalsChart', {
             type: 'bar',
             data: { labels: labels, datasets: [{ label: 'Çekilen Ders Sayısı', data: metrics.map(m=>m.withdrawals), backgroundColor: '#ff4f4f' }] },
             options: { maintainAspectRatio: false }
         });
 
         // 8. Difficulty
-        new Chart(document.getElementById('difficultyChart'), {
+        makeChart('difficultyChart', {
             type: 'bar',
             data: { labels: hardest.map(c=>c.name), datasets: [{ label: 'Ortalama Not', data: hardest.map(c=>c.avg), backgroundColor: '#e74c3c' }] },
             options: { indexAxis: 'y', maintainAspectRatio: false, scales: { x: { min: 0, max: 4 } } }
         });
 
         // 9. Mastery
-        new Chart(document.getElementById('masteryChart'), {
+        makeChart('masteryChart', {
             type: 'bar',
             data: { labels: easiest.map(c=>c.name), datasets: [{ label: 'Ortalama Not', data: easiest.map(c=>c.avg), backgroundColor: '#27ae60' }] },
             options: { indexAxis: 'y', maintainAspectRatio: false, scales: { x: { min: 0, max: 4 } } }
@@ -875,7 +893,7 @@
         const globalDist = {};
         gradeOrder.forEach(g=>globalDist[g]=0);
         allCards.forEach(c=>{ if(globalDist.hasOwnProperty(c.grade)) globalDist[c.grade]++; });
-        new Chart(document.getElementById('gradeDistChart'), {
+        makeChart('gradeDistChart', {
             type: 'doughnut',
             data: {
                 labels: gradeOrder,
@@ -885,7 +903,7 @@
         });
 
         // 11. Status
-        new Chart(document.getElementById('creditByStatusChart'), {
+        makeChart('creditByStatusChart', {
             type: 'pie',
             data: { labels: statusOrder, datasets: [{ data: statusOrder.map(s=>statusData[s]), backgroundColor: ['#3498db','#f39c12','#e74c3c','#95a5a6'] }] },
             options: { maintainAspectRatio: false }
@@ -900,7 +918,7 @@
         
         document.getElementById('corr-analysis').innerText = `Korelasyon Katsayısı: ${corr.toFixed(2)}. ${corrMsg}`;
         
-        new Chart(document.getElementById('correlationChart'), {
+        makeChart('correlationChart', {
             type: 'scatter',
             data: {
                 datasets: [{
@@ -919,6 +937,15 @@
             }
         });
     }
+
+    // --- OTOMATİK YÜKLEME ---
+    // Planlayıcı/PDF dönüştürücüden kaydedilen veriler varsa analiz otomatik başlar
+    (function autoLoad() {
+        const saved = window.GPAStorage ? GPAStorage.load() : null;
+        if (saved && saved.cards && saved.cards.length > 0) {
+            analyzeData(saved, 'auto');
+        }
+    })();
 </script>
 
 </body>
