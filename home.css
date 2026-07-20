@@ -475,6 +475,119 @@
 }
 
 /* ============================================================
+   LIQUID GLASS BUTON
+   shadcn "liquid-glass-button" bileşeninin saf CSS/SVG uyarlaması.
+   (Bu site React/Tailwind kullanmadığı için efekt vanilla'ya taşındı:
+    çok katmanlı cam kenarı gölgesi + backdrop-filter SVG bozulması.)
+   En iyi görsel/gradyan zeminler üzerinde görünür.
+   ============================================================ */
+.liquid-glass-btn {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 14px 28px;
+  border-radius: 999px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+.liquid-glass-btn:hover {
+  transform: scale(1.05);
+}
+
+.liquid-glass-btn:active {
+  transform: scale(0.98);
+}
+
+.liquid-glass-btn > .lg-content {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.liquid-glass-btn > .lg-content .icon {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+/* Cam kenarı — açık zeminde koyu iç gölge yığını (bileşenin light varyantı) */
+.liquid-glass-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: 999px;
+  transition: box-shadow 0.2s ease;
+  box-shadow:
+    0 0 6px rgba(0, 0, 0, 0.03),
+    0 2px 6px rgba(0, 0, 0, 0.08),
+    inset 3px 3px 0.5px -3px rgba(0, 0, 0, 0.9),
+    inset -3px -3px 0.5px -3px rgba(0, 0, 0, 0.85),
+    inset 1px 1px 1px -0.5px rgba(0, 0, 0, 0.6),
+    inset -1px -1px 1px -0.5px rgba(0, 0, 0, 0.6),
+    inset 0 0 6px 6px rgba(0, 0, 0, 0.12),
+    inset 0 0 2px 2px rgba(0, 0, 0, 0.06),
+    0 0 12px rgba(255, 255, 255, 0.15);
+}
+
+/* Cam yüzeyi — arkasını bulanıklaştırır. Destekleyen tarayıcılarda
+   #container-glass SVG filtresiyle sıvı bozulma eklenir (ilerlemeli geliştirme). */
+.liquid-glass-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 999px;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+@supports (backdrop-filter: url("#container-glass")) {
+  .liquid-glass-btn::after {
+    backdrop-filter: url("#container-glass") blur(2px);
+  }
+}
+
+/* Koyu tema ya da koyu/görsel zemin: açık renkli cam kenarı (bileşenin dark varyantı) */
+:root[data-theme="dark"] .liquid-glass-btn::before,
+.liquid-glass-btn.on-dark::before {
+  box-shadow:
+    0 0 8px rgba(0, 0, 0, 0.03),
+    0 2px 6px rgba(0, 0, 0, 0.08),
+    inset 3px 3px 0.5px -3.5px rgba(255, 255, 255, 0.09),
+    inset -3px -3px 0.5px -3.5px rgba(255, 255, 255, 0.85),
+    inset 1px 1px 1px -0.5px rgba(255, 255, 255, 0.6),
+    inset -1px -1px 1px -0.5px rgba(255, 255, 255, 0.6),
+    inset 0 0 6px 6px rgba(255, 255, 255, 0.12),
+    inset 0 0 2px 2px rgba(255, 255, 255, 0.06),
+    0 0 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Görsel üzerindeki CTA her iki temada da beyaz metin kullanır */
+.liquid-glass-btn.on-dark {
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .liquid-glass-btn:hover,
+  .liquid-glass-btn:active {
+    transform: none;
+  }
+}
+
+/* ============================================================
    DUYARLI TASARIM
    ============================================================ */
 @media (max-width: 940px) {
