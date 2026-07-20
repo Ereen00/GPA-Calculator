@@ -11,7 +11,7 @@
   const gradeOrder = ['AA', 'BA', 'BB', 'CB', 'CC', 'DC', 'DD', 'FF'];
   const statusOrder = ['taken', 'repeated with', 'withdrawed', 'not taken'];
 
-  // Tasarım sistemine uyumlu grafik paleti
+  // Tasarım sistemine uyumlu grafik paleti (slate temaya göre değişir)
   const COLORS = {
     indigo: '#6366f1',
     indigoDark: '#4f46e5',
@@ -25,11 +25,20 @@
     gray: '#94a3b8'
   };
 
-  if (window.Chart && Chart.defaults) {
-    Chart.defaults.font = Chart.defaults.font || {};
-    Chart.defaults.font.family = "'Inter', 'Segoe UI', system-ui, sans-serif";
-    Chart.defaults.color = '#64748b';
+  const isDarkTheme = () => document.documentElement.getAttribute('data-theme') === 'dark';
+
+  // Eksen yazıları, ızgara çizgileri ve koyu palet renkleri temaya uyarlanır
+  function applyChartTheme() {
+    const dark = isDarkTheme();
+    COLORS.slate = dark ? '#cbd5e1' : '#334155';
+    if (window.Chart && Chart.defaults) {
+      Chart.defaults.font = Chart.defaults.font || {};
+      Chart.defaults.font.family = "'Inter', 'Segoe UI', system-ui, sans-serif";
+      Chart.defaults.color = dark ? '#94a3b8' : '#64748b';
+      Chart.defaults.borderColor = dark ? 'rgba(148, 163, 184, 0.16)' : 'rgba(15, 23, 42, 0.08)';
+    }
   }
+  applyChartTheme();
 
   // Global vars for simulator
   let globalTotalPoints = 0;
@@ -82,9 +91,18 @@
     return chartRegistry[id];
   }
 
+  // Tema değişince grafiklerin son veriyle yeniden çizilebilmesi için tutulur
+  let lastAnalysis = null;
+
+  window.addEventListener('gpa:themechange', () => {
+    applyChartTheme();
+    if (lastAnalysis) analyzeData(lastAnalysis.json, lastAnalysis.sourceLabel);
+  });
+
   // --- Main Logic ---
   // Veriyi çözümleyip tüm panelleri oluşturur (kaynak: 'auto' = tarayıcı kaydı, 'file' = JSON yedeği)
   function analyzeData(json, sourceLabel) {
+    lastAnalysis = { json, sourceLabel };
     let cards = [], semesters = [], semNames = [];
 
     if (json.cards && json.semesters) {

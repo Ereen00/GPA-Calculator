@@ -100,7 +100,7 @@ input[type="file"] {
 
 .status-loading {
   background: var(--warning-soft);
-  color: #92400e;
+  color: var(--status-warning-text);
   border: 1px solid var(--warning-border);
 }
 
@@ -121,13 +121,13 @@ input[type="file"] {
 
 .status-success {
   background: var(--success-soft);
-  color: #065f46;
+  color: var(--status-success-text);
   border: 1px solid var(--success-border);
 }
 
 .status-error {
   background: var(--danger-soft);
-  color: #9f1239;
+  color: var(--status-error-text);
   border: 1px solid var(--danger-border);
 }
 

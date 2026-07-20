@@ -97,7 +97,7 @@
 .sem-name:focus {
   border-color: var(--primary);
   background: var(--surface);
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+  box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 .sem-chips {
@@ -198,7 +198,7 @@
 .course-row input:focus,
 .course-row select:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+  box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 .course-lesson {
@@ -305,7 +305,7 @@
 }
 
 #add-semester-btn:hover {
-  background: #e0e7ff;
+  background: var(--primary-soft-strong);
   border-color: var(--primary);
 }
 
@@ -315,7 +315,7 @@
   left: 0;
   bottom: 0;
   width: 100%;
-  background: rgba(255, 255, 255, 0.92);
+  background: var(--bar-bg);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-top: 1px solid var(--border);

@@ -4,6 +4,8 @@ Boğaziçi Üniversitesi öğrencileri için geliştirilmiş açık kaynaklı bi
 
 **Tamamen istemci tarafında çalışır** — sunucu, veritabanı veya hesap yoktur. PDF'iniz cihazınızdan hiç çıkmaz; veriler yalnızca kendi tarayıcınızda saklanır ve tüm sayfalar arasında otomatik paylaşılır.
 
+**Karanlık mod:** Navbar'daki 🌙/☀️ düğmesiyle tema değiştirilebilir; ilk açılışta sistem tercihiniz kullanılır ve seçiminiz hatırlanır. Grafikler dahil tüm arayüz temaya uyum sağlar.
+
 ## 🌟 Modüller
 
 ### 📄 PDF Dönüştürücü (`pdf_upload.html`)
