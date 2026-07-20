@@ -29,7 +29,8 @@
   }
 
   function countsAsAttempt(status) {
-    return status !== 'not taken' && status !== 'non credit';
+    // 'withdrawed': eski yedek dosyalarında görülebilen alternatif yazım
+    return status !== 'not taken' && status !== 'non credit' && status !== 'withdrawed';
   }
 
   /* Tekrar kuralı için dersin grup anahtarı: repeated-with derste hedef dersin adı,
@@ -56,19 +57,33 @@
 
     var points = 0, credits = 0, attempted = 0, completed = 0;
     groups.forEach(function (attempts) {
-      var latest = attempts[0];
-      attempts.forEach(function (a) {
-        if (a.semIdx > latest.semIdx) latest = a;
-        else if (a.semIdx === latest.semIdx && a.course.status === 'repeated with') latest = a;
+      // GPA'yı yalnızca SONUÇLANMIŞ denemeler belirler: geçerli (sayısal) notu olan
+      // taken/repeated-with denemeleri. Devam eden (notsuz) veya çekilen (W) bir
+      // tekrar, önceki notu SİLMEZ — resmi transkript davranışıyla birebir aynı.
+      var concluded = attempts.filter(function (a) {
+        return countsForGpa(a.course.status) && !isNaN(gradeValue(a.course.grade));
       });
-      var c = latest.course;
-      var cr = courseCredit(c);
-      var g = gradeValue(c.grade);
-      if (countsAsAttempt(c.status)) attempted += cr;
-      if (countsForGpa(c.status) && !isNaN(g)) {
+      if (concluded.length > 0) {
+        var latest = concluded[0];
+        concluded.forEach(function (a) {
+          if (a.semIdx > latest.semIdx) latest = a;
+          else if (a.semIdx === latest.semIdx && a.course.status === 'repeated with') latest = a;
+        });
+        var c = latest.course;
+        var cr = courseCredit(c);
+        var g = gradeValue(c.grade);
         points += g * cr;
         credits += cr;
         if (g > 0) completed += cr;
+      }
+      // Denenen kredi: dersin en son denemesinin durumuna göre
+      // (devam eden dersler de denenmiş sayılır; çekilenler sayılmaz)
+      var latestAny = attempts[0];
+      attempts.forEach(function (a) {
+        if (a.semIdx > latestAny.semIdx) latestAny = a;
+      });
+      if (countsAsAttempt(latestAny.course.status)) {
+        attempted += courseCredit(latestAny.course);
       }
     });
 

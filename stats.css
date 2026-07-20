@@ -1,0 +1,354 @@
+/* ============================================================
+   GPA Planlayıcı — İstatistik Sayfası Stilleri
+   Ortak belirteçler ve bileşenler base.css içindedir.
+   ============================================================ */
+
+.stats-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 36px 20px 20px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 10px;
+}
+
+p.subtitle {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  line-height: 1.65;
+  margin: 0 auto 28px;
+  max-width: 640px;
+}
+
+/* ---------- Veri yokken gösterilen karşılama ---------- */
+.stats-empty {
+  background: var(--surface);
+  border: 2px dashed var(--primary-border);
+  border-radius: var(--radius-lg);
+  padding: 48px 32px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.stats-empty .empty-icon {
+  font-size: 3rem;
+  margin-bottom: 12px;
+}
+
+.stats-empty h2 {
+  margin: 0 0 8px;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.stats-empty p {
+  color: var(--text-muted);
+  margin: 0 0 20px;
+  line-height: 1.6;
+}
+
+.empty-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ---------- Yedek yükleme çubuğu ---------- */
+.upload-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 14px 20px;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.upload-section input[type="file"] {
+  display: none;
+}
+
+.upload-section label {
+  background: var(--primary);
+  color: #fff;
+  padding: 9px 18px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: background 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.upload-section label:hover {
+  background: var(--primary-dark);
+}
+
+#upload-info {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+/* ---------- Özet kartları ---------- */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.summary-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px 22px;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.summary-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+}
+
+.summary-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--primary);
+}
+
+.summary-card.success::after {
+  background: var(--success);
+}
+
+.summary-card.danger::after {
+  background: var(--danger);
+}
+
+.summary-card h3 {
+  margin: 0 0 8px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.summary-card .value {
+  font-size: 1.9rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.summary-card .desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ---------- Grafik kartları ---------- */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.stat-graph {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.25s;
+}
+
+.stat-graph:hover {
+  box-shadow: var(--shadow);
+}
+
+.stat-graph-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Canvas boyut sınırı — grafiklerin aşırı büyümesini engeller */
+.stat-graph canvas {
+  max-height: 250px !important;
+  width: 100% !important;
+}
+
+.full-width canvas {
+  max-height: 300px !important;
+}
+
+.badge {
+  font-size: 0.72rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: var(--text-muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.analysis-text {
+  background: var(--warning-soft);
+  border-left: 4px solid var(--warning);
+  padding: 12px 14px;
+  margin-top: 14px;
+  font-size: 0.87rem;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  line-height: 1.5;
+}
+
+.analysis-text.info {
+  background: var(--primary-soft);
+  border-left-color: var(--primary);
+  color: var(--text);
+}
+
+/* ---------- Mezuniyet simülatörü ---------- */
+.simulator-section {
+  background: linear-gradient(135deg, var(--surface), var(--primary-soft));
+  border: 1px solid var(--primary-border);
+  border-radius: var(--radius-lg);
+  padding: 26px;
+  box-shadow: var(--shadow-sm);
+  margin-top: 28px;
+  margin-bottom: 28px;
+}
+
+.simulator-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.simulator-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.sim-icon {
+  font-size: 1.4rem;
+  background: var(--surface);
+  border: 1px solid var(--primary-border);
+  padding: 10px;
+  border-radius: 50%;
+}
+
+.simulator-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  align-items: center;
+}
+
+.sim-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sim-input-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.sim-input-group input,
+.sim-input-group select {
+  font-family: var(--font);
+  padding: 11px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  outline: none;
+  background: var(--surface);
+  color: var(--text);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.sim-input-group input:focus,
+.sim-input-group select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+.sim-result {
+  background: var(--primary);
+  color: #fff;
+  padding: 20px;
+  border-radius: var(--radius);
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3);
+}
+
+.sim-result-value {
+  font-size: 2.1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.sim-result-label {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+/* ---------- Duyarlı tasarım ---------- */
+@media (max-width: 900px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .simulator-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .stats-container {
+    padding: 24px 14px 14px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  .upload-section {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+}

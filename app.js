@@ -285,11 +285,19 @@
     var semDelBtn = el('button', { class: 'sem-delete', type: 'button', text: '✕', title: 'Dönemi sil' });
     semDelBtn.addEventListener('click', function () {
       var count = sem.courses.length;
-      if (count > 0 && !confirm('"' + sem.name + '" dönemi ve içindeki ' + count + ' ders silinsin mi?')) return;
-      var idx = state.semesters.indexOf(sem);
-      if (idx !== -1) state.semesters.splice(idx, 1);
-      render();
-      scheduleSave();
+      var doDelete = function () {
+        var idx = state.semesters.indexOf(sem);
+        if (idx !== -1) state.semesters.splice(idx, 1);
+        render();
+        scheduleSave();
+      };
+      if (count === 0) { doDelete(); return; }
+      GPAUI.confirm({
+        title: 'Dönemi sil',
+        message: '"' + sem.name + '" dönemi ve içindeki ' + count + ' ders silinecek. Bu işlem geri alınamaz.',
+        confirmText: 'Sil',
+        danger: true
+      }).then(function (ok) { if (ok) doDelete(); });
     });
     header.appendChild(semDelBtn);
     card.appendChild(header);
@@ -448,7 +456,8 @@
 
   // ---------- Yedekleme (JSON dışa/içe aktarma) ----------
   document.getElementById('save-btn').addEventListener('click', function () {
-    GPAStorage.exportDownload(toStorageData(state));
+    var ok = GPAStorage.exportDownload(toStorageData(state));
+    if (ok) GPAUI.toast('JSON yedeği indirildi.', 'success');
   });
 
   document.getElementById('load-btn').addEventListener('click', function () {
@@ -460,21 +469,33 @@
     if (!file) return;
     var reader = new FileReader();
     reader.onload = function (evt) {
+      var data;
       try {
-        var data = JSON.parse(evt.target.result);
-        if (!window.GPAStorage || !GPAStorage.isValidData(data)) {
-          throw new Error('Geçersiz dosya biçimi');
-        }
-        var existing = GPAStorage.load();
-        if (existing && existing.cards.length > 0 &&
-            !confirm('Yedek dosyası mevcut planınızın üzerine yazılacak. Devam edilsin mi?')) {
-          return;
-        }
+        data = JSON.parse(evt.target.result);
+      } catch (err) {
+        GPAUI.toast('Dosya okunamadı: geçerli bir JSON değil.', 'error');
+        return;
+      }
+      if (!window.GPAStorage || !GPAStorage.isValidData(data)) {
+        GPAUI.toast('Geçersiz dosya biçimi: bu bir GPA yedeği değil.', 'error');
+        return;
+      }
+      var apply = function () {
         state = toEditorState(data);
         render();
         scheduleSave();
-      } catch (err) {
-        alert('Dosya yüklenemedi: ' + err.message);
+        GPAUI.toast('Yedek geri yüklendi.', 'success');
+      };
+      var existing = GPAStorage.load();
+      if (existing && existing.cards.length > 0) {
+        GPAUI.confirm({
+          title: 'Yedeği geri yükle',
+          message: 'Yedek dosyası mevcut planınızın üzerine yazılacak. Devam edilsin mi?',
+          confirmText: 'Üzerine Yaz',
+          danger: true
+        }).then(function (ok) { if (ok) apply(); });
+      } else {
+        apply();
       }
     };
     reader.readAsText(file);

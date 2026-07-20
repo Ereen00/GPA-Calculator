@@ -1,104 +1,87 @@
-🎓 Boğaziçi Transcript Parser & Academic Planner
-Boğaziçi Üniversitesi öğrencileri için geliştirilmiş; resmi not döküm belgesini (PDF) analiz eden, interaktif bir ders planlama arayüzü sunan ve detaylı akademik performans istatistikleri çıkaran açık kaynaklı bir web aracıdır.
+# 🎓 GPA Planlayıcı
 
-🌟 Özellikler
-Bu proje üç ana modülden oluşur:
+Boğaziçi Üniversitesi öğrencileri için geliştirilmiş açık kaynaklı bir akademik araç: resmi not döküm belgesini (PDF) otomatik ayrıştırır, sürükle-bırak destekli bir ders planlama arayüzü sunar ve detaylı akademik performans istatistikleri çıkarır.
 
-1. PDF Parser (Dönüştürücü)
-Otomatik Ayrıştırma: Resmi PDF transkriptini okur ve Regex algoritmalarıyla dersleri, notları, kredileri ve dönemleri ayrıştırır.
+**Tamamen istemci tarafında çalışır** — sunucu, veritabanı veya hesap yoktur. PDF'iniz cihazınızdan hiç çıkmaz; veriler yalnızca kendi tarayıcınızda saklanır ve tüm sayfalar arasında otomatik paylaşılır.
 
-Akıllı Algılama:
+## 🌟 Modüller
 
-Withdraw (W), Repeated (TKR) ve Yerine Sayılan (YRN) dersleri otomatik tanır.
+### 📄 PDF Dönüştürücü (`pdf_upload.html`)
+- Transkript PDF'ini sürükleyip bırakın; dönüştürme otomatik başlar.
+- Ayrıştırıcı (`parser.js`) dersleri, notları, kredileri ve dönemleri tarayıcıda tanır.
+- Withdraw (W/DÇ), Tekrar (TKR), Yerine Sayılan (YRN), kredisiz dersler (PE vb.), yaz okulu ve devam eden (notu girilmemiş) dönem otomatik algılanır.
+- Sonuç doğrudan tarayıcı kaydına (localStorage) yazılır; JSON yedeği indirme isteğe bağlıdır.
 
-Yaz okulu ve dönem isimlerini (Güz/Bahar) dinamik olarak algılar.
+### 📅 Ders Planlayıcı (`index.html`)
+- Dönemler kart, dersler satır olarak listelenir; ders sayısı sınırsızdır.
+- Dersleri dönemler arasında, dönemleri kronolojik sırada sürükleyip bırakabilirsiniz (mobil uyumlu).
+- Dönemlik (SPA) ve kümülatif (GPA) ortalamalar ile denenen/tamamlanan krediler anlık güncellenir.
+- Her değişiklik otomatik kaydedilir; "ne olurdu?" senaryolarını güvenle deneyebilirsiniz.
 
-JSON Çıktısı: Veriyi diğer modüllerde kullanılmak üzere yapılandırılmış .json formatına çevirir.
+### 📊 İstatistikler (`statistics.html`)
+- Chart.js ile 12 grafik: performans trendi, not dağılımları, momentum, volatilite, mevsimsel analiz, kredi yükü korelasyonu ve daha fazlası.
+- Mezuniyet Ortalaması Simülatörü: kalan krediler ve hedef notla tahmini mezuniyet GPA'sı.
+- Veriler planlayıcıdan otomatik yüklenir; eski bir JSON yedeğini de analiz edebilirsiniz.
 
-2. Magnetic Grid Editörü (Ders Planlayıcı)
-Sürükle & Bırak Arayüzü: Dersleri dönemler arasında "manyetik" kartlar şeklinde taşıyabilirsiniz.
+## 🎯 Hesaplama Kuralları (`gpa.js`)
 
-Canlı Hesaplama: Kartların yeri değiştikçe Dönemlik (SPA) ve Kümülatif (GPA) ortalamalar anlık olarak güncellenir.
+Resmi Boğaziçi transkript mantığı birebir uygulanır ve gerçek bir transkriptin basılı DNO/GNO değerleriyle doğrulanmıştır:
 
-Dinamik Yapı: Yeni dönem ekleme, silme ve ders statüsü (Tekrar, W vb.) değiştirme imkanı sunar.
+- Bir ders birden çok kez alındıysa kümülatif ortalamaya yalnızca **son sonuçlanmış** alınışı girer (TKR); YRN derslerde yerine geçtiği ders eşleştirilir.
+- Devam eden (notu girilmemiş) veya çekilen (W) bir tekrar, önceki notu **silmez**.
+- Teorik saati 0 olan dersler (PE vb.) ve kredisiz dersler ortalamaya girmez.
+- F / KL notları FF (0.00) olarak sayılır.
 
-3. Gelişmiş İstatistik Paneli
-Veri Görselleştirme: Chart.js altyapısı ile 12 farklı grafik türü.
+## 🔄 Veri Akışı
 
-Trend Analizi: Akademik başarının yönünü (Yükseliş/Düşüş) ve regresyon analizini gösterir.
+```
+PDF ──► pdf.js (metin) ──► parser.js (ayrıştırma) ──► tarayıcı localStorage
+        └────────── tümü tarayıcıda ──────────┘             │
+              ┌─────────────────────────────────────────────┼─────────────┐
+              ▼                                             ▼             ▼
+        Ders Planlayıcı  ◄────── otomatik senkron ──► İstatistikler   JSON yedeği
+                                                                    (isteğe bağlı)
+```
 
-Mevsimsel Analiz: Hangi dönemlerde (Güz/Bahar/Yaz) daha başarılı olduğunuzu ve kredi yükü kaldırma kapasitenizi ölçer.
+## 🚀 Dağıtım ve Yerel Geliştirme
 
-Mezuniyet Simülatörü: Kalan krediler ve hedeflenen notlarla tahmini mezuniyet ortalamasını hesaplar.
+Proje saf statik bir sitedir — Vercel, GitHub Pages veya herhangi bir statik sunucuda yapılandırmasız çalışır.
 
-🚀 Kurulum ve Çalıştırma
-Projeyi yerel makinenizde çalıştırmak için aşağıdaki adımları izleyin.
+```bash
+# Yerel geliştirme (herhangi bir statik sunucu yeterli):
+python -m http.server 8000
+# http://localhost:8000
+```
 
-Gereksinimler
-Python 3.x
+## 📂 Proje Yapısı
 
-Flask
+```
+├── index.html         # Ders Planlayıcı (ana sayfa)
+├── pdf_upload.html    # PDF Dönüştürücü
+├── statistics.html    # İstatistik Paneli
+├── base.css           # Ortak tasarım sistemi (tokenlar, navbar, toast, modal)
+├── style.css          # Planlayıcı stilleri
+├── upload.css         # Dönüştürücü stilleri
+├── stats.css          # İstatistik stilleri
+├── app.js             # Planlayıcı mantığı (state tabanlı)
+├── upload.js          # Dönüştürücü mantığı (pdf.js entegrasyonu)
+├── stats.js           # İstatistik/grafik mantığı
+├── parser.js          # GPAParser — transkript metni ayrıştırıcısı
+├── gpa.js             # GPACalc — ortalama hesaplama modülü (saf fonksiyonlar)
+├── storage.js         # GPAStorage — localStorage veri katmanı
+└── ui.js              # GPAUI — toast bildirimleri ve onay pencereleri
+```
 
-Adım 1: Depoyu Klonlayın veya İndirin
-Dosyaları bir klasöre çıkarın.
+## 🛡️ Gizlilik
 
-Adım 2: Gerekli Kütüphaneleri Yükleyin
-Terminal veya komut satırında proje dizinine gidip şunu çalıştırın:
+- PDF dosyanız **hiçbir sunucuya gönderilmez** — okuma (pdf.js) ve ayrıştırma (parser.js) tamamen tarayıcınızda gerçekleşir.
+- Ders verileriniz sadece kendi tarayıcınızın localStorage'ında tutulur; veritabanı, analitik veya üçüncü taraf servis yoktur.
+- Dış bağımlılıklar yalnızca CDN'den yüklenen kütüphanelerdir (pdf.js, Chart.js, SortableJS, Inter fontu).
 
-Bash
+## 🤝 Katkıda Bulunma
 
-pip install flask flask-cors
-Adım 3: Backend Sunucusunu Başlatın
-PDF işleme motorunu (Python) ayağa kaldırın:
+Pull request ve issue'lara açığız. Özellikle farklı transkript biçimleri (ör. Erasmus dönemleri, diğer üniversiteler) için `parser.js` içindeki desenlere katkılar memnuniyetle karşılanır.
 
-Bash
+## 📄 Lisans
 
-python txt-json.py
-Sunucu http://localhost:5000 adresinde çalışmaya başlayacaktır.
-
-Adım 4: Uygulamayı Kullanın
-Tarayıcınızda index.html dosyasını açın.
-
-📖 Kullanım Kılavuzu
-Veri Dönüştürme:
-
-index.html sayfasını açın.
-
-Transkript PDF dosyanızı sürükleyip bırakın.
-
-Oluşturulan lessons_and_grids.json dosyasını indirin.
-
-Planlama:
-
-Üst menüden Grid Editörü'ne gidin.
-
-"Yükle" butonuna basarak indirdiğiniz JSON dosyasını seçin.
-
-Derslerinizi düzenleyin, senaryolar oluşturun ve "Kaydet" ile güncel halini saklayın.
-
-Analiz:
-
-Üst menüden İstatistikler sayfasına gidin (veya statistics.html).
-
-JSON dosyanızı yükleyin.
-
-Akademik hayatınızla ilgili detaylı grafikleri ve simülasyonları inceleyin.
-
-📂 Proje Yapısı
-├── txt-json.py          # Flask Backend (PDF Parsing Logic)
-├── index.html           # Landing Page & PDF Upload UI
-├── magnetic-grid.html   # Sürükle-Bırak Ders Planlayıcı
-├── statistics.html      # İstatistik ve Simülasyon Paneli
-├── style.css            # Grid Editörü Stilleri
-├── app.js               # Grid Editörü Mantığı
-└── README.md            # Proje Dokümantasyonu
-🛡️ Gizlilik ve Güvenlik
-Bu proje tamamen Client-Side (İstemci Taraflı) ve Localhost üzerinde çalışır. Yüklediğiniz PDF dosyaları ve kişisel verileriniz hiçbir harici sunucuya veya veritabanına gönderilmez/kaydedilmez. Tüm işlemler kendi bilgisayarınızda gerçekleşir.
-
-🤝 Katkıda Bulunma
-Projeyi geliştirmek isterseniz Pull Request gönderebilir veya Issue açabilirsiniz. Özellikle farklı transkript formatları (örneğin Erasmus dönemleri) için regex geliştirmeleri memnuniyetle karşılanır.
-
-📄 Lisans
-Bu proje MIT License altında lisanslanmıştır.
-
-Geliştirici: Yunus Eren Bayrak
+MIT License — Geliştirici: Yunus Eren Bayrak
