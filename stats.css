@@ -6,15 +6,21 @@
 .stats-container {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 36px 20px 20px;
+  padding: 44px 20px 20px;
+}
+
+.stats-container > .eyebrow {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
 }
 
 h1 {
   text-align: center;
-  font-size: 2.1rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  margin: 0 0 10px;
+  font-size: clamp(1.9rem, 4vw, 2.7rem);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  margin: 0 0 12px;
 }
 
 p.subtitle {
@@ -37,7 +43,9 @@ p.subtitle {
 }
 
 .stats-empty .empty-icon {
-  font-size: 3rem;
+  color: var(--primary);
+  display: flex;
+  justify-content: center;
   margin-bottom: 12px;
 }
 
@@ -262,11 +270,25 @@ p.subtitle {
 }
 
 .sim-icon {
-  font-size: 1.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
   background: var(--surface);
   border: 1px solid var(--primary-border);
   padding: 10px;
   border-radius: 50%;
+}
+
+.sim-icon .icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+#sim-info {
+  font-size: 0.8rem;
+  margin-top: 5px;
+  opacity: 0.9;
 }
 
 .simulator-grid {
@@ -313,7 +335,7 @@ p.subtitle {
   padding: 20px;
   border-radius: var(--radius);
   text-align: center;
-  box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3);
+  box-shadow: 0 5px 15px rgba(26, 75, 157, 0.3);
 }
 
 .sim-result-value {

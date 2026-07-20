@@ -23,8 +23,15 @@
   box-shadow: var(--shadow-sm);
 }
 
+/* `hidden` özniteliği display:flex'i ezmesin diye açıkça gizle */
+.empty-state[hidden] {
+  display: none;
+}
+
 .empty-state-icon {
-  font-size: 2.4rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
 }
 
 .empty-state-text {
@@ -271,6 +278,10 @@
 }
 
 .add-course-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
   background: transparent;
   color: var(--primary);
   border: 1px dashed var(--primary-border);
@@ -289,7 +300,17 @@
   border-color: var(--primary);
 }
 
+.add-course-plus {
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
 #add-semester-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   width: 100%;
   margin-top: 20px;
   padding: 15px;
@@ -302,6 +323,11 @@
   font-weight: 700;
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
+}
+
+#add-semester-btn .icon {
+  width: 1.2rem;
+  height: 1.2rem;
 }
 
 #add-semester-btn:hover {
@@ -384,16 +410,24 @@
 }
 
 #fixed-bar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   font-family: var(--font);
   font-size: 0.85rem;
   font-weight: 600;
   padding: 9px 16px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: 999px;
   background: var(--surface);
   color: var(--text);
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s, transform 0.15s;
+}
+
+#fixed-bar button .icon {
+  width: 1.05rem;
+  height: 1.05rem;
 }
 
 #fixed-bar button:hover {

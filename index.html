@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GPA Planlayıcı</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+  <title>Boğaziçi GPA — Akademik Planlayıcı, Analitik ve Transkript Yükleyici</title>
+  <meta name="description" content="Boğaziçi Üniversitesi öğrencileri için tarayıcıda çalışan GPA hesaplayıcı: transkript yükleyici, ders planlayıcı ve akademik analitik — verileriniz cihazınızdan çıkmaz.">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
   <script>
     // Tema tercihini CSS yüklenmeden uygula (açılışta beyaz parlama olmasın)
     (function () {
@@ -18,63 +19,259 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="base.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="home.css">
 </head>
 <body>
+  <a href="#tools" class="skip-link" data-i18n="common.skipToContent">İçeriğe geç</a>
+
   <nav class="navbar">
-    <div class="logo">
-      🎓 <span>GPA Planlayıcı</span>
+    <a href="index.html" class="logo">
+      <img src="assets/bu-logo.png" alt="Boğaziçi Üniversitesi logosu" width="38" height="38">
+      <span>
+        <span class="logo-name" data-i18n="brand.name">Boğaziçi GPA</span>
+        <span class="logo-sub" data-i18n="brand.sub">Akademik Planlayıcı</span>
+      </span>
+    </a>
+    <div class="nav-links" id="primary-nav">
+      <a href="index.html" class="nav-link" aria-current="page" data-i18n="nav.home">Ana Sayfa</a>
+      <a href="planner.html" class="nav-link" data-i18n="nav.planner">Ders Planlayıcı</a>
+      <a href="statistics.html" class="nav-link" data-i18n="nav.stats">Analitik</a>
+      <a href="pdf_upload.html" class="nav-link" data-i18n="nav.upload">Transkript Yükleyici</a>
     </div>
     <div class="nav-buttons">
-      <a href="statistics.html" class="nav-btn">📊 İstatistikler</a>
-      <a href="pdf_upload.html" class="nav-btn">📄 PDF Dönüştürücü</a>
-      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Temayı değiştir">🌙</button>
+      <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language / Dili değiştir">EN</button>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Temayı değiştir"></button>
+      <button id="nav-menu-toggle" class="nav-menu-toggle" type="button" aria-label="Menüyü aç" aria-expanded="false" aria-controls="primary-nav"></button>
     </div>
   </nav>
 
-  <main class="main-container">
-    <div id="empty-state" class="empty-state" hidden>
-      <div class="empty-state-icon">👋</div>
-      <div class="empty-state-text">
-        <strong>Henüz ders eklenmemiş.</strong><br>
-        Transkript PDF'inizi dönüştürerek tüm derslerinizi tek seferde aktarabilir
-        ya da dönem kartındaki <em>"➕ Ders Ekle"</em> butonuyla elle başlayabilirsiniz.
-        Yaptığınız her değişiklik tarayıcınıza otomatik kaydedilir.
-      </div>
-      <a href="pdf_upload.html" class="nav-btn">📄 PDF'den Aktar</a>
-    </div>
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <div class="wrap">
+      <nav class="hero-breadcrumb" aria-label="breadcrumb">
+        <span data-i18n="home.crumb.home">Ana Sayfa</span>
+        <span class="sep">/</span>
+        <span class="here" data-i18n="home.crumb.here">GPA Hesaplayıcı</span>
+      </nav>
 
-    <div id="semesters-container"></div>
-
-    <button id="add-semester-btn" type="button">📅 Dönem Ekle</button>
-  </main>
-
-  <footer id="fixed-bar">
-    <div class="totals">
-      <div class="gpa-box" title="Kümülatif genel not ortalaması">
-        <span class="gpa-label">GPA</span>
-        <strong id="gpa-value">0.00</strong>
+      <div class="hero-top">
+        <div class="hero-main">
+          <span class="eyebrow"><span class="diamond"></span><span data-i18n="home.eyebrow">Boğaziçi Üniversitesi için</span></span>
+          <h1 class="hero-title" style="margin-top:16px;">
+            <span data-i18n="home.title1">Ortalamanızı</span><br>
+            <span class="accent" data-i18n="home.title2">Tanıyın.</span>
+          </h1>
+        </div>
+        <div class="hero-side">
+          <p class="hero-lead" data-i18n="home.lead">
+            Transkriptinizi saniyeler içinde aktarın, dönem dönem planlayın ve akademik gelişiminizi
+            gerçek verilerle analiz edin — hepsi tarayıcınızda, sunucuya hiçbir şey gönderilmeden.
+          </p>
+          <div class="hero-actions">
+            <a href="pdf_upload.html" class="btn-action btn-lg">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"></path></svg>
+              <span data-i18n="home.cta.primary">Transkript Yükle</span>
+            </a>
+            <a href="planner.html" class="btn-action secondary btn-lg">
+              <span data-i18n="home.cta.secondary">Planlayıcıyı Aç</span>
+            </a>
+          </div>
+        </div>
       </div>
-      <div class="total-stats">
-        <span id="total-credit-display" title="Ortalamaya giren toplam kredi">Toplam Kredi: 0</span>
-        <span id="overall-attempted" title="Denenen toplam kredi (çekilen ve kredisiz dersler hariç)">Denenen: 0</span>
-        <span id="overall-completed" title="Başarıyla tamamlanan toplam kredi">Tamamlanan: 0</span>
+
+      <figure class="hero-figure reveal">
+        <img src="assets/hero-campus.webp" alt="Boğaziçi Üniversitesi Güney Kampüsü'nden Boğaz manzarası" width="1600" height="700" fetchpriority="high">
+        <div class="hero-badge">
+          <span class="diamond"></span>
+          <div>
+            <div class="badge-value">4.00</div>
+            <div class="badge-label">GPA</div>
+          </div>
+        </div>
+      </figure>
+
+      <div class="stat-strip reveal">
+        <div class="stat-item">
+          <div class="stat-value" data-i18n="home.stat1.value">%100</div>
+          <div class="stat-label" data-i18n="home.stat1.label">Tarayıcıda çalışır</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" data-i18n="home.stat2.value">12</div>
+          <div class="stat-label" data-i18n="home.stat2.label">Analitik grafik</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" data-i18n="home.stat3.value">3</div>
+          <div class="stat-label" data-i18n="home.stat3.label">Bütünleşik araç</div>
+        </div>
       </div>
     </div>
-    <div class="bar-actions">
-      <span id="autosave-status" title="Değişiklikleriniz tarayıcınıza otomatik kaydedilir"></span>
-      <button id="save-btn" type="button" title="Verileriniz zaten otomatik kaydedilir; bu buton bir JSON yedeği indirir">💾 Yedek İndir</button>
-      <button id="load-btn" type="button" title="Daha önce indirdiğiniz bir JSON yedeğini geri yükler">📂 Yedekten Yükle</button>
+  </header>
+
+  <!-- ============ ARAÇ KARTLARI ============ -->
+  <section class="section" id="tools">
+    <div class="wrap">
+      <div class="section-head center reveal">
+        <span class="eyebrow"><span class="diamond"></span><span data-i18n="home.sections.eyebrow">Neler Yapabilirsiniz</span></span>
+        <h2 class="section-title" data-i18n="home.sections.title">Tek bir yerde tam akademik kontrol</h2>
+        <p class="section-lead" data-i18n="home.sections.lead">
+          Üç araç, tek bir veri kaynağını paylaşır: transkriptinizi bir kez aktarın,
+          planlayıcıda ve analitikte anında görün.
+        </p>
+      </div>
+
+      <div class="tools-grid">
+        <a href="pdf_upload.html" class="tool-card reveal">
+          <span class="tool-icon">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M14 3v4a1 1 0 001 1h4"></path><path d="M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z"></path><path d="M12 11v6m0 0l-2.5-2.5M12 17l2.5-2.5"></path></svg>
+          </span>
+          <div class="tool-tag" data-i18n="home.card.upload.tag">01 — Başlangıç</div>
+          <h3 class="tool-title" data-i18n="home.card.upload.title">Transkript Yükleyici</h3>
+          <p class="tool-desc" data-i18n="home.card.upload.desc">
+            Resmi PDF not döküm belgenizi bırakın; dersleriniz, notlarınız ve dönemleriniz
+            otomatik tanınıp aktarılsın.
+          </p>
+          <span class="tool-link">
+            <span data-i18n="home.card.upload.link">PDF Dönüştürücüyü Aç</span>
+            <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+          </span>
+        </a>
+
+        <a href="planner.html" class="tool-card reveal">
+          <span class="tool-icon">
+            <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"></rect><path d="M3 9h18M8 2v4M16 2v4"></path><path d="M8 13h2M14 13h2M8 17h2M14 17h2"></path></svg>
+          </span>
+          <div class="tool-tag" data-i18n="home.card.planner.tag">02 — Planlama</div>
+          <h3 class="tool-title" data-i18n="home.card.planner.title">Ders Planlayıcı</h3>
+          <p class="tool-desc" data-i18n="home.card.planner.desc">
+            Dönemlerinizi sürükle-bırakla düzenleyin, ders ekleyin ve kümülatif ortalamanızı
+            anlık izleyin. Değişiklikleriniz otomatik kaydedilir.
+          </p>
+          <span class="tool-link">
+            <span data-i18n="home.card.planner.link">Planlayıcıyı Aç</span>
+            <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+          </span>
+        </a>
+
+        <a href="statistics.html" class="tool-card reveal">
+          <span class="tool-icon">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M3 3v18h18"></path><path d="M7 15l3-4 3 2 4-6"></path></svg>
+          </span>
+          <div class="tool-tag" data-i18n="home.card.stats.tag">03 — Analiz</div>
+          <h3 class="tool-title" data-i18n="home.card.stats.title">Akademik Analitik</h3>
+          <p class="tool-desc" data-i18n="home.card.stats.desc">
+            Performans trendinizi, not dağılımınızı, en zorlandığınız dersleri ve mezuniyet
+            ortalaması simülasyonunu grafiklerle görün.
+          </p>
+          <span class="tool-link">
+            <span data-i18n="home.card.stats.link">Analitiği Aç</span>
+            <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+          </span>
+        </a>
+      </div>
     </div>
-    <input type="file" id="load-input" accept="application/json" style="display:none;">
+  </section>
+
+  <!-- ============ ÖZELLİK ŞERİDİ ============ -->
+  <section class="section features">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow"><span class="diamond"></span><span data-i18n="home.features.eyebrow">Neden Bu Araç</span></span>
+        <h2 class="section-title" data-i18n="home.features.title">Boğaziçili öğrenciler için tasarlandı</h2>
+      </div>
+
+      <div class="features-list">
+        <div class="feature reveal">
+          <span class="feature-mark">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"></path></svg>
+          </span>
+          <h3 data-i18n="home.feature1.title">Hızlı ve Otomatik</h3>
+          <p data-i18n="home.feature1.desc">Manuel veri girişine son. Yüzlerce satırlık transkript verisi saniyeler içinde analiz edilir.</p>
+        </div>
+        <div class="feature reveal">
+          <span class="feature-mark">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path></svg>
+          </span>
+          <h3 data-i18n="home.feature2.title">%100 Tarayıcıda</h3>
+          <p data-i18n="home.feature2.desc">PDF'iniz hiçbir sunucuya gönderilmez; okuma, ayrıştırma ve kaydetme dahil her şey kendi cihazınızda çalışır.</p>
+        </div>
+        <div class="feature reveal">
+          <span class="feature-mark">
+            <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect></svg>
+          </span>
+          <h3 data-i18n="home.feature3.title">Akıllı Ayrıştırma</h3>
+          <p data-i18n="home.feature3.desc">Withdraw (W), Tekrar (TKR), Yerine Sayılan (YRN) ve Yaz Okulu gibi karmaşık senaryoları otomatik algılar.</p>
+        </div>
+        <div class="feature reveal">
+          <span class="feature-mark">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+          </span>
+          <h3 data-i18n="home.feature4.title">Gerçek Zamanlı Analiz</h3>
+          <p data-i18n="home.feature4.desc">GPA, SPA ve kredi hesaplamaları her değişiklikte anında güncellenir; hiçbir şeyi manuel hesaplamazsınız.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KAMPÜS ============ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="campus">
+        <figure class="campus-figure reveal">
+          <img src="assets/campus-about.webp" alt="Boğaziçi Üniversitesi tarihi kampüs binaları" width="900" height="525" loading="lazy">
+        </figure>
+        <div class="campus-body reveal">
+          <span class="eyebrow"><span class="diamond"></span><span data-i18n="home.campus.eyebrow">Güney Kampüs, İstanbul</span></span>
+          <h2 class="section-title" data-i18n="home.campus.title">Boğaz'ın kıyısında, 1863'ten beri</h2>
+          <p class="section-lead" data-i18n="home.campus.desc">
+            Bu araç resmi bir üniversite ürünü değildir; Boğaziçili bir öğrenci tarafından,
+            kampüsün gündelik akademik ihtiyaçlarını kolaylaştırmak için geliştirildi.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KAPANIŞ CTA ============ -->
+  <section class="section closing">
+    <div class="wrap">
+      <div class="closing-inner reveal">
+        <span class="eyebrow"><span class="diamond"></span><span data-i18n="home.eyebrow">Boğaziçi Üniversitesi için</span></span>
+        <h2 class="closing-title" data-i18n="home.closing.title">Transkriptiniz elinizin altında.</h2>
+        <p class="closing-desc" data-i18n="home.closing.desc">PDF'inizi yükleyin, geri kalanını biz halledelim.</p>
+        <a href="pdf_upload.html" class="btn-action btn-lg">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"></path></svg>
+          <span data-i18n="home.cta.primary">Transkript Yükle</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="assets/bu-logo.png" alt="Boğaziçi Üniversitesi logosu" width="34" height="34">
+        <div>
+          <strong data-i18n="brand.name">Boğaziçi GPA</strong>
+          <span data-i18n="brand.sub">Akademik Planlayıcı</span>
+        </div>
+      </div>
+      <div class="footer-links">
+        <a href="index.html" data-i18n="nav.home">Ana Sayfa</a>
+        <a href="planner.html" data-i18n="nav.planner">Ders Planlayıcı</a>
+        <a href="statistics.html" data-i18n="nav.stats">Analitik</a>
+        <a href="pdf_upload.html" data-i18n="nav.upload">Transkript Yükleyici</a>
+      </div>
+    </div>
+    <p class="footer-note" data-i18n="common.footerNote">
+      Bu proje Boğaziçi Üniversitesi ile bağlantılı değildir; bağımsız bir öğrenci aracıdır.
+      Tüm veriler yalnızca tarayıcınızda saklanır.
+    </p>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
-  <script src="storage.js"></script>
-  <script src="gpa.js"></script>
+  <script src="i18n.js"></script>
   <script src="ui.js"></script>
-  <script src="app.js"></script>
 </body>
 </html>

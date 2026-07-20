@@ -7,7 +7,11 @@
 (function () {
   'use strict';
 
+  function t(key) { return window.GPAI18N ? GPAI18N.t(key) : key; }
+
   var PDF_WORKER_SRC = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+
+  var ARROW_RIGHT = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>';
 
   var fileInput = document.getElementById('file-input');
   var dropLabel = document.getElementById('drop-area');
@@ -33,23 +37,24 @@
   }
 
   function showSuccess(data) {
-    setStatus('success', '🎉 ' + data.cards.length + ' ders, ' + data.semesters.length +
-      ' dönem aktarıldı ve tarayıcınıza kaydedildi!');
+    setStatus('success', t('upload.status.success')
+      .replace('{n}', data.cards.length)
+      .replace('{m}', data.semesters.length));
 
     clearResults();
     var row = document.createElement('div');
     row.className = 'action-row';
 
     var openPlanner = document.createElement('a');
-    openPlanner.href = 'index.html';
+    openPlanner.href = 'planner.html';
     openPlanner.className = 'btn-action';
-    openPlanner.textContent = '📅 Planlayıcıyı Aç';
+    openPlanner.innerHTML = '<span>' + t('upload.action.openPlanner') + '</span>' + ARROW_RIGHT;
     row.appendChild(openPlanner);
 
     var openStats = document.createElement('a');
     openStats.href = 'statistics.html';
     openStats.className = 'btn-action secondary';
-    openStats.textContent = '📊 İstatistikleri Gör';
+    openStats.textContent = t('upload.action.openStats');
     row.appendChild(openStats);
 
     resultDiv.appendChild(row);
@@ -57,10 +62,10 @@
     var backupBtn = document.createElement('button');
     backupBtn.type = 'button';
     backupBtn.className = 'backup-link';
-    backupBtn.textContent = '💾 Ayrıca JSON yedeği indir';
+    backupBtn.textContent = t('upload.action.backup');
     backupBtn.addEventListener('click', function () {
       if (lastResult && GPAStorage.exportDownload(lastResult)) {
-        GPAUI.toast('JSON yedeği indirildi.', 'success');
+        GPAUI.toast(t('upload.toast.backup'), 'success');
       }
     });
     resultDiv.appendChild(backupBtn);
@@ -70,13 +75,13 @@
   function extractPdfText(file) {
     return new Promise(function (resolve, reject) {
       if (typeof pdfjsLib === 'undefined') {
-        reject(new Error('PDF kütüphanesi yüklenemedi. Sayfayı yenileyin.'));
+        reject(new Error(t('upload.libNotLoaded')));
         return;
       }
       pdfjsLib.GlobalWorkerOptions.workerSrc = PDF_WORKER_SRC;
 
       var reader = new FileReader();
-      reader.onerror = function () { reject(new Error('Dosya okunamadı.')); };
+      reader.onerror = function () { reject(new Error(t('upload.fileReadError'))); };
       reader.onload = function () {
         pdfjsLib.getDocument({ data: new Uint8Array(reader.result) }).promise
           .then(async function (pdf) {
@@ -97,23 +102,24 @@
 
   // ---------- Dönüştürme ve kaydetme (tamamen tarayıcıda) ----------
   async function convertAndStore(text) {
-    setStatus('loading', 'Transkript ayrıştırılıyor...');
+    setStatus('loading', t('upload.status.parsing'));
 
     var data = GPAParser.parse(text);
     if (!window.GPAStorage || !GPAStorage.isValidData(data) || data.cards.length === 0) {
-      throw new Error('Transkriptte ders bulunamadı. Dosyanın resmi Boğaziçi not döküm belgesi (PDF) olduğundan emin olun.');
+      throw new Error(t('upload.status.noCourses'));
     }
 
     // Mevcut plan varsa üzerine yazmadan önce onay al
     if (GPAStorage.hasData()) {
       var ok = await GPAUI.confirm({
-        title: 'Mevcut planın üzerine yaz',
-        message: 'Kayıtlı bir planınız zaten var. Yeni transkript verisiyle üzerine yazılsın mı?',
-        confirmText: 'Üzerine Yaz',
+        title: t('upload.confirm.overwriteTitle'),
+        message: t('upload.confirm.overwriteMsg'),
+        confirmText: t('upload.confirm.overwriteBtn'),
+        cancelText: t('upload.confirm.cancelBtn'),
         danger: true
       });
       if (!ok) {
-        setStatus('error', 'İşlem iptal edildi. Mevcut verileriniz korundu.');
+        setStatus('error', t('upload.status.cancelled'));
         return;
       }
     }
@@ -124,8 +130,7 @@
     } else {
       // localStorage kullanılamıyorsa (ör. gizli mod) yedek dosyası tek seçenek
       GPAStorage.exportDownload(data);
-      setStatus('error', 'Tarayıcı kaydı yapılamadı (gizli mod olabilir). JSON yedeği indirildi; ' +
-        'Planlayıcı\'daki "Yedekten Yükle" butonuyla açabilirsiniz.');
+      setStatus('error', t('upload.status.saveFailed'));
     }
   }
 
@@ -135,28 +140,28 @@
 
     var isPdf = (file.type === 'application/pdf') || /\.pdf$/i.test(file.name);
     if (!isPdf) {
-      GPAUI.toast('Lütfen bir PDF dosyası seçin.', 'error');
+      GPAUI.toast(t('upload.toast.notPdf'), 'error');
       return;
     }
 
     busy = true;
     clearResults();
-    fileLabelText.textContent = 'Seçilen: ' + file.name;
+    fileLabelText.textContent = t('upload.selectedFile').replace('{name}', file.name);
     dropLabel.classList.add('has-file');
 
     try {
-      setStatus('loading', 'PDF okunuyor...');
+      setStatus('loading', t('upload.status.reading'));
       var text;
       try {
         text = await extractPdfText(file);
       } catch (readErr) {
         console.error(readErr);
-        setStatus('error', 'PDF okunamadı. Dosyanın resmi transkript PDF\'i olduğundan emin olun.');
+        setStatus('error', t('upload.status.readError'));
         return;
       }
       await convertAndStore(text);
     } catch (err) {
-      setStatus('error', '❌ ' + err.message);
+      setStatus('error', err.message);
     } finally {
       busy = false;
     }

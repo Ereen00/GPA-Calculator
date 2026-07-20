@@ -12,12 +12,16 @@
 (function () {
   'use strict';
 
+  // ---------- Çeviri yardımcısı ----------
+  // i18n.js yoksa (ör. tek dosya açılırsa) anahtarın kendisini döndürür.
+  function t(key) { return window.GPAI18N ? GPAI18N.t(key) : key; }
+
   // ---------- Sabitler ----------
   var STATUS_OPTIONS = [
-    { value: 'taken', label: 'Alındı' },
-    { value: 'repeated with', label: 'Tekrar (Yerine)' },
-    { value: 'not taken', label: 'Çekildi (W)' },
-    { value: 'non credit', label: 'Kredisiz' }
+    { value: 'taken', i18n: 'editor.status.taken' },
+    { value: 'repeated with', i18n: 'editor.status.repeatedWith' },
+    { value: 'not taken', i18n: 'editor.status.notTaken' },
+    { value: 'non credit', i18n: 'editor.status.nonCredit' }
   ];
   var VALID_STATUSES = STATUS_OPTIONS.map(function (o) { return o.value; });
   var GRADE_OPTIONS = ['AA', 'BA', 'BB', 'CB', 'CC', 'DC', 'DD', 'FF', 'W', ''];
@@ -76,7 +80,7 @@
 
     var semesters = (data.semesters || []).map(function (s) {
       return {
-        name: s.name || 'Dönem',
+        name: s.name || t('editor.defaultSemester'),
         courses: (s.cards || [])
           .map(function (id) { used.add(id); return byId[id]; })
           .filter(Boolean)
@@ -87,7 +91,7 @@
     // Hiçbir döneme yerleştirilmemiş kartlar kaybolmasın
     var orphans = (data.cards || []).filter(function (c) { return !used.has(c.id); });
     if (orphans.length) {
-      semesters.push({ name: 'Yerleştirilmemiş Dersler', courses: orphans.map(normalizeCourse) });
+      semesters.push({ name: t('editor.unplaced'), courses: orphans.map(normalizeCourse) });
     }
 
     return { semesters: semesters };
@@ -167,11 +171,11 @@
   function buildCourseRow(course) {
     var row = el('div', { class: 'course-row', dataset: { courseId: course.id } });
 
-    row.appendChild(el('span', { class: 'drag-handle', text: '⠿', title: 'Sürükleyerek taşı' }));
+    row.appendChild(el('span', { class: 'drag-handle', text: '⠿', title: t('editor.dragCourse') }));
 
     var lessonInput = el('input', {
       class: 'course-lesson', type: 'text', value: course.lesson,
-      placeholder: 'Ders kodu (örn. CMPE 150)', title: 'Ders kodu / adı'
+      placeholder: t('editor.lessonPlaceholder'), title: t('editor.lessonTitle')
     });
     lessonInput.addEventListener('input', function () {
       course.lesson = lessonInput.value;
@@ -180,9 +184,9 @@
     });
     row.appendChild(lessonInput);
 
-    var statusSel = el('select', { class: 'course-status', title: 'Ders durumu' });
+    var statusSel = el('select', { class: 'course-status', title: t('editor.statusTitle') });
     STATUS_OPTIONS.forEach(function (o) {
-      statusSel.appendChild(el('option', { value: o.value, text: o.label }));
+      statusSel.appendChild(el('option', { value: o.value, text: t(o.i18n) }));
     });
     statusSel.value = course.status;
     statusSel.addEventListener('change', function () {
@@ -194,8 +198,8 @@
     row.appendChild(statusSel);
 
     if (course.status === 'repeated with') {
-      var repSel = el('select', { class: 'course-repeat', title: 'Hangi dersin yerine sayılıyor?' });
-      repSel.appendChild(el('option', { value: '', text: '— yerine geçtiği ders —' }));
+      var repSel = el('select', { class: 'course-repeat', title: t('editor.repeatTitle') });
+      repSel.appendChild(el('option', { value: '', text: t('editor.repeatEmpty') }));
       repeatCandidates(course).forEach(function (name) {
         repSel.appendChild(el('option', { value: name, text: name }));
       });
@@ -211,7 +215,7 @@
       row.appendChild(repSel);
     }
 
-    var gradeSel = el('select', { class: 'course-grade', title: 'Not' });
+    var gradeSel = el('select', { class: 'course-grade', title: t('editor.gradeTitle') });
     GRADE_OPTIONS.forEach(function (g) {
       gradeSel.appendChild(el('option', { value: g, text: g === '' ? '--' : g }));
     });
@@ -228,7 +232,7 @@
 
     var creditInput = el('input', {
       class: 'course-credit', type: 'number', min: '0', step: '0.5',
-      value: course.credit, title: 'Kredi', placeholder: 'Kr'
+      value: course.credit, title: t('editor.creditTitle'), placeholder: t('editor.creditPlaceholder')
     });
     creditInput.addEventListener('input', function () {
       course.credit = creditInput.value;
@@ -237,7 +241,7 @@
     });
     row.appendChild(creditInput);
 
-    var delBtn = el('button', { class: 'course-delete', type: 'button', text: '✕', title: 'Dersi sil' });
+    var delBtn = el('button', { class: 'course-delete', type: 'button', text: '✕', title: t('editor.deleteCourse') });
     delBtn.addEventListener('click', function () {
       var sem = state.semesters.find(function (s) { return s.courses.indexOf(course) !== -1; });
       if (sem) sem.courses.splice(sem.courses.indexOf(course), 1);
@@ -263,10 +267,10 @@
 
     // Başlık
     var header = el('div', { class: 'sem-header' });
-    header.appendChild(el('span', { class: 'sem-drag-handle', text: '⠿', title: 'Dönemi sürükleyerek sırala' }));
+    header.appendChild(el('span', { class: 'sem-drag-handle', text: '⠿', title: t('editor.dragSemester') }));
 
     var nameInput = el('input', {
-      class: 'sem-name', type: 'text', value: sem.name, title: 'Dönem adını düzenlemek için tıklayın'
+      class: 'sem-name', type: 'text', value: sem.name, title: t('editor.semNameTitle')
     });
     nameInput.addEventListener('input', function () {
       sem.name = nameInput.value;
@@ -275,14 +279,14 @@
     header.appendChild(nameInput);
 
     var chips = el('div', { class: 'sem-chips' });
-    chips.appendChild(makeChip('SPA', 'spa', 'chip-spa', 'Bu dönemin not ortalaması'));
-    chips.appendChild(makeChip('GPA', 'gpa', 'chip-gpa', 'Bu dönem sonundaki kümülatif ortalama'));
-    var detail = el('span', { class: 'chip-detail', title: 'Bu dönemde denenen ve tamamlanan krediler' });
+    chips.appendChild(makeChip(t('editor.spa'), 'spa', 'chip-spa', t('editor.spaTitle')));
+    chips.appendChild(makeChip('GPA', 'gpa', 'chip-gpa', t('editor.gpaTitle')));
+    var detail = el('span', { class: 'chip-detail', title: t('editor.detail').replace('{a}', '').replace('{c}', '') });
     detail.dataset.chip = 'detail';
     chips.appendChild(detail);
     header.appendChild(chips);
 
-    var semDelBtn = el('button', { class: 'sem-delete', type: 'button', text: '✕', title: 'Dönemi sil' });
+    var semDelBtn = el('button', { class: 'sem-delete', type: 'button', text: '✕', title: t('editor.deleteSemester') });
     semDelBtn.addEventListener('click', function () {
       var count = sem.courses.length;
       var doDelete = function () {
@@ -293,9 +297,10 @@
       };
       if (count === 0) { doDelete(); return; }
       GPAUI.confirm({
-        title: 'Dönemi sil',
-        message: '"' + sem.name + '" dönemi ve içindeki ' + count + ' ders silinecek. Bu işlem geri alınamaz.',
-        confirmText: 'Sil',
+        title: t('editor.confirmDeleteSemTitle'),
+        message: t('editor.confirmDeleteSemMsg').replace('{name}', sem.name).replace('{count}', count),
+        confirmText: t('editor.confirmDelete'),
+        cancelText: t('editor.cancel'),
         danger: true
       }).then(function (ok) { if (ok) doDelete(); });
     });
@@ -318,7 +323,9 @@
     });
 
     // Ders ekle
-    var addBtn = el('button', { class: 'add-course-btn', type: 'button', text: '➕ Ders Ekle' });
+    var addBtn = el('button', { class: 'add-course-btn', type: 'button' });
+    addBtn.appendChild(el('span', { class: 'add-course-plus', text: '+' }));
+    addBtn.appendChild(el('span', { text: ' ' + t('editor.addCourse') }));
     addBtn.addEventListener('click', function () {
       var course = { id: newCourseId(), lesson: '', status: 'taken', grade: 'AA', credit: '3', repeatedLesson: '' };
       sem.courses.push(course);
@@ -367,7 +374,9 @@
 
       setChip(cardEl, 'spa', s.spa.toFixed(2));
       setChip(cardEl, 'gpa', s.runningGpa.toFixed(2));
-      setChip(cardEl, 'detail', 'Denenen ' + fmtNum(s.semesterAttempted) + ' · Tamamlanan ' + fmtNum(s.semesterCompleted));
+      setChip(cardEl, 'detail', t('editor.detail')
+        .replace('{a}', fmtNum(s.semesterAttempted))
+        .replace('{c}', fmtNum(s.semesterCompleted)));
 
       sem.courses.forEach(function (course) {
         var row = cardEl.querySelector('.course-row[data-course-id="' + course.id + '"]');
@@ -383,9 +392,9 @@
     });
 
     document.getElementById('gpa-value').textContent = stats.overall.gpa.toFixed(2);
-    document.getElementById('total-credit-display').textContent = 'Toplam Kredi: ' + fmtNum(stats.overall.credits);
-    document.getElementById('overall-attempted').textContent = 'Denenen: ' + fmtNum(stats.overall.attempted);
-    document.getElementById('overall-completed').textContent = 'Tamamlanan: ' + fmtNum(stats.overall.completed);
+    document.getElementById('total-credit-display').textContent = t('planner.totalCredit') + ': ' + fmtNum(stats.overall.credits);
+    document.getElementById('overall-attempted').textContent = t('planner.attempted') + ': ' + fmtNum(stats.overall.attempted);
+    document.getElementById('overall-completed').textContent = t('planner.completed') + ': ' + fmtNum(stats.overall.completed);
 
     var totalCourses = state.semesters.reduce(function (acc, s) { return acc + s.courses.length; }, 0);
     if (emptyStateEl) emptyStateEl.hidden = totalCourses > 0;
@@ -406,14 +415,14 @@
         var tail = m[3].toLowerCase();
         var isEnglish = /fall|spring|summer/.test(tail);
         if (tail.indexOf('güz') !== -1 || tail.indexOf('fall') !== -1) {
-          return m[1] + '-' + m[2] + (isEnglish ? ' Spring Term' : ' Bahar Dönemi');
+          return m[1] + '-' + m[2] + ' ' + (isEnglish ? 'Spring Term' : 'Bahar Dönemi');
         }
         if (/bahar|spring|yaz|summer/.test(tail)) {
-          return (y1 + 1) + '-' + (y2 + 1) + (isEnglish ? ' Fall Term' : ' Güz Dönemi');
+          return (y1 + 1) + '-' + (y2 + 1) + ' ' + (isEnglish ? 'Fall Term' : 'Güz Dönemi');
         }
       }
     }
-    return 'Dönem ' + (state.semesters.length + 1);
+    return t('editor.defaultSemester') + ' ' + (state.semesters.length + 1);
   }
 
   document.getElementById('add-semester-btn').addEventListener('click', function () {
@@ -437,9 +446,10 @@
     var ok = GPAStorage.save(toStorageData(state), 'editor');
     var statusEl = document.getElementById('autosave-status');
     if (statusEl) {
+      var locale = (window.GPAI18N && GPAI18N.lang() === 'en') ? 'en-US' : 'tr-TR';
       statusEl.textContent = ok
-        ? '☁ Kaydedildi ' + new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })
-        : '⚠ Kaydedilemedi';
+        ? t('editor.autosaveSaved').replace('{time}', new Date().toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' }))
+        : t('editor.autosaveFailed');
       statusEl.classList.toggle('error', !ok);
     }
   }
@@ -457,7 +467,7 @@
   // ---------- Yedekleme (JSON dışa/içe aktarma) ----------
   document.getElementById('save-btn').addEventListener('click', function () {
     var ok = GPAStorage.exportDownload(toStorageData(state));
-    if (ok) GPAUI.toast('JSON yedeği indirildi.', 'success');
+    if (ok) GPAUI.toast(t('editor.toastBackup'), 'success');
   });
 
   document.getElementById('load-btn').addEventListener('click', function () {
@@ -473,25 +483,26 @@
       try {
         data = JSON.parse(evt.target.result);
       } catch (err) {
-        GPAUI.toast('Dosya okunamadı: geçerli bir JSON değil.', 'error');
+        GPAUI.toast(t('editor.toastFileError'), 'error');
         return;
       }
       if (!window.GPAStorage || !GPAStorage.isValidData(data)) {
-        GPAUI.toast('Geçersiz dosya biçimi: bu bir GPA yedeği değil.', 'error');
+        GPAUI.toast(t('editor.toastInvalidBackup'), 'error');
         return;
       }
       var apply = function () {
         state = toEditorState(data);
         render();
         scheduleSave();
-        GPAUI.toast('Yedek geri yüklendi.', 'success');
+        GPAUI.toast(t('editor.toastRestored'), 'success');
       };
       var existing = GPAStorage.load();
       if (existing && existing.cards.length > 0) {
         GPAUI.confirm({
-          title: 'Yedeği geri yükle',
-          message: 'Yedek dosyası mevcut planınızın üzerine yazılacak. Devam edilsin mi?',
-          confirmText: 'Üzerine Yaz',
+          title: t('editor.confirmRestoreTitle'),
+          message: t('editor.confirmRestoreMsg'),
+          confirmText: t('editor.confirmOverwrite'),
+          cancelText: t('editor.cancel'),
           danger: true
         }).then(function (ok) { if (ok) apply(); });
       } else {
@@ -508,10 +519,16 @@
     if (saved && (saved.semesters.length > 0 || saved.cards.length > 0)) {
       state = toEditorState(saved);
     } else {
-      state = { semesters: [{ name: 'Dönem 1', courses: [] }] };
+      state = { semesters: [{ name: t('editor.defaultSemester') + ' 1', courses: [] }] };
     }
     render();
     autosaveEnabled = true;
     scheduleSave(); // normalize edilmiş veriyi bir kez geri yaz
+
+    // Dil değişince seçenek etiketleri, rozet başlıkları ve toplamlar güncellensin.
+    // (Kullanıcının girdiği dönem/ders adları korunur; yalnızca üretilen metinler yenilenir.)
+    if (window.GPAI18N) {
+      GPAI18N.onChange(function () { render(); });
+    }
   })();
 })();

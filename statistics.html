@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>İstatistikler – GPA Planlayıcı</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+  <title>Akademik Analitik – Boğaziçi GPA</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
   <script>
     // Tema tercihini CSS yüklenmeden uygula (açılışta beyaz parlama olmasın)
     (function () {
@@ -18,184 +18,219 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="base.css">
   <link rel="stylesheet" href="stats.css">
 </head>
 <body>
+  <a href="#main" class="skip-link" data-i18n="common.skipToContent">İçeriğe geç</a>
 
   <nav class="navbar">
-    <div class="logo">
-      🎓 <span>GPA Planlayıcı</span>
+    <a href="index.html" class="logo">
+      <img src="assets/bu-logo.png" alt="Boğaziçi Üniversitesi logosu" width="38" height="38">
+      <span>
+        <span class="logo-name" data-i18n="brand.name">Boğaziçi GPA</span>
+        <span class="logo-sub" data-i18n="brand.sub">Akademik Planlayıcı</span>
+      </span>
+    </a>
+    <div class="nav-links" id="primary-nav">
+      <a href="index.html" class="nav-link" data-i18n="nav.home">Ana Sayfa</a>
+      <a href="planner.html" class="nav-link" data-i18n="nav.planner">Ders Planlayıcı</a>
+      <a href="statistics.html" class="nav-link" aria-current="page" data-i18n="nav.stats">Analitik</a>
+      <a href="pdf_upload.html" class="nav-link" data-i18n="nav.upload">Transkript Yükleyici</a>
     </div>
     <div class="nav-buttons">
-      <a href="index.html" class="nav-btn">📅 Ders Planlayıcı</a>
-      <a href="pdf_upload.html" class="nav-btn">📄 PDF Dönüştürücü</a>
-      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Temayı değiştir">🌙</button>
+      <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language / Dili değiştir">EN</button>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Temayı değiştir"></button>
+      <button id="nav-menu-toggle" class="nav-menu-toggle" type="button" aria-label="Menüyü aç" aria-expanded="false" aria-controls="primary-nav"></button>
     </div>
   </nav>
 
-<div class="stats-container">
-  <h1>Akademik Analitik Paneli</h1>
-  <p class="subtitle">Notlarınızı analiz edin, performans trendlerinizi görün ve akademik gelişiminizi takip edin.</p>
+  <main class="stats-container" id="main">
+    <span class="eyebrow" style="justify-content:center;"><span class="diamond"></span><span data-i18n="nav.stats">Analitik</span></span>
+    <h1 data-i18n="stats.title">Akademik Analitik Paneli</h1>
+    <p class="subtitle" data-i18n="stats.lead">Notlarınızı analiz edin, performans trendlerinizi görün ve akademik gelişiminizi takip edin.</p>
 
-  <div id="stats-empty" class="stats-empty">
-    <div class="empty-icon">📊</div>
-    <h2>Henüz analiz edilecek veri yok</h2>
-    <p>Transkriptinizi aktarın ya da planlayıcıda derslerinizi girin;<br>bu sayfa verilerinizi otomatik olarak yükler.</p>
-    <div class="empty-actions">
-      <a class="nav-btn" href="pdf_upload.html">📄 PDF'den Aktar</a>
-      <a class="nav-btn secondary" href="index.html">📅 Planlayıcıyı Aç</a>
-    </div>
-  </div>
-
-  <div class="upload-section">
-    <label for="stats-upload">📂 JSON Yedeği Yükle</label>
-    <input type="file" id="stats-upload" accept="application/json">
-    <span id="upload-info">Verileriniz Ders Planlayıcı'dan otomatik yüklenir; dilerseniz bir JSON yedeğini de analiz edebilirsiniz.</span>
-  </div>
-
-  <div id="stats-content" hidden>
-
-    <div class="summary-grid" id="summary-cards"></div>
-
-    <div class="charts-grid">
-
-      <div class="stat-graph full-width">
-        <div class="stat-graph-title">Akademik Performans Trendi (SPA vs Kümülatif GPA) <span class="badge">Zaman Serisi</span></div>
-        <canvas id="gpaChart"></canvas>
-        <div id="trend-analysis" class="analysis-text">Veri bekleniyor...</div>
+    <div id="stats-empty" class="stats-empty">
+      <div class="empty-icon">
+        <svg class="icon" viewBox="0 0 24 24" style="width:3rem;height:3rem;stroke-width:1.4"><path d="M3 3v18h18"></path><path d="M7 15l3-4 3 2 4-6"></path></svg>
       </div>
-
-      <div class="stat-graph full-width">
-        <div class="stat-graph-title">Dönemlere Göre Not Dağılımı <span class="badge">Performans Haritası</span></div>
-        <canvas id="gradeDistBySemChart"></canvas>
-        <div class="analysis-text info">
-          Dönem başına aldığınız harf notlarının (AA, BB, FF vb.) dağılımını gösterir. Hangi dönemlerde belirli notların yığıldığını analiz etmenizi sağlar.
-        </div>
-      </div>
-
-      <div class="stat-graph">
-        <div class="stat-graph-title">Dönemler Arası Değişim <span class="badge">Momentum</span></div>
-        <canvas id="improvementChart"></canvas>
-        <div class="analysis-text info">
-          Bir önceki döneme göre not ortalamanızdaki (SPA) artış veya azalışı gösterir. Yeşil çubuklar iyileşmeyi, kırmızılar düşüşü temsil eder.
-        </div>
-      </div>
-
-      <div class="stat-graph">
-        <div class="stat-graph-title">Performans Stabilitesi <span class="badge">Risk Analizi</span></div>
-        <canvas id="volatilityChart"></canvas>
-        <div class="analysis-text info">
-          Notlarınızın standart sapmasıdır (Volatilite). Yüksek çubuklar, aynı dönem içinde hem çok yüksek hem çok düşük notlar aldığınızı (dengesiz performans) gösterir.
-        </div>
-      </div>
-
-      <div class="stat-graph">
-        <div class="stat-graph-title">En Çok Tekrar Edilen Dersler <span class="badge">Tekrar Sayısı</span></div>
-        <canvas id="topRepeatedLessonsChart"></canvas>
-        <div class="analysis-text info">
-          Eğitim hayatınız boyunca birden fazla kez aldığınız dersleri ve kaç kez tekrar ettiğinizi listeler.
-        </div>
-      </div>
-
-      <div class="stat-graph">
-        <div class="stat-graph-title">Dönemlere Göre Çekilen Dersler <span class="badge">Bırakılanlar</span></div>
-        <canvas id="mostWithdrawalsChart"></canvas>
-        <div class="analysis-text info">
-          Her dönem kaç dersten çekildiğinizi (W) gösterir. Akademik planlamadaki sapmaları işaret eder.
-        </div>
-      </div>
-
-      <div class="stat-graph">
-        <div class="stat-graph-title">En Zor Dersler (Min. Avg) <span class="badge">Zorluk</span></div>
-        <canvas id="difficultyChart"></canvas>
-        <div class="analysis-text info">
-          Tekrar edilen dersler dahil, ortalama notunuzun en düşük olduğu derslerdir. Akademik olarak en çok zorlandığınız alanları gösterir.
-        </div>
-      </div>
-
-      <div class="stat-graph">
-        <div class="stat-graph-title">En Güçlü Dersler (Max. Avg) <span class="badge">Ustalık</span></div>
-        <canvas id="masteryChart"></canvas>
-        <div class="analysis-text info">
-          Ortalama notunuzun en yüksek olduğu derslerdir. En başarılı olduğunuz ve yetkinlik kazandığınız konuları yansıtır.
-        </div>
-      </div>
-
-      <div class="stat-graph">
-        <div class="stat-graph-title">Genel Not Dağılımı <span class="badge">Toplam</span></div>
-        <canvas id="gradeDistChart"></canvas>
-        <div class="analysis-text info">
-          Tüm eğitim hayatınız boyunca aldığınız harf notlarının genel oransal dağılımını gösteren pasta grafiği.
-        </div>
-      </div>
-
-      <div class="stat-graph">
-        <div class="stat-graph-title">Duruma Göre Krediler <span class="badge">Genel Bakış</span></div>
-        <canvas id="creditByStatusChart"></canvas>
-        <div class="analysis-text info">
-          Toplam kredi yükünüzün ne kadarının başarılı (Taken), tekrar edilen (Repeated) veya çekilen (Withdraw) derslerden oluştuğunu gösterir.
-        </div>
-      </div>
-
-      <div class="stat-graph">
-        <div class="stat-graph-title">Kredi Yükü vs Başarı Korelasyonu <span class="badge">Regresyon</span></div>
-        <canvas id="correlationChart"></canvas>
-        <div id="corr-analysis" class="analysis-text">Veri bekleniyor...</div>
-      </div>
-
-      <div class="stat-graph full-width">
-        <div class="stat-graph-title">Mevsimsel Performans ve Yük Analizi <span class="badge">Sezonluk Trend</span></div>
-        <canvas id="seasonalChart"></canvas>
-        <div id="seasonal-analysis" class="analysis-text info">Veri bekleniyor...</div>
-      </div>
-
-    </div>
-
-    <div class="simulator-section" id="sim-section" style="display:none;">
-      <div class="simulator-header">
-        <span class="sim-icon">🎓</span>
-        <h2>Mezuniyet Ortalaması Simülatörü</h2>
-      </div>
-      <div class="simulator-grid">
-        <div class="sim-input-group">
-          <label>Mezuniyet İçin Gerekli Toplam Kredi</label>
-          <input type="number" id="grad-credits" value="146" placeholder="Örn: 146 (MIS)">
-        </div>
-        <div class="sim-input-group">
-          <label>Kalan Dersler İçin Hedef Not</label>
-          <select id="future-grade">
-            <option value="AA">AA (4.00)</option>
-            <option value="BA">BA (3.50)</option>
-            <option value="BB">BB (3.00)</option>
-            <option value="CB">CB (2.50)</option>
-            <option value="CC">CC (2.00)</option>
-            <option value="DC">DC (1.50)</option>
-            <option value="DD">DD (1.00)</option>
-            <option value="FF">FF (0.00)</option>
-          </select>
-        </div>
-        <div class="sim-result">
-          <div class="sim-result-value" id="projected-gpa">--</div>
-          <div class="sim-result-label">Tahmini Mezuniyet Ortalaması</div>
-          <div id="sim-info" style="font-size: 0.8rem; margin-top:5px; opacity:0.8;">Kalan Kredi: --</div>
-        </div>
+      <h2 data-i18n="stats.empty.title">Henüz analiz edilecek veri yok</h2>
+      <p data-i18n="stats.empty.desc">Transkriptinizi aktarın ya da planlayıcıda derslerinizi girin; bu sayfa verilerinizi otomatik olarak yükler.</p>
+      <div class="empty-actions">
+        <a class="nav-btn" href="pdf_upload.html" data-i18n="stats.empty.cta1">PDF'den Aktar</a>
+        <a class="nav-btn secondary" href="planner.html" data-i18n="stats.empty.cta2">Planlayıcıyı Aç</a>
       </div>
     </div>
 
-  </div>
+    <div class="upload-section">
+      <label for="stats-upload" data-i18n="stats.uploadLabel">JSON Yedeği Yükle</label>
+      <input type="file" id="stats-upload" accept="application/json">
+      <span id="upload-info" data-i18n="stats.uploadInfo">Verileriniz Ders Planlayıcı'dan otomatik yüklenir; dilerseniz bir JSON yedeğini de analiz edebilirsiniz.</span>
+    </div>
 
-</div>
+    <div id="stats-content" hidden>
 
-<footer class="site-footer">
-  &copy; 2026 GPA Planlayıcı. Tüm hakları saklıdır.
-</footer>
+      <div class="summary-grid" id="summary-cards"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="storage.js"></script>
-<script src="gpa.js"></script>
-<script src="ui.js"></script>
-<script src="stats.js"></script>
+      <div class="charts-grid">
+
+        <div class="stat-graph full-width">
+          <div class="stat-graph-title"><span data-i18n="stats.chart.trend.title">Akademik Performans Trendi (SPA vs Kümülatif GPA)</span> <span class="badge" data-i18n="stats.chart.trend.badge">Zaman Serisi</span></div>
+          <canvas id="gpaChart"></canvas>
+          <div id="trend-analysis" class="analysis-text" data-i18n="stats.waiting">Veri bekleniyor…</div>
+        </div>
+
+        <div class="stat-graph full-width">
+          <div class="stat-graph-title"><span data-i18n="stats.chart.gradeDistSem.title">Dönemlere Göre Not Dağılımı</span> <span class="badge" data-i18n="stats.chart.gradeDistSem.badge">Performans Haritası</span></div>
+          <canvas id="gradeDistBySemChart"></canvas>
+          <div class="analysis-text info" data-i18n="stats.chart.gradeDistSem.desc">
+            Dönem başına aldığınız harf notlarının (AA, BB, FF vb.) dağılımını gösterir.
+          </div>
+        </div>
+
+        <div class="stat-graph">
+          <div class="stat-graph-title"><span data-i18n="stats.chart.improvement.title">Dönemler Arası Değişim</span> <span class="badge" data-i18n="stats.chart.improvement.badge">Momentum</span></div>
+          <canvas id="improvementChart"></canvas>
+          <div class="analysis-text info" data-i18n="stats.chart.improvement.desc">
+            Bir önceki döneme göre not ortalamanızdaki (SPA) artış veya azalışı gösterir.
+          </div>
+        </div>
+
+        <div class="stat-graph">
+          <div class="stat-graph-title"><span data-i18n="stats.chart.volatility.title">Performans Stabilitesi</span> <span class="badge" data-i18n="stats.chart.volatility.badge">Risk Analizi</span></div>
+          <canvas id="volatilityChart"></canvas>
+          <div class="analysis-text info" data-i18n="stats.chart.volatility.desc">
+            Notlarınızın standart sapmasıdır (Volatilite).
+          </div>
+        </div>
+
+        <div class="stat-graph">
+          <div class="stat-graph-title"><span data-i18n="stats.chart.repeated.title">En Çok Tekrar Edilen Dersler</span> <span class="badge" data-i18n="stats.chart.repeated.badge">Tekrar Sayısı</span></div>
+          <canvas id="topRepeatedLessonsChart"></canvas>
+          <div class="analysis-text info" data-i18n="stats.chart.repeated.desc">
+            Eğitim hayatınız boyunca birden fazla kez aldığınız dersleri listeler.
+          </div>
+        </div>
+
+        <div class="stat-graph">
+          <div class="stat-graph-title"><span data-i18n="stats.chart.withdrawals.title">Dönemlere Göre Çekilen Dersler</span> <span class="badge" data-i18n="stats.chart.withdrawals.badge">Bırakılanlar</span></div>
+          <canvas id="mostWithdrawalsChart"></canvas>
+          <div class="analysis-text info" data-i18n="stats.chart.withdrawals.desc">
+            Her dönem kaç dersten çekildiğinizi (W) gösterir.
+          </div>
+        </div>
+
+        <div class="stat-graph">
+          <div class="stat-graph-title"><span data-i18n="stats.chart.difficulty.title">En Zor Dersler (Min. Ort.)</span> <span class="badge" data-i18n="stats.chart.difficulty.badge">Zorluk</span></div>
+          <canvas id="difficultyChart"></canvas>
+          <div class="analysis-text info" data-i18n="stats.chart.difficulty.desc">
+            Tekrar edilen dersler dahil, ortalama notunuzun en düşük olduğu derslerdir.
+          </div>
+        </div>
+
+        <div class="stat-graph">
+          <div class="stat-graph-title"><span data-i18n="stats.chart.mastery.title">En Güçlü Dersler (Max. Ort.)</span> <span class="badge" data-i18n="stats.chart.mastery.badge">Ustalık</span></div>
+          <canvas id="masteryChart"></canvas>
+          <div class="analysis-text info" data-i18n="stats.chart.mastery.desc">
+            Ortalama notunuzun en yüksek olduğu derslerdir.
+          </div>
+        </div>
+
+        <div class="stat-graph">
+          <div class="stat-graph-title"><span data-i18n="stats.chart.gradeDist.title">Genel Not Dağılımı</span> <span class="badge" data-i18n="stats.chart.gradeDist.badge">Toplam</span></div>
+          <canvas id="gradeDistChart"></canvas>
+          <div class="analysis-text info" data-i18n="stats.chart.gradeDist.desc">
+            Tüm eğitim hayatınız boyunca aldığınız harf notlarının genel oransal dağılımı.
+          </div>
+        </div>
+
+        <div class="stat-graph">
+          <div class="stat-graph-title"><span data-i18n="stats.chart.creditStatus.title">Duruma Göre Krediler</span> <span class="badge" data-i18n="stats.chart.creditStatus.badge">Genel Bakış</span></div>
+          <canvas id="creditByStatusChart"></canvas>
+          <div class="analysis-text info" data-i18n="stats.chart.creditStatus.desc">
+            Toplam kredi yükünüzün ne kadarının başarılı, tekrar edilen veya çekilen derslerden oluştuğunu gösterir.
+          </div>
+        </div>
+
+        <div class="stat-graph">
+          <div class="stat-graph-title"><span data-i18n="stats.chart.correlation.title">Kredi Yükü vs Başarı Korelasyonu</span> <span class="badge" data-i18n="stats.chart.correlation.badge">Regresyon</span></div>
+          <canvas id="correlationChart"></canvas>
+          <div id="corr-analysis" class="analysis-text" data-i18n="stats.waiting">Veri bekleniyor…</div>
+        </div>
+
+        <div class="stat-graph full-width">
+          <div class="stat-graph-title"><span data-i18n="stats.chart.seasonal.title">Mevsimsel Performans ve Yük Analizi</span> <span class="badge" data-i18n="stats.chart.seasonal.badge">Sezonluk Trend</span></div>
+          <canvas id="seasonalChart"></canvas>
+          <div id="seasonal-analysis" class="analysis-text info" data-i18n="stats.waiting">Veri bekleniyor…</div>
+        </div>
+
+      </div>
+
+      <div class="simulator-section" id="sim-section" style="display:none;">
+        <div class="simulator-header">
+          <span class="sim-icon">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z"></path><path d="M6 12v5c0 1 2.5 2.5 6 2.5s6-1.5 6-2.5v-5"></path></svg>
+          </span>
+          <h2 data-i18n="stats.sim.title">Mezuniyet Ortalaması Simülatörü</h2>
+        </div>
+        <div class="simulator-grid">
+          <div class="sim-input-group">
+            <label for="grad-credits" data-i18n="stats.sim.credits">Mezuniyet İçin Gerekli Toplam Kredi</label>
+            <input type="number" id="grad-credits" value="146" placeholder="146">
+          </div>
+          <div class="sim-input-group">
+            <label for="future-grade" data-i18n="stats.sim.target">Kalan Dersler İçin Hedef Not</label>
+            <select id="future-grade">
+              <option value="AA">AA (4.00)</option>
+              <option value="BA">BA (3.50)</option>
+              <option value="BB">BB (3.00)</option>
+              <option value="CB">CB (2.50)</option>
+              <option value="CC">CC (2.00)</option>
+              <option value="DC">DC (1.50)</option>
+              <option value="DD">DD (1.00)</option>
+              <option value="FF">FF (0.00)</option>
+            </select>
+          </div>
+          <div class="sim-result">
+            <div class="sim-result-value" id="projected-gpa">--</div>
+            <div class="sim-result-label" data-i18n="stats.sim.resultLabel">Tahmini Mezuniyet Ortalaması</div>
+            <div id="sim-info"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="assets/bu-logo.png" alt="Boğaziçi Üniversitesi logosu" width="34" height="34">
+        <div>
+          <strong data-i18n="brand.name">Boğaziçi GPA</strong>
+          <span data-i18n="brand.sub">Akademik Planlayıcı</span>
+        </div>
+      </div>
+      <div class="footer-links">
+        <a href="index.html" data-i18n="nav.home">Ana Sayfa</a>
+        <a href="planner.html" data-i18n="nav.planner">Ders Planlayıcı</a>
+        <a href="statistics.html" data-i18n="nav.stats">Analitik</a>
+        <a href="pdf_upload.html" data-i18n="nav.upload">Transkript Yükleyici</a>
+      </div>
+    </div>
+    <p class="footer-note" data-i18n="common.footerNote">
+      Bu proje Boğaziçi Üniversitesi ile bağlantılı değildir; bağımsız bir öğrenci aracıdır.
+      Tüm veriler yalnızca tarayıcınızda saklanır.
+    </p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="storage.js"></script>
+  <script src="i18n.js"></script>
+  <script src="gpa.js"></script>
+  <script src="ui.js"></script>
+  <script src="stats.js"></script>
 </body>
 </html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ders Planlayıcı – Boğaziçi GPA</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <script>
+    // Tema tercihini CSS yüklenmeden uygula (açılışta beyaz parlama olmasın)
+    (function () {
+      var theme;
+      try { theme = localStorage.getItem('gpa-planner:theme'); } catch (e) {}
+      if (theme !== 'dark' && theme !== 'light') {
+        theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a href="#main" class="skip-link" data-i18n="common.skipToContent">İçeriğe geç</a>
+
+  <nav class="navbar">
+    <a href="index.html" class="logo">
+      <img src="assets/bu-logo.png" alt="Boğaziçi Üniversitesi logosu" width="38" height="38">
+      <span>
+        <span class="logo-name" data-i18n="brand.name">Boğaziçi GPA</span>
+        <span class="logo-sub" data-i18n="brand.sub">Akademik Planlayıcı</span>
+      </span>
+    </a>
+    <div class="nav-links" id="primary-nav">
+      <a href="index.html" class="nav-link" data-i18n="nav.home">Ana Sayfa</a>
+      <a href="planner.html" class="nav-link" aria-current="page" data-i18n="nav.planner">Ders Planlayıcı</a>
+      <a href="statistics.html" class="nav-link" data-i18n="nav.stats">Analitik</a>
+      <a href="pdf_upload.html" class="nav-link" data-i18n="nav.upload">Transkript Yükleyici</a>
+    </div>
+    <div class="nav-buttons">
+      <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language / Dili değiştir">EN</button>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Temayı değiştir"></button>
+      <button id="nav-menu-toggle" class="nav-menu-toggle" type="button" aria-label="Menüyü aç" aria-expanded="false" aria-controls="primary-nav"></button>
+    </div>
+  </nav>
+
+  <main class="main-container" id="main">
+    <div id="empty-state" class="empty-state" hidden>
+      <div class="empty-state-icon">
+        <svg class="icon" viewBox="0 0 24 24" style="width:2.4rem;height:2.4rem;stroke-width:1.4"><path d="M9 12l2 2 4-4"></path><circle cx="12" cy="12" r="9"></circle></svg>
+      </div>
+      <div class="empty-state-text">
+        <strong data-i18n="planner.empty.title">Henüz ders eklenmemiş.</strong><br>
+        <span data-i18n="planner.empty.desc">Transkript PDF'inizi dönüştürerek tüm derslerinizi tek seferde aktarabilir ya da dönem kartındaki "Ders Ekle" butonuyla elle başlayabilirsiniz. Yaptığınız her değişiklik tarayıcınıza otomatik kaydedilir.</span>
+      </div>
+      <a href="pdf_upload.html" class="nav-btn">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"></path></svg>
+        <span data-i18n="planner.empty.cta">PDF'den Aktar</span>
+      </a>
+    </div>
+
+    <div id="semesters-container"></div>
+
+    <button id="add-semester-btn" type="button">
+      <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="3"></rect><path d="M3 9h18M8 2v4M16 2v4M12 13v5M9.5 15.5h5"></path></svg>
+      <span data-i18n="planner.addSemester">Dönem Ekle</span>
+    </button>
+  </main>
+
+  <footer id="fixed-bar">
+    <div class="totals">
+      <div class="gpa-box" title="Kümülatif genel not ortalaması">
+        <span class="gpa-label" data-i18n="planner.gpa">GPA</span>
+        <strong id="gpa-value">0.00</strong>
+      </div>
+      <div class="total-stats">
+        <span id="total-credit-display">Toplam Kredi: 0</span>
+        <span id="overall-attempted">Denenen: 0</span>
+        <span id="overall-completed">Tamamlanan: 0</span>
+      </div>
+    </div>
+    <div class="bar-actions">
+      <span id="autosave-status" title="Değişiklikleriniz tarayıcınıza otomatik kaydedilir"></span>
+      <button id="save-btn" type="button" title="Verileriniz zaten otomatik kaydedilir; bu buton bir JSON yedeği indirir">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"></path></svg>
+        <span data-i18n="planner.save">Yedek İndir</span>
+      </button>
+      <button id="load-btn" type="button" title="Daha önce indirdiğiniz bir JSON yedeğini geri yükler">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 21V9m0 0l-4 4m4-4l4 4M4 7V5a2 2 0 012-2h12a2 2 0 012 2v2"></path></svg>
+        <span data-i18n="planner.load">Yedekten Yükle</span>
+      </button>
+    </div>
+    <input type="file" id="load-input" accept="application/json" style="display:none;">
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
+  <script src="storage.js"></script>
+  <script src="i18n.js"></script>
+  <script src="gpa.js"></script>
+  <script src="ui.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

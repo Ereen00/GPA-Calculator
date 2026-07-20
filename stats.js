@@ -6,22 +6,27 @@
 (function () {
   'use strict';
 
+  // i18n yardımcısı — i18n.js yoksa anahtarın kendisini döndürür.
+  function tr(key) { return window.GPAI18N ? GPAI18N.t(key) : key; }
+  function lang() { return window.GPAI18N ? GPAI18N.lang() : 'tr'; }
+
   // --- Configuration ---
   const gradeMap = { 'AA': 4.0, 'BA': 3.5, 'BB': 3.0, 'CB': 2.5, 'CC': 2.0, 'DC': 1.5, 'DD': 1.0, 'FF': 0.0 };
   const gradeOrder = ['AA', 'BA', 'BB', 'CB', 'CC', 'DC', 'DD', 'FF'];
   const statusOrder = ['taken', 'repeated with', 'withdrawed', 'not taken'];
 
-  // Tasarım sistemine uyumlu grafik paleti (slate temaya göre değişir)
+  // Boğaziçi markasına göre grafik paleti (lacivert + Boğaz mavisi çekirdek).
+  // Anahtar adları eski kodla uyumlu tutuldu; değerler markaya güncellendi.
   const COLORS = {
-    indigo: '#6366f1',
-    indigoDark: '#4f46e5',
-    green: '#10b981',
-    red: '#f43f5e',
-    redDark: '#e11d48',
-    amber: '#f59e0b',
-    purple: '#8b5cf6',
-    orange: '#f97316',
-    slate: '#334155',
+    indigo: '#1a4b9d',     // marka laciverti
+    indigoDark: '#133c81',
+    green: '#0d8a63',
+    red: '#d3294a',
+    redDark: '#b0203c',
+    amber: '#e0952b',
+    purple: '#6d5ac4',
+    orange: '#3bb3e6',     // Boğaz mavisi vurgusu
+    slate: '#475569',
     gray: '#94a3b8'
   };
 
@@ -99,6 +104,11 @@
     if (lastAnalysis) analyzeData(lastAnalysis.json, lastAnalysis.sourceLabel);
   });
 
+  // Dil değişince tüm üretilen metinler ve grafik etiketleri yeniden çizilir.
+  window.addEventListener('gpa:langchange', () => {
+    if (lastAnalysis) analyzeData(lastAnalysis.json, lastAnalysis.sourceLabel);
+  });
+
   // --- Main Logic ---
   // Veriyi çözümleyip tüm panelleri oluşturur (kaynak: 'auto' = tarayıcı kaydı, 'file' = JSON yedeği)
   function analyzeData(json, sourceLabel) {
@@ -119,12 +129,12 @@
         const group = cards.slice(i, i + semSize);
         if (group.length) semesters.push(group);
       }
-      semNames = semesters.map((_, i) => `Dönem ${i + 1}`);
+      semNames = semesters.map((_, i) => `${tr('editor.defaultSemester')} ${i + 1}`);
     }
 
     document.getElementById('upload-info').textContent = sourceLabel === 'auto'
-      ? `✅ Kayıtlı verileriniz otomatik yüklendi (${semesters.length} dönem, ${cards.length} ders). Planlayıcı'daki değişiklikler buraya otomatik yansır.`
-      : `${semesters.length} dönem, ${cards.length} ders yüklendi. Analiz başlatıldı...`;
+      ? tr('stats.info.auto').replace('{s}', semesters.length).replace('{c}', cards.length)
+      : tr('stats.info.file').replace('{s}', semesters.length).replace('{c}', cards.length);
 
     document.getElementById('stats-empty').hidden = true;
     document.getElementById('stats-content').hidden = false;
@@ -140,7 +150,7 @@
       try {
         analyzeData(JSON.parse(evt.target.result), 'file');
       } catch (err) {
-        GPAUI.toast('Dosya çözümlenemedi: ' + err.message, 'error');
+        GPAUI.toast(tr('stats.toast.parseError').replace('{msg}', err.message), 'error');
       }
     };
     reader.readAsText(file);
@@ -162,12 +172,12 @@
 
     if (remainingCredits <= 0) {
       resDiv.textContent = (globalTotalPoints / globalTotalCredits).toFixed(2);
-      infoDiv.textContent = 'Tebrikler! Mezuniyet kredisini zaten tamamladınız.';
+      infoDiv.textContent = tr('stats.sim.done');
     } else {
       const projectedTotalPoints = globalTotalPoints + (remainingCredits * futurePoints);
       const projectedGPA = projectedTotalPoints / targetCredits;
       resDiv.textContent = projectedGPA.toFixed(2);
-      infoDiv.textContent = `Kalan ${remainingCredits} kredinin hepsini ${futureGrade} alırsanız.`;
+      infoDiv.textContent = tr('stats.sim.projection').replace('{n}', remainingCredits).replace('{g}', futureGrade);
     }
   }
 
@@ -311,10 +321,10 @@
     const totalW = metrics.reduce((a, b) => a + b.withdrawals, 0);
 
     document.getElementById('summary-cards').innerHTML = `
-        <div class="summary-card"><h3>Kümülatif GPA</h3><div class="value">${current.toFixed(2)}</div><div class="desc">Mevcut Durum</div></div>
-        <div class="summary-card ${parseFloat(nextPred) > current ? 'success' : 'danger'}"><h3>Tahmini Sonraki SPA</h3><div class="value">${nextPred}</div><div class="desc">Trend Bazlı Tahmin</div></div>
-        <div class="summary-card success"><h3>En Yüksek SPA</h3><div class="value">${best.toFixed(2)}</div><div class="desc">Kişisel Rekor</div></div>
-        <div class="summary-card ${totalW > 0 ? 'danger' : ''}"><h3>Toplam Çekilen Ders</h3><div class="value">${totalW}</div><div class="desc">Bırakılan (Withdraw)</div></div>
+        <div class="summary-card"><h3>${tr('stats.card.cumGpa')}</h3><div class="value">${current.toFixed(2)}</div><div class="desc">${tr('stats.card.cumGpaDesc')}</div></div>
+        <div class="summary-card ${parseFloat(nextPred) > current ? 'success' : 'danger'}"><h3>${tr('stats.card.nextSpa')}</h3><div class="value">${nextPred}</div><div class="desc">${tr('stats.card.nextSpaDesc')}</div></div>
+        <div class="summary-card success"><h3>${tr('stats.card.bestSpa')}</h3><div class="value">${best.toFixed(2)}</div><div class="desc">${tr('stats.card.bestSpaDesc')}</div></div>
+        <div class="summary-card ${totalW > 0 ? 'danger' : ''}"><h3>${tr('stats.card.totalW')}</h3><div class="value">${totalW}</div><div class="desc">${tr('stats.card.totalWDesc')}</div></div>
     `;
   }
 
@@ -325,15 +335,16 @@
     const seasonSpa = seasonalAvg.map(s => s.avgSpa);
     const seasonLoad = seasonalAvg.map(s => s.avgLoad);
 
-    let insightMsg = 'Veri yeterli değil.';
+    let insightMsg = tr('stats.seasonal.insufficient');
     if (seasonalAvg.length > 0) {
       const maxSpaSeason = seasonalAvg.reduce((p, c) => p.avgSpa > c.avgSpa ? p : c);
       const maxLoadSeason = seasonalAvg.reduce((p, c) => p.avgLoad > c.avgLoad ? p : c);
 
-      insightMsg = `<strong>Başarı Analizi:</strong> En yüksek not ortalamasına (Ort. ${maxSpaSeason.avgSpa.toFixed(2)})
-                    genellikle <strong>${maxSpaSeason.season}</strong> dönemlerinde ulaşıyorsunuz.<br>
-                    <strong>Yük Analizi:</strong> En yoğun kredi yükünü (Ort. ${maxLoadSeason.avgLoad.toFixed(1)} kredi)
-                    <strong>${maxLoadSeason.season}</strong> dönemlerinde alıyorsunuz.`;
+      insightMsg = tr('stats.seasonal.insight')
+        .replace('{spa}', maxSpaSeason.avgSpa.toFixed(2))
+        .replace('{sSeason}', maxSpaSeason.season)
+        .replace('{load}', maxLoadSeason.avgLoad.toFixed(1))
+        .replace('{lSeason}', maxLoadSeason.season);
     }
     document.getElementById('seasonal-analysis').innerHTML = insightMsg;
 
@@ -342,16 +353,16 @@
       data: {
         labels: seasonLabels,
         datasets: [
-          { label: 'Ortalama SPA', data: seasonSpa, backgroundColor: COLORS.indigo, yAxisID: 'y' },
-          { label: 'Ortalama Kredi Yükü', data: seasonLoad, type: 'line', borderColor: COLORS.redDark, borderWidth: 3, pointRadius: 5, pointBackgroundColor: '#fff', yAxisID: 'y1' }
+          { label: tr('stats.ds.avgSpa'), data: seasonSpa, backgroundColor: COLORS.indigo, yAxisID: 'y' },
+          { label: tr('stats.ds.avgLoad'), data: seasonLoad, type: 'line', borderColor: COLORS.orange, borderWidth: 3, pointRadius: 5, pointBackgroundColor: '#fff', yAxisID: 'y1' }
         ]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         scales: {
-          y: { type: 'linear', display: true, position: 'left', title: { display: true, text: 'Not Ortalaması (SPA)' }, min: 0, max: 4 },
-          y1: { type: 'linear', display: true, position: 'right', title: { display: true, text: 'Kredi Yükü' }, grid: { drawOnChartArea: false } }
+          y: { type: 'linear', display: true, position: 'left', title: { display: true, text: tr('stats.axis.spa') }, min: 0, max: 4 },
+          y1: { type: 'linear', display: true, position: 'right', title: { display: true, text: tr('stats.axis.load') }, grid: { drawOnChartArea: false } }
         }
       }
     });
@@ -360,19 +371,19 @@
     const trendData = labels.map((_, i) => reg.predict(i));
     const currentGPA = cumGPA[cumGPA.length - 1];
     const nextPred = reg.predict(metrics.length);
-    const trendMsg = `Trend Eğimi: ${reg.m.toFixed(3)} puan/dönem.`;
+    const trendMsg = tr('stats.trend.slope').replace('{m}', reg.m.toFixed(3));
     document.getElementById('trend-analysis').textContent = nextPred > currentGPA
-      ? `Pozitif Momentum! ${trendMsg}`
-      : `Stabilize veya Düşüş Eğilimi. ${trendMsg}`;
+      ? tr('stats.trend.positive').replace('{slope}', trendMsg)
+      : tr('stats.trend.negative').replace('{slope}', trendMsg);
 
     makeChart('gpaChart', {
       type: 'line',
       data: {
         labels: labels,
         datasets: [
-          { label: 'Dönemlik SPA', data: metrics.map(m => m.spa), borderColor: COLORS.indigo, backgroundColor: COLORS.indigo, tension: 0.3 },
-          { label: 'Kümülatif GPA', data: cumGPA, borderColor: COLORS.green, borderDash: [5, 5], tension: 0.1 },
-          { label: 'Trend', data: trendData, borderColor: COLORS.amber, borderWidth: 2, pointRadius: 0, fill: false }
+          { label: tr('stats.ds.termSpa'), data: metrics.map(m => m.spa), borderColor: COLORS.indigo, backgroundColor: COLORS.indigo, tension: 0.3 },
+          { label: tr('stats.ds.cumGpa'), data: cumGPA, borderColor: COLORS.green, borderDash: [5, 5], tension: 0.1 },
+          { label: tr('stats.ds.trend'), data: trendData, borderColor: COLORS.amber, borderWidth: 2, pointRadius: 0, fill: false }
         ]
       },
       options: {
@@ -386,7 +397,7 @@
       type: 'bar',
       data: {
         labels: labels,
-        datasets: gradeOrder.map((g, i) => ({ label: g, data: metrics.map(m => m.gradeDist[g]), backgroundColor: `rgba(99, 102, 241, ${1 - i * 0.1})` }))
+        datasets: gradeOrder.map((g, i) => ({ label: g, data: metrics.map(m => m.gradeDist[g]), backgroundColor: `rgba(26, 75, 157, ${1 - i * 0.1})` }))
       },
       options: {
         maintainAspectRatio: false,
@@ -397,42 +408,42 @@
     // 4. Improvement
     makeChart('improvementChart', {
       type: 'bar',
-      data: { labels: labels, datasets: [{ label: 'SPA Değişimi', data: diffs, backgroundColor: diffs.map(d => d >= 0 ? COLORS.green : COLORS.red) }] },
+      data: { labels: labels, datasets: [{ label: tr('stats.ds.spaChange'), data: diffs, backgroundColor: diffs.map(d => d >= 0 ? COLORS.green : COLORS.red) }] },
       options: { maintainAspectRatio: false }
     });
 
     // 5. Volatility
     makeChart('volatilityChart', {
       type: 'bar',
-      data: { labels: labels, datasets: [{ label: 'Std Sapma (Not Dalgalanması)', data: metrics.map(m => m.volatility), backgroundColor: COLORS.purple }] },
+      data: { labels: labels, datasets: [{ label: tr('stats.ds.stdDev'), data: metrics.map(m => m.volatility), backgroundColor: COLORS.purple }] },
       options: { maintainAspectRatio: false }
     });
 
     // 6. Repeated
     makeChart('topRepeatedLessonsChart', {
       type: 'bar',
-      data: { labels: repeated.map(r => r[0]), datasets: [{ label: 'Tekrar Sayısı', data: repeated.map(r => r[1]), backgroundColor: COLORS.amber }] },
+      data: { labels: repeated.map(r => r[0]), datasets: [{ label: tr('stats.ds.repeatCount'), data: repeated.map(r => r[1]), backgroundColor: COLORS.amber }] },
       options: { indexAxis: 'y', maintainAspectRatio: false }
     });
 
     // 7. Withdrawals
     makeChart('mostWithdrawalsChart', {
       type: 'bar',
-      data: { labels: labels, datasets: [{ label: 'Çekilen Ders Sayısı', data: metrics.map(m => m.withdrawals), backgroundColor: COLORS.red }] },
+      data: { labels: labels, datasets: [{ label: tr('stats.ds.withdrawCount'), data: metrics.map(m => m.withdrawals), backgroundColor: COLORS.red }] },
       options: { maintainAspectRatio: false }
     });
 
     // 8. Difficulty
     makeChart('difficultyChart', {
       type: 'bar',
-      data: { labels: hardest.map(c => c.name), datasets: [{ label: 'Ortalama Not', data: hardest.map(c => c.avg), backgroundColor: COLORS.redDark }] },
+      data: { labels: hardest.map(c => c.name), datasets: [{ label: tr('stats.ds.avgGrade'), data: hardest.map(c => c.avg), backgroundColor: COLORS.redDark }] },
       options: { indexAxis: 'y', maintainAspectRatio: false, scales: { x: { min: 0, max: 4 } } }
     });
 
     // 9. Mastery
     makeChart('masteryChart', {
       type: 'bar',
-      data: { labels: easiest.map(c => c.name), datasets: [{ label: 'Ortalama Not', data: easiest.map(c => c.avg), backgroundColor: COLORS.green }] },
+      data: { labels: easiest.map(c => c.name), datasets: [{ label: tr('stats.ds.avgGrade'), data: easiest.map(c => c.avg), backgroundColor: COLORS.green }] },
       options: { indexAxis: 'y', maintainAspectRatio: false, scales: { x: { min: 0, max: 4 } } }
     });
 
@@ -459,17 +470,19 @@
     // 12. Correlation
     const corr = correlationCoefficient(loads, spas);
     let corrMsg = '';
-    if (Math.abs(corr) < 0.3) corrMsg = 'Kredi yükü ile notlar arasında anlamlı bir bağlantı yok.';
-    else if (corr < 0) corrMsg = 'Dikkat: Daha fazla kredi almak SPA\'nızı düşürme eğiliminde.';
-    else corrMsg = 'Daha yüksek kredi yüklerinde daha iyi performans gösteriyorsunuz.';
+    if (Math.abs(corr) < 0.3) corrMsg = tr('stats.corr.none');
+    else if (corr < 0) corrMsg = tr('stats.corr.negative');
+    else corrMsg = tr('stats.corr.positive');
 
-    document.getElementById('corr-analysis').textContent = `Korelasyon Katsayısı: ${corr.toFixed(2)}. ${corrMsg}`;
+    document.getElementById('corr-analysis').textContent = tr('stats.corr.result')
+      .replace('{c}', corr.toFixed(2))
+      .replace('{msg}', corrMsg);
 
     makeChart('correlationChart', {
       type: 'scatter',
       data: {
         datasets: [{
-          label: 'Dönemler (Yük vs Başarı)',
+          label: tr('stats.ds.termsLoadVsSuccess'),
           data: loads.map((l, i) => ({ x: l, y: spas[i] })),
           backgroundColor: COLORS.slate,
           pointRadius: 6
@@ -478,19 +491,28 @@
       options: {
         maintainAspectRatio: false,
         scales: {
-          x: { title: { display: true, text: 'Alınan Kredi (Load)' } },
-          y: { title: { display: true, text: 'Dönem Ortalaması (SPA)' }, min: 0, max: 4 }
+          x: { title: { display: true, text: tr('stats.axis.creditsTaken') } },
+          y: { title: { display: true, text: tr('stats.axis.spa') }, min: 0, max: 4 }
         }
       }
     });
   }
 
   // --- OTOMATİK YÜKLEME ---
-  // Planlayıcı/PDF dönüştürücüden kaydedilen veriler varsa analiz otomatik başlar
-  (function autoLoad() {
+  // Planlayıcı/PDF dönüştürücüden kaydedilen veriler varsa analiz otomatik başlar.
+  // i18n.js DOMContentLoaded'da statik metinleri uygular; bu yüzden otomatik
+  // yüklemeyi ondan SONRA çalıştırırız ki JS'in ürettiği analiz metinleri
+  // (trend, korelasyon, sezonluk, upload-info) placeholder'a geri dönmesin.
+  function autoLoad() {
     const saved = window.GPAStorage ? GPAStorage.load() : null;
     if (saved && saved.cards && saved.cards.length > 0) {
       analyzeData(saved, 'auto');
     }
-  })();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', autoLoad);
+  } else {
+    autoLoad();
+  }
 })();

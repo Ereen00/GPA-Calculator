@@ -1,0 +1,551 @@
+/* ============================================================
+   Boğaziçi GPA — Ana Sayfa (Landing) Stilleri
+   Ortak belirteçler ve bileşenler base.css içindedir.
+   İmza öğe: logodaki baklava (elmas) motifi bölüm işaretçisi olarak.
+   ============================================================ */
+
+.wrap {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  padding: 56px 0 24px;
+}
+
+.hero-breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+}
+
+.hero-breadcrumb .sep {
+  color: var(--primary);
+  opacity: 0.5;
+}
+
+.hero-breadcrumb .here {
+  color: var(--primary);
+}
+
+.hero-top {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 48px;
+  align-items: end;
+}
+
+.hero-title {
+  font-size: clamp(2.6rem, 6vw, 4.6rem);
+  line-height: 1.02;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.hero-title .accent {
+  position: relative;
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+/* Boğaz Mavisi altını — logonun açık mavisi */
+.hero-title .accent::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.08em;
+  height: 0.14em;
+  background: var(--accent);
+  opacity: 0.5;
+  border-radius: 2px;
+  z-index: -1;
+}
+
+.hero-side {
+  padding-bottom: 10px;
+}
+
+.hero-lead {
+  font-size: 1.08rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+  margin: 0 0 24px;
+  max-width: 46ch;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-lg {
+  padding: 13px 24px;
+  font-size: 0.95rem;
+}
+
+/* ---- Hero görseli (yuvarlatılmış Boğaz manzarası) ---- */
+.hero-figure {
+  position: relative;
+  margin-top: 40px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+  aspect-ratio: 16 / 7;
+  background: var(--surface-2);
+}
+
+.hero-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Görsel üstünde yüzen mini GPA rozeti — "canlı veri" hissi (video ilhamı) */
+.hero-badge {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--bar-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 20px;
+  box-shadow: var(--shadow);
+}
+
+.hero-badge .diamond {
+  width: 14px;
+  height: 14px;
+}
+
+.hero-badge .badge-value {
+  font-family: var(--font-serif);
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.hero-badge .badge-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ============================================================
+   İSTATİSTİK ŞERİDİ
+   ============================================================ */
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin: 40px 0 8px;
+  padding: 28px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-item {
+  text-align: center;
+  position: relative;
+}
+
+.stat-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -12px;
+  top: 10%;
+  height: 80%;
+  width: 1px;
+  background: var(--border);
+}
+
+.stat-value {
+  font-family: var(--font-serif);
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.1;
+}
+
+.stat-label {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+/* ============================================================
+   BÖLÜM BAŞLIĞI (ortak)
+   ============================================================ */
+.section {
+  padding: 64px 0;
+}
+
+.section-head {
+  max-width: 620px;
+  margin-bottom: 40px;
+}
+
+.section-head.center {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.section-head.center .eyebrow {
+  justify-content: center;
+}
+
+.section-title {
+  font-size: clamp(1.9rem, 3.5vw, 2.7rem);
+  margin: 16px 0 12px;
+  letter-spacing: -0.015em;
+}
+
+.section-lead {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ============================================================
+   ANA ARAÇ KARTLARI (Transkript / Planlayıcı / Analitik)
+   ============================================================ */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.tool-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px 26px;
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tool-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.tool-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-border);
+}
+
+.tool-card:hover::before {
+  transform: scaleX(1);
+}
+
+.tool-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: var(--radius);
+  background: var(--primary-soft);
+  color: var(--primary);
+  margin-bottom: 20px;
+}
+
+.tool-icon .icon {
+  width: 28px;
+  height: 28px;
+  stroke-width: 1.7;
+}
+
+.tool-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+:root[data-theme="light"] .tool-tag,
+:root:not([data-theme="dark"]) .tool-tag {
+  color: #1f8fc4; /* açık temada daha okunur bir mavi */
+}
+
+.tool-title {
+  font-size: 1.4rem;
+  margin: 0 0 10px;
+}
+
+.tool-desc {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 0 0 20px;
+  flex: 1;
+}
+
+.tool-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--primary);
+}
+
+.tool-link .icon {
+  width: 1.05rem;
+  height: 1.05rem;
+  transition: transform 0.2s ease;
+}
+
+.tool-card:hover .tool-link .icon {
+  transform: translateX(4px);
+}
+
+/* ============================================================
+   ÖZELLİK ŞERİDİ (Neden bu araç)
+   ============================================================ */
+.features {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.features-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+}
+
+.feature {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.feature-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  color: var(--primary);
+}
+
+.feature-mark .icon {
+  width: 22px;
+  height: 22px;
+}
+
+.feature h3 {
+  font-family: var(--font);
+  font-size: 1.02rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.feature p {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ============================================================
+   KAMPÜS BÖLÜMÜ
+   ============================================================ */
+.campus {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.campus-figure {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  aspect-ratio: 4 / 3;
+}
+
+.campus-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.campus-body .section-title {
+  margin-top: 14px;
+}
+
+/* ============================================================
+   KAPANIŞ CTA
+   ============================================================ */
+.closing {
+  margin: 24px 0 0;
+}
+
+.closing-inner {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  padding: 64px 48px;
+  text-align: center;
+  color: #fff;
+  background:
+    linear-gradient(135deg, rgba(19, 60, 129, 0.92), rgba(26, 75, 157, 0.82)),
+    url('assets/campus-wide.webp') center/cover;
+  box-shadow: var(--shadow-lg);
+}
+
+.closing-inner .eyebrow {
+  color: rgba(255, 255, 255, 0.8);
+  justify-content: center;
+}
+
+.closing-inner .diamond {
+  background: linear-gradient(135deg, #fff 50%, var(--accent) 50%);
+}
+
+.closing-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: #fff;
+  margin: 16px 0 12px;
+}
+
+.closing-desc {
+  font-size: 1.08rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 28px;
+}
+
+.closing .btn-action {
+  background: #fff;
+  color: var(--primary);
+  border-color: #fff;
+}
+
+.closing .btn-action:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent-soft);
+  color: var(--primary-dark);
+}
+
+/* ============================================================
+   DUYARLI TASARIM
+   ============================================================ */
+@media (max-width: 940px) {
+  .hero-top {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .hero-side {
+    padding-bottom: 0;
+  }
+
+  .tools-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .features-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .campus {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .campus-figure {
+    order: -1;
+  }
+}
+
+@media (max-width: 620px) {
+  .hero {
+    padding: 36px 0 16px;
+  }
+
+  .hero-figure {
+    aspect-ratio: 4 / 3;
+    margin-top: 28px;
+  }
+
+  .hero-badge {
+    left: 16px;
+    bottom: 16px;
+    padding: 10px 14px;
+    gap: 10px;
+  }
+
+  .hero-badge .badge-value {
+    font-size: 1.5rem;
+  }
+
+  .stat-strip {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 24px;
+  }
+
+  .stat-item:not(:last-child)::after {
+    display: none;
+  }
+
+  .features-list {
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding: 48px 0;
+  }
+
+  .closing-inner {
+    padding: 44px 24px;
+  }
+}

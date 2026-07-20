@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PDF Dönüştürücü – GPA Planlayıcı</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+  <title>Transkript Yükleyici – Boğaziçi GPA</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
   <script>
     // Tema tercihini CSS yüklenmeden uygula (açılışta beyaz parlama olmasın)
     (function () {
@@ -18,37 +18,51 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="base.css">
   <link rel="stylesheet" href="upload.css">
 </head>
 <body>
+  <a href="#main" class="skip-link" data-i18n="common.skipToContent">İçeriğe geç</a>
 
   <nav class="navbar">
-    <div class="logo">
-      🎓 <span>GPA Planlayıcı</span>
+    <a href="index.html" class="logo">
+      <img src="assets/bu-logo.png" alt="Boğaziçi Üniversitesi logosu" width="38" height="38">
+      <span>
+        <span class="logo-name" data-i18n="brand.name">Boğaziçi GPA</span>
+        <span class="logo-sub" data-i18n="brand.sub">Akademik Planlayıcı</span>
+      </span>
+    </a>
+    <div class="nav-links" id="primary-nav">
+      <a href="index.html" class="nav-link" data-i18n="nav.home">Ana Sayfa</a>
+      <a href="planner.html" class="nav-link" data-i18n="nav.planner">Ders Planlayıcı</a>
+      <a href="statistics.html" class="nav-link" data-i18n="nav.stats">Analitik</a>
+      <a href="pdf_upload.html" class="nav-link" aria-current="page" data-i18n="nav.upload">Transkript Yükleyici</a>
     </div>
     <div class="nav-buttons">
-      <a href="index.html" class="nav-btn">📅 Ders Planlayıcı</a>
-      <a href="statistics.html" class="nav-btn">📊 İstatistikler</a>
-      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Temayı değiştir">🌙</button>
+      <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language / Dili değiştir">EN</button>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Temayı değiştir"></button>
+      <button id="nav-menu-toggle" class="nav-menu-toggle" type="button" aria-label="Menüyü aç" aria-expanded="false" aria-controls="primary-nav"></button>
     </div>
   </nav>
 
-  <div class="container">
+  <main class="container" id="main">
 
-    <h1>Transkriptinizi Saniyeler İçinde Aktarın</h1>
-    <p class="subtitle">
+    <span class="eyebrow" style="justify-content:center;"><span class="diamond"></span><span data-i18n="nav.upload">Transkript Yükleyici</span></span>
+    <h1 data-i18n="upload.title">Transkriptinizi Saniyeler İçinde Aktarın</h1>
+    <p class="subtitle" data-i18n="upload.lead">
       PDF formatındaki not döküm belgenizi bırakın; dersleriniz, notlarınız ve dönemleriniz
       otomatik olarak tanınıp doğrudan Ders Planlayıcı'ya aktarılsın.
       Tüm işlem tarayıcınızda gerçekleşir — dosyanız cihazınızdan hiç çıkmaz.
     </p>
 
-    <div class="upload-card">
+    <div class="upload-card reveal">
       <label for="file-input" id="drop-area" class="file-upload-label">
-        <div class="file-upload-icon">📄</div>
-        <span class="file-upload-text" id="file-label-text">PDF dosyasını buraya bırakın</span>
-        <span class="file-upload-subtext">veya seçmek için tıklayın — dönüştürme otomatik başlar</span>
+        <div class="file-upload-icon">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M14 3v4a1 1 0 001 1h4"></path><path d="M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z"></path><path d="M12 11v6m0 0l-2.5-2.5M12 17l2.5-2.5"></path></svg>
+        </div>
+        <span class="file-upload-text" id="file-label-text" data-i18n="upload.dropText">PDF dosyasını buraya bırakın</span>
+        <span class="file-upload-subtext" data-i18n="upload.dropSubtext">veya seçmek için tıklayın — dönüştürme otomatik başlar</span>
         <input type="file" id="file-input" accept=".pdf,application/pdf">
       </label>
 
@@ -57,42 +71,67 @@
     </div>
 
     <div class="features-grid">
-      <div class="feature-item">
-        <span class="feature-icon">⚡</span>
-        <div class="feature-title">Hızlı ve Otomatik</div>
-        <div class="feature-desc">
+      <div class="feature-item reveal">
+        <span class="feature-icon">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"></path></svg>
+        </span>
+        <div class="feature-title" data-i18n="upload.feature1.title">Hızlı ve Otomatik</div>
+        <div class="feature-desc" data-i18n="upload.feature1.desc">
           Manuel veri girişine son. PDF dosyanızdaki yüzlerce satır veri saniyeler içinde analiz edilir,
           planlayıcıya ve istatistiklere anında yansır.
         </div>
       </div>
 
-      <div class="feature-item">
-        <span class="feature-icon">🔒</span>
-        <div class="feature-title">%100 Tarayıcıda</div>
-        <div class="feature-desc">
+      <div class="feature-item reveal">
+        <span class="feature-icon">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path></svg>
+        </span>
+        <div class="feature-title" data-i18n="upload.feature2.title">%100 Tarayıcıda</div>
+        <div class="feature-desc" data-i18n="upload.feature2.desc">
           PDF'iniz hiçbir sunucuya gönderilmez; okuma, ayrıştırma ve kaydetme dahil
           her şey kendi cihazınızda çalışır.
         </div>
       </div>
 
-      <div class="feature-item">
-        <span class="feature-icon">🧩</span>
-        <div class="feature-title">Akıllı Ayrıştırma</div>
-        <div class="feature-desc">
+      <div class="feature-item reveal">
+        <span class="feature-icon">
+          <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect></svg>
+        </span>
+        <div class="feature-title" data-i18n="upload.feature3.title">Akıllı Ayrıştırma</div>
+        <div class="feature-desc" data-i18n="upload.feature3.desc">
           Withdraw (W), Tekrar (TKR), Yerine Sayılan (YRN) ve Yaz Okulu gibi karmaşık
           akademik senaryoları otomatik algılar.
         </div>
       </div>
     </div>
 
-  </div>
+  </main>
 
   <footer class="site-footer">
-    &copy; 2026 GPA Planlayıcı. Tüm hakları saklıdır.
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="assets/bu-logo.png" alt="Boğaziçi Üniversitesi logosu" width="34" height="34">
+        <div>
+          <strong data-i18n="brand.name">Boğaziçi GPA</strong>
+          <span data-i18n="brand.sub">Akademik Planlayıcı</span>
+        </div>
+      </div>
+      <div class="footer-links">
+        <a href="index.html" data-i18n="nav.home">Ana Sayfa</a>
+        <a href="planner.html" data-i18n="nav.planner">Ders Planlayıcı</a>
+        <a href="statistics.html" data-i18n="nav.stats">Analitik</a>
+        <a href="pdf_upload.html" data-i18n="nav.upload">Transkript Yükleyici</a>
+      </div>
+    </div>
+    <p class="footer-note" data-i18n="common.footerNote">
+      Bu proje Boğaziçi Üniversitesi ile bağlantılı değildir; bağımsız bir öğrenci aracıdır.
+      Tüm veriler yalnızca tarayıcınızda saklanır.
+    </p>
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
   <script src="storage.js"></script>
+  <script src="i18n.js"></script>
   <script src="parser.js"></script>
   <script src="ui.js"></script>
   <script src="upload.js"></script>
