@@ -33,23 +33,55 @@
     return status !== 'not taken' && status !== 'non credit' && status !== 'withdrawed';
   }
 
+  function courseKey(name, course) {
+    var trimmed = (name || '').trim().toLowerCase();
+    return trimmed || ('__anon_' + course.id);
+  }
+
+  /* Zincirleme tekrarlar için takma-ad haritası: "B dersi A yerine alındı" ise
+     alias[B] = A. Böylece A -> B -> C zinciri tek bir derse indirgenir
+     (ör. ESC 301 yerine PHIL417, onun da yerine PHIL314 alınmışsa üçü aynı gruptadır). */
+  function buildAliasMap(semesters, endIdx) {
+    var alias = new Map();
+    for (var i = 0; i <= endIdx && i < semesters.length; i++) {
+      semesters[i].courses.forEach(function (course) {
+        if (course.status !== 'repeated with') return;
+        var from = (course.lesson || '').trim().toLowerCase();
+        var to = (course.repeatedLesson || '').trim().toLowerCase();
+        if (from && to && from !== to && !alias.has(from)) alias.set(from, to);
+      });
+    }
+    return alias;
+  }
+
   /* Tekrar kuralı için dersin grup anahtarı: repeated-with derste hedef dersin adı,
-     diğerlerinde dersin kendi adı. Adsız dersler tekil sayılır (gruplanmaz). */
-  function effectiveKey(course) {
+     diğerlerinde dersin kendi adı — ardından takma-ad zinciri kökene kadar izlenir.
+     Adsız dersler tekil sayılır (gruplanmaz). */
+  function effectiveKey(course, alias) {
     var name = (course.status === 'repeated with'
       ? (course.repeatedLesson || course.lesson)
       : course.lesson) || '';
-    var trimmed = name.trim().toLowerCase();
-    return trimmed || ('__anon_' + course.id);
+    var key = courseKey(name, course);
+
+    // Zinciri kökene kadar izle; hatalı veride döngü oluşmasına karşı korumalı
+    var seen = new Set([key]);
+    while (alias && alias.has(key)) {
+      var next = alias.get(key);
+      if (seen.has(next)) break;
+      seen.add(next);
+      key = next;
+    }
+    return key;
   }
 
   /* [0..endIdx] dönem aralığı için tekrar kuralı uygulanmış kümülatif değerler */
   function cumulative(semesters, endIdx) {
+    var alias = buildAliasMap(semesters, endIdx);
     var groups = new Map();
     for (var i = 0; i <= endIdx && i < semesters.length; i++) {
       semesters[i].courses.forEach(function (course) {
         if (courseCredit(course) === null) return;
-        var key = effectiveKey(course);
+        var key = effectiveKey(course, alias);
         if (!groups.has(key)) groups.set(key, []);
         groups.get(key).push({ course: course, semIdx: i });
       });
