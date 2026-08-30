@@ -58,6 +58,7 @@ Ayrıştırıcıya verilen belge hem düz metni hem de her metin parçasının s
 | Boğaziçi Üniversitesi | Not Döküm Belgesi / Öğrenci Durum Belgesi | Ulusal kredi | — |
 | Yıldız Teknik Üniversitesi | Öğrenci Not Çizelgesi | Yerel kredi | [docs/ytu-notlandirma.md](docs/ytu-notlandirma.md) |
 | Marmara Üniversitesi | Not Döküm Belgesi | AKTS | [docs/marmara-notlandirma.md](docs/marmara-notlandirma.md) |
+| Orta Doğu Teknik Üniversitesi | Not Döküm Belgesi | Ulusal kredi | [docs/odtu-notlandirma.md](docs/odtu-notlandirma.md) |
 
 Her üniversitenin kuralları kendi profilinde durur ve gerçek bir transkriptin **basılı
 ortalama değerleriyle** doğrulanmıştır:
@@ -69,6 +70,14 @@ ortalama değerleriyle** doğrulanmıştır:
 - **Marmara** belgesi Boğaziçi ile aynı YÖK e-Devlet şablonudur, ama ortalama AKTS üzerinden
   hesaplanır, DD geçer nottur (koşullu geçme yoktur), DZ ve FG sıfır katsayıyla ortalamaya
   girer, S notlu dersler ortalamaya girmeden krediye sayılır.
+- **ODTÜ** de aynı şablonu kullanır ama ders kodları tamamen rakamdır (`6390101`) ve T/U/Puan
+  sütunları `-` olabilir. NA (devamsız) yönetmelik gereği ortalamada FF gibi işlenir — YTÜ'nün
+  F0'ından farklı olarak genel ortalamadan çıkarılmaz. Şeref derecesi ayrıca her yarıyıl
+  yarıyıl ortalamasına göre yeniden belirlenir.
+
+Marmara ve ODTÜ aynı YÖK şablonunu kullandığı için ortak bir okuyucu (`yok-transkript.js`)
+üzerine kuruludur; `parser-marmara.js` ve `parser-odtu.js` yalnızca ders kodu deseni, kredi
+sütunu ve not kümesi gibi üniversiteye özgü ayarları verir.
 
 ## 🎯 Hesaplama Kuralları (`gpa.js`)
 
@@ -125,9 +134,12 @@ python -m http.server 8000
 ├── uni-bogazici.js    # Boğaziçi profili (not tablosu, kurallar, belge imzası)
 ├── uni-ytu.js         # Yıldız Teknik Üniversitesi profili
 ├── uni-marmara.js     # Marmara Üniversitesi profili
+├── uni-odtu.js        # Orta Doğu Teknik Üniversitesi profili
+├── yok-transkript.js  # YÖK e-Devlet not döküm belgesi şablonunu okuyan ortak modül
 ├── parser-bogazici.js # Boğaziçi transkript ayrıştırıcısı (düz metin)
 ├── parser-ytu.js      # YTÜ "Öğrenci Not Çizelgesi" ayrıştırıcısı (iki sütunlu, konum tabanlı)
-├── parser-marmara.js  # Marmara not döküm belgesi ayrıştırıcısı (düz metin)
+├── parser-marmara.js  # Marmara ayrıştırıcı yapılandırması (yok-transkript.js üzerine)
+├── parser-odtu.js     # ODTÜ ayrıştırıcı yapılandırması (yok-transkript.js üzerine)
 ├── parser.js          # GPAParser — belgeyi tespit edip ilgili ayrıştırıcıya devreden cephe
 ├── gpa.js             # GPACalc — ortalama hesaplama modülü (saf fonksiyonlar, profil tabanlı)
 ├── storage.js         # GPAStorage — localStorage veri katmanı
