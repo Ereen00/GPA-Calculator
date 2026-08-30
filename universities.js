@@ -104,6 +104,38 @@
     };
   }
 
+  /* Aynı ders kodu birden çok dönemde geçiyorsa, ilkinden sonraki her alınışı
+     "tekrar" olarak işaretler. Ortalama hesabı zaten son alınışı kullanır (gpa.js);
+     bu işaret planlayıcıda eski denemenin etkisiz olduğunu göstermek içindir.
+
+     Transkriptinde açık bir tekrar sütunu bulunan üniversiteler (ör. Boğaziçi'nin
+     TKR/YRN açıklamaları) bunu KULLANMAZ — orada tekrar bilgisi belgeden okunur ve
+     "başka dersin yerine" gibi durumlar kod tekrarına indirgenemez. */
+  function markRepeats(data) {
+    var byId = {};
+    data.cards.forEach(function (card) { byId[card.id] = card; });
+
+    var seen = {};
+    data.semesters.forEach(function (sem) {
+      // Aynı dönemde aynı kod iki kez geçerse ikincisi tekrar sayılmasın diye
+      // dönem içindeki kodlar dönem sonunda işaretlenir.
+      var inTerm = {};
+      sem.cards.forEach(function (id) {
+        var card = byId[id];
+        if (!card || card.status !== 'taken') return;
+        if (seen[card.lesson]) {
+          card.status = 'repeated with';
+          card.lessonInputType = 'select';
+          card.repeatedLesson = card.lesson;
+        }
+        inTerm[card.lesson] = true;
+      });
+      Object.keys(inTerm).forEach(function (code) { seen[code] = true; });
+    });
+
+    return data;
+  }
+
   /* Ham girdiyi (düz metin ya da {text, pages}) tek biçime indirger. */
   function toDoc(input) {
     if (input && typeof input === 'object' && typeof input.text === 'string') {
@@ -169,6 +201,7 @@
   global.GPAUniversities = {
     register: register,
     createCollector: createCollector,
+    markRepeats: markRepeats,
     list: list,
     get: get,
     toDoc: toDoc,

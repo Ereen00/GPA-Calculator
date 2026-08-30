@@ -190,36 +190,7 @@
       });
     });
 
-    return markRepeats(collector.result());
-  }
-
-  /* Aynı ders kodu birden çok dönemde geçiyorsa, ilkinden sonraki her alınış
-     "tekrar" olarak işaretlenir. Ortalama hesabı zaten son alınışı kullanır
-     (gpa.js); bu işaret, planlayıcıda eski denemenin etkisiz olduğunu göstermek
-     ve Boğaziçi ayrıştırıcısıyla aynı veri biçimini üretmek içindir. */
-  function markRepeats(data) {
-    var byId = {};
-    data.cards.forEach(function (card) { byId[card.id] = card; });
-
-    var seen = {};
-    data.semesters.forEach(function (sem) {
-      // Aynı dönemde aynı kod iki kez geçerse ikincisi tekrar sayılmasın diye
-      // dönem içindeki kodlar dönem sonunda işaretlenir.
-      var inTerm = {};
-      sem.cards.forEach(function (id) {
-        var card = byId[id];
-        if (!card || card.status !== 'taken') return;
-        if (seen[card.lesson]) {
-          card.status = 'repeated with';
-          card.lessonInputType = 'select';
-          card.repeatedLesson = card.lesson;
-        }
-        inTerm[card.lesson] = true;
-      });
-      Object.keys(inTerm).forEach(function (code) { seen[code] = true; });
-    });
-
-    return data;
+    return global.GPAUniversities.markRepeats(collector.result());
   }
 
   var profile = global.GPAUniversities && global.GPAUniversities.get('ytu');

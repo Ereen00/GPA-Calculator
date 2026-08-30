@@ -37,13 +37,18 @@
     },
 
     /* Belge tespiti. Not döküm belgesinin başlığı hem Türkçe hem İngilizce basılır;
-       pdf.js metni harf öbeklerine bölebildiği için harfler arası boşluğa toleranslı bakılır. */
+       pdf.js metni harf öbeklerine bölebildiği için harfler arası boşluğa toleranslı bakılır.
+
+       "NOT DÖKÜM BELGESİ" başlığı imza olarak KULLANILMAZ: o başlık YÖK e-Devlet
+       şablonunun ortak başlığıdır, her üniversitenin belgesinde geçer. İmza saysaydık
+       profili olmayan bir üniversitenin transkripti sessizce Boğaziçi kurallarıyla
+       hesaplanır ve makul görünen ama yanlış bir sonuç üretirdi. */
     detect: function (doc) {
       var text = doc.text || '';
       if (/BO\s*Ğ\s*A\s*Z\s*İ\s*Ç\s*İ/i.test(text)) return 1;
       if (/BOGAZICI\s+UNIVERSITY/i.test(text)) return 1;
-      // Başlık okunamadıysa belgenin kendine özgü bölüm adlarına bak
-      if (/NOT\s+DÖKÜM\s+BELGESİ/i.test(text) || /Öğrenci\s+Durum\s+Belgesi/i.test(text)) return 0.5;
+      // Üniversite adı okunamadıysa Boğaziçi'ye özgü ikinci belge türüne bak
+      if (/Öğrenci\s+Durum\s+Belgesi/i.test(text)) return 0.5;
       return 0;
     }
   };

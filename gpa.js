@@ -48,6 +48,14 @@
     return typeof min === 'number' ? gradeVal >= min : gradeVal > 0;
   }
 
+  /* Sayısal notu olmayan ama krediyi kazandıran notlar. Marmara'da S (yeterli):
+     transfer/muafiyet dersleri ortalamaya katılmaz, tamamlanan krediye sayılır
+     (yönetmelik Md. 23/8-f). Profil tanımlamazsa böyle bir not yoktur. */
+  function isCreditOnly(grade, profile) {
+    var list = profile && profile.rules && profile.rules.creditOnlyGrades;
+    return !!list && list.indexOf(grade) !== -1;
+  }
+
   function courseCredit(course) {
     var cr = parseFloat(course.credit);
     return (isNaN(cr) || cr <= 0) ? null : cr;
@@ -149,6 +157,11 @@
       });
       if (countsAsAttempt(latestAny.course.status)) {
         attempted += courseCredit(latestAny.course);
+        // Sayısal notu olmadığı için yukarıdaki hesaba hiç girmeyen, ama krediyi
+        // kazandıran ders (Marmara'da S notu)
+        if (concluded.length === 0 && isCreditOnly(latestAny.course.grade, profile)) {
+          completed += courseCredit(latestAny.course);
+        }
       }
     });
 
@@ -178,6 +191,8 @@
           points += g * cr;
           credits += cr;
           if (isCompleted(g, profile)) completed += cr;
+        } else if (countsForGpa(course.status) && isCreditOnly(course.grade, profile)) {
+          completed += cr;
         }
       });
       var running = cumulative(semesters, idx, profile);

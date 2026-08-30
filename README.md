@@ -53,16 +53,22 @@ Ayrıştırıcıya verilen belge hem düz metni hem de her metin parçasının s
 
 ### Desteklenen üniversiteler
 
-| Üniversite | Belge | Kural belgesi |
-|---|---|---|
-| Boğaziçi Üniversitesi | Not Döküm Belgesi / Öğrenci Durum Belgesi | — |
-| Yıldız Teknik Üniversitesi | Öğrenci Not Çizelgesi | [docs/ytu-notlandirma.md](docs/ytu-notlandirma.md) |
+| Üniversite | Belge | Ortalama kredisi | Kural belgesi |
+|---|---|---|---|
+| Boğaziçi Üniversitesi | Not Döküm Belgesi / Öğrenci Durum Belgesi | Ulusal kredi | — |
+| Yıldız Teknik Üniversitesi | Öğrenci Not Çizelgesi | Yerel kredi | [docs/ytu-notlandirma.md](docs/ytu-notlandirma.md) |
+| Marmara Üniversitesi | Not Döküm Belgesi | AKTS | [docs/marmara-notlandirma.md](docs/marmara-notlandirma.md) |
 
-YTÜ'nün transkripti sayfada iki sütunludur (solda Güz, sağda Bahar); düz metne çevrildiğinde
-iki tablonun satırları iç içe geçer. `parser-ytu.js` bu yüzden metin yerine her parçanın sayfa
-üzerindeki konumunu kullanır. Hesapta yerel kredi esas alınır, F0 (devamsız) dönem ortalamasına
-girer ama genel ortalamadan çıkarılır — ikisi de gerçek bir transkriptin basılı değerleriyle
-doğrulanmıştır.
+Her üniversitenin kuralları kendi profilinde durur ve gerçek bir transkriptin **basılı
+ortalama değerleriyle** doğrulanmıştır:
+
+- **YTÜ** transkripti sayfada iki sütunludur (solda Güz, sağda Bahar); düz metne çevrildiğinde
+  iki tablonun satırları iç içe geçer. `parser-ytu.js` bu yüzden metin yerine her parçanın
+  sayfa üzerindeki konumunu kullanır. F0 (devamsız) dönem ortalamasına girer ama genel
+  ortalamadan çıkarılır.
+- **Marmara** belgesi Boğaziçi ile aynı YÖK e-Devlet şablonudur, ama ortalama AKTS üzerinden
+  hesaplanır, DD geçer nottur (koşullu geçme yoktur), DZ ve FG sıfır katsayıyla ortalamaya
+  girer, S notlu dersler ortalamaya girmeden krediye sayılır.
 
 ## 🎯 Hesaplama Kuralları (`gpa.js`)
 
@@ -75,6 +81,8 @@ birebir uygulanır ve gerçek bir transkriptin basılı DNO/GNO değerleriyle do
 - F / KL notları FF (0.00) olarak sayılır.
 - Profil `excludeFromCumulative` tanımlarsa, son notu bu listede olan ders kümülatif ortalamaya
   hiç girmez ama dönem ortalamasına normal girer (YTÜ'deki F0 davranışı).
+- `completedMinGrade` tamamlanmış sayılan en düşük notu, `creditOnlyGrades` ise sayısal notu
+  olmadığı hâlde krediyi kazandıran notları belirler (Marmara'daki S notu).
 
 ## 🔄 Veri Akışı
 
@@ -116,8 +124,10 @@ python -m http.server 8000
 ├── universities.js    # GPAUniversities — üniversite profili kayıt defteri ve belge tespiti
 ├── uni-bogazici.js    # Boğaziçi profili (not tablosu, kurallar, belge imzası)
 ├── uni-ytu.js         # Yıldız Teknik Üniversitesi profili
+├── uni-marmara.js     # Marmara Üniversitesi profili
 ├── parser-bogazici.js # Boğaziçi transkript ayrıştırıcısı (düz metin)
 ├── parser-ytu.js      # YTÜ "Öğrenci Not Çizelgesi" ayrıştırıcısı (iki sütunlu, konum tabanlı)
+├── parser-marmara.js  # Marmara not döküm belgesi ayrıştırıcısı (düz metin)
 ├── parser.js          # GPAParser — belgeyi tespit edip ilgili ayrıştırıcıya devreden cephe
 ├── gpa.js             # GPACalc — ortalama hesaplama modülü (saf fonksiyonlar, profil tabanlı)
 ├── storage.js         # GPAStorage — localStorage veri katmanı
