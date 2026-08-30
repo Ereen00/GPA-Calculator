@@ -24,8 +24,24 @@
     { value: 'non credit', i18n: 'editor.status.nonCredit' }
   ];
   var VALID_STATUSES = STATUS_OPTIONS.map(function (o) { return o.value; });
-  var GRADE_OPTIONS = ['AA', 'BA', 'BB', 'CB', 'CC', 'DC', 'DD', 'FF', 'W', ''];
-  var REPEAT_CANDIDATE_GRADES = ['DC', 'DD', 'FF'];
+
+  // ---------- Üniversite profili ----------
+  // Not listesi ve tekrar adayı notlar, son yüklenen transkriptin üniversitesinden gelir
+  // (universities.js). Profil yoksa Boğaziçi varsayılanına düşülür.
+  var DEFAULT_GRADE_OPTIONS = ['AA', 'BA', 'BB', 'CB', 'CC', 'DC', 'DD', 'FF', 'W', ''];
+  var DEFAULT_REPEAT_GRADES = ['DC', 'DD', 'FF'];
+
+  function uni() {
+    return window.GPAUniversities ? GPAUniversities.active() : null;
+  }
+  function gradeOptions() {
+    var p = uni();
+    return (p && p.gradeOptions) || DEFAULT_GRADE_OPTIONS;
+  }
+  function repeatCandidateGrades() {
+    var p = uni();
+    return (p && p.repeatCandidateGrades) || DEFAULT_REPEAT_GRADES;
+  }
 
   // ---------- Durum ----------
   var state = { semesters: [] };
@@ -159,7 +175,7 @@
     state.semesters.forEach(function (sem) {
       sem.courses.forEach(function (c) {
         if (c === current) return;
-        if (REPEAT_CANDIDATE_GRADES.indexOf(c.grade) === -1) return;
+        if (repeatCandidateGrades().indexOf(c.grade) === -1) return;
         var name = (c.lesson || '').trim();
         if (name && names.indexOf(name) === -1) names.push(name);
       });
@@ -216,7 +232,7 @@
     }
 
     var gradeSel = el('select', { class: 'course-grade', title: t('editor.gradeTitle') });
-    GRADE_OPTIONS.forEach(function (g) {
+    gradeOptions().forEach(function (g) {
       gradeSel.appendChild(el('option', { value: g, text: g === '' ? '--' : g }));
     });
     if (!Array.prototype.some.call(gradeSel.options, function (o) { return o.value === course.grade; })) {
@@ -327,7 +343,7 @@
     addBtn.appendChild(el('span', { class: 'add-course-plus', text: '+' }));
     addBtn.appendChild(el('span', { text: ' ' + t('editor.addCourse') }));
     addBtn.addEventListener('click', function () {
-      var course = { id: newCourseId(), lesson: '', status: 'taken', grade: 'AA', credit: '3', repeatedLesson: '' };
+      var course = { id: newCourseId(), lesson: '', status: 'taken', grade: gradeOptions()[0] || 'AA', credit: '3', repeatedLesson: '' };
       sem.courses.push(course);
       render();
       scheduleSave();

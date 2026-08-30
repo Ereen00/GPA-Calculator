@@ -72,7 +72,10 @@
   }
 
   // ---------- PDF metin çıkarma ----------
-  function extractPdfText(file) {
+  /* Düz metnin yanında her parçanın sayfa üzerindeki konumunu da toplar:
+     çok sütunlu transkriptlerde (ör. YTÜ) sütunları ayırmanın tek yolu budur.
+     Yalnız metinle çalışan ayrıştırıcılar doc.text'i kullanmayı sürdürür. */
+  function extractPdfDoc(file) {
     return new Promise(function (resolve, reject) {
       if (typeof pdfjsLib === 'undefined') {
         reject(new Error(t('upload.libNotLoaded')));
@@ -86,13 +89,27 @@
         pdfjsLib.getDocument({ data: new Uint8Array(reader.result) }).promise
           .then(async function (pdf) {
             var extracted = '';
+            var pages = [];
             for (var i = 1; i <= pdf.numPages; i++) {
               var page = await pdf.getPage(i);
               var content = await page.getTextContent();
+              var viewport = page.getViewport({ scale: 1 });
               extracted += '\n--- Sayfa ' + i + ' ---\n' +
                 content.items.map(function (item) { return item.str; }).join(' ') + '\n';
+              pages.push({
+                width: viewport.width,
+                height: viewport.height,
+                items: content.items.map(function (item) {
+                  return {
+                    str: item.str,
+                    x: item.transform[4],   // sayfa solundan uzaklık (pt)
+                    y: item.transform[5],   // sayfa altından uzaklık (pt)
+                    w: item.width || 0
+                  };
+                })
+              });
             }
-            resolve(extracted);
+            resolve({ text: extracted, pages: pages });
           })
           .catch(reject);
       };
@@ -101,12 +118,19 @@
   }
 
   // ---------- Dönüştürme ve kaydetme (tamamen tarayıcıda) ----------
-  async function convertAndStore(text) {
+  async function convertAndStore(doc) {
     setStatus('loading', t('upload.status.parsing'));
 
-    var data = GPAParser.parse(text);
+    var parsed = GPAParser.parseWithProfile(doc);
+    var data = parsed.data;
     if (!window.GPAStorage || !GPAStorage.isValidData(data) || data.cards.length === 0) {
       throw new Error(t('upload.status.noCourses'));
+    }
+
+    // Ayrıştırmayı hangi üniversite yaptıysa hesap kuralları da onunki olsun:
+    // planlayıcı ve istatistik sayfaları bu seçimi okur.
+    if (parsed.profile && window.GPAUniversities) {
+      GPAUniversities.setActive(parsed.profile.id);
     }
 
     // Mevcut plan varsa üzerine yazmadan önce onay al
@@ -151,15 +175,15 @@
 
     try {
       setStatus('loading', t('upload.status.reading'));
-      var text;
+      var doc;
       try {
-        text = await extractPdfText(file);
+        doc = await extractPdfDoc(file);
       } catch (readErr) {
         console.error(readErr);
         setStatus('error', t('upload.status.readError'));
         return;
       }
-      await convertAndStore(text);
+      await convertAndStore(doc);
     } catch (err) {
       setStatus('error', err.message);
     } finally {

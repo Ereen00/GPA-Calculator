@@ -1,20 +1,41 @@
 /*
  * GPACalc — not ortalaması hesaplama modülü (saf fonksiyonlar, DOM'a dokunmaz)
  *
- * Kurallar (Boğaziçi):
- *  - SPA: yalnızca o dönemdeki 'taken' / 'repeated with' dersler.
- *  - Kümülatif GPA: bir ders birden çok kez alındıysa yalnızca EN SON alınışı sayılır
+ * Not tablosu ve kurallar ÜNİVERSİTE PROFİLİNDEN gelir (universities.js). Profil
+ * verilmezse aktif profil, o da yoksa aşağıdaki Boğaziçi varsayılanı kullanılır —
+ * böylece modül tek başına da (ör. testte) çalışır.
+ *
+ * Kurallar:
+ *  - SPA/YANO: yalnızca o dönemdeki 'taken' / 'repeated with' dersler.
+ *  - Kümülatif GPA/AGNO: bir ders birden çok kez alındıysa yalnızca EN SON alınışı sayılır
  *    ('repeated with' derslerde hedef ders repeatedLesson ile eşleştirilir).
  *  - 'not taken' (çekilen) ve 'non credit' dersler ortalamaya ve denenen krediye girmez.
  *  - Tamamlanan kredi: FF (0.00) üstü not alınan derslerin kredisi.
+ *  - profile.rules.excludeFromCumulative: son notu bu listede olan ders kümülatif
+ *    ortalamanın PAYINA DA PAYDASINA DA girmez; dönem ortalamasına ise normal girer
+ *    (YTÜ'deki F0 davranışı — bkz. docs/ytu-notlandirma.md §4).
  */
 (function (global) {
   'use strict';
 
   var GRADE_MAP = { AA: 4.0, BA: 3.5, BB: 3.0, CB: 2.5, CC: 2.0, DC: 1.5, DD: 1.0, FF: 0.0 };
 
-  function gradeValue(grade) {
-    if (Object.prototype.hasOwnProperty.call(GRADE_MAP, grade)) return GRADE_MAP[grade];
+  function resolveProfile(profile) {
+    if (profile && profile.grades) return profile;
+    if (global.GPAUniversities) {
+      var active = global.GPAUniversities.resolve(profile);
+      if (active && active.grades) return active;
+    }
+    return null;
+  }
+
+  function gradeMapOf(profile) {
+    return (profile && profile.grades) || GRADE_MAP;
+  }
+
+  function gradeValue(grade, profile) {
+    var map = gradeMapOf(profile);
+    if (Object.prototype.hasOwnProperty.call(map, grade)) return map[grade];
     var num = parseFloat(grade);
     return isNaN(num) ? NaN : num;
   }
@@ -75,7 +96,8 @@
   }
 
   /* [0..endIdx] dönem aralığı için tekrar kuralı uygulanmış kümülatif değerler */
-  function cumulative(semesters, endIdx) {
+  function cumulative(semesters, endIdx, profile) {
+    var excluded = (profile && profile.rules && profile.rules.excludeFromCumulative) || [];
     var alias = buildAliasMap(semesters, endIdx);
     var groups = new Map();
     for (var i = 0; i <= endIdx && i < semesters.length; i++) {
@@ -93,7 +115,7 @@
       // taken/repeated-with denemeleri. Devam eden (notsuz) veya çekilen (W) bir
       // tekrar, önceki notu SİLMEZ — resmi transkript davranışıyla birebir aynı.
       var concluded = attempts.filter(function (a) {
-        return countsForGpa(a.course.status) && !isNaN(gradeValue(a.course.grade));
+        return countsForGpa(a.course.status) && !isNaN(gradeValue(a.course.grade, profile));
       });
       if (concluded.length > 0) {
         var latest = concluded[0];
@@ -102,11 +124,14 @@
           else if (a.semIdx === latest.semIdx && a.course.status === 'repeated with') latest = a;
         });
         var c = latest.course;
-        var cr = courseCredit(c);
-        var g = gradeValue(c.grade);
-        points += g * cr;
-        credits += cr;
-        if (g > 0) completed += cr;
+        // Son notu profilde "kümülatif dışı" işaretliyse (YTÜ: F0) ders AGNO'ya hiç girmez
+        if (excluded.indexOf(c.grade) === -1) {
+          var cr = courseCredit(c);
+          var g = gradeValue(c.grade, profile);
+          points += g * cr;
+          credits += cr;
+          if (g > 0) completed += cr;
+        }
       }
       // Denenen kredi: dersin en son denemesinin durumuna göre
       // (devam eden dersler de denenmiş sayılır; çekilenler sayılmaz)
@@ -129,14 +154,17 @@
   }
 
   /* Tüm dönemler için SPA + kümülatif istatistikler.
-     semesters: [{ name, courses: [{ id, lesson, status, grade, credit, repeatedLesson }] }] */
-  function computeAll(semesters) {
+     semesters: [{ name, courses: [{ id, lesson, status, grade, credit, repeatedLesson }] }]
+     profile:   üniversite profili (verilmezse aktif profil kullanılır) */
+  function computeAll(semesters, profile) {
+    profile = resolveProfile(profile);
+
     var perSemester = semesters.map(function (sem, idx) {
       var points = 0, credits = 0, attempted = 0, completed = 0;
       sem.courses.forEach(function (course) {
         var cr = courseCredit(course);
         if (cr === null) return;
-        var g = gradeValue(course.grade);
+        var g = gradeValue(course.grade, profile);
         if (countsAsAttempt(course.status)) attempted += cr;
         if (countsForGpa(course.status) && !isNaN(g)) {
           points += g * cr;
@@ -144,7 +172,7 @@
           if (g > 0) completed += cr;
         }
       });
-      var running = cumulative(semesters, idx);
+      var running = cumulative(semesters, idx, profile);
       return {
         spa: credits > 0 ? points / credits : 0,
         semesterCredits: credits,
@@ -157,7 +185,7 @@
     });
 
     var overall = semesters.length
-      ? cumulative(semesters, semesters.length - 1)
+      ? cumulative(semesters, semesters.length - 1, profile)
       : { gpa: 0, points: 0, credits: 0, attempted: 0, completed: 0 };
 
     /* Sonradan tekrar edilen derslerin adları (satır renklendirme: "etkisiz" dersler) */
@@ -170,11 +198,17 @@
       });
     });
 
-    return { perSemester: perSemester, overall: overall, repeatedTargets: repeatedTargets };
+    return {
+      perSemester: perSemester,
+      overall: overall,
+      repeatedTargets: repeatedTargets,
+      profile: profile
+    };
   }
 
   global.GPACalc = {
-    GRADE_MAP: GRADE_MAP,
+    GRADE_MAP: GRADE_MAP,          // Boğaziçi varsayılanı (geriye dönük uyumluluk)
+    gradeMapOf: gradeMapOf,
     gradeValue: gradeValue,
     computeAll: computeAll
   };

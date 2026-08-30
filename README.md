@@ -18,7 +18,8 @@ Boğaziçi Üniversitesi öğrencileri için geliştirilmiş açık kaynaklı bi
 
 ### 📄 Transkript Yükleyici (`pdf_upload.html`)
 - Transkript PDF'ini sürükleyip bırakın; dönüştürme otomatik başlar.
-- Ayrıştırıcı (`parser.js`) dersleri, notları, kredileri ve dönemleri tarayıcıda tanır.
+- Belge önce **hangi üniversiteye ait olduğu** için taranır (`universities.js`), sonra o üniversitenin
+  ayrıştırıcısına verilir; dersler, notlar, krediler ve dönemler tarayıcıda tanınır.
 - Withdraw (W/DÇ), Tekrar (TKR), Yerine Sayılan (YRN), kredisiz dersler (PE vb.), yaz okulu ve devam eden (notu girilmemiş) dönem otomatik algılanır.
 - Sonuç doğrudan tarayıcı kaydına (localStorage) yazılır; JSON yedeği indirme isteğe bağlıdır.
 
@@ -33,20 +34,43 @@ Boğaziçi Üniversitesi öğrencileri için geliştirilmiş açık kaynaklı bi
 - Mezuniyet Ortalaması Simülatörü: kalan krediler ve hedef notla tahmini mezuniyet GPA'sı.
 - Veriler planlayıcıdan otomatik yüklenir; eski bir JSON yedeğini de analiz edebilirsiniz.
 
+## 🏫 Çoklu Üniversite Desteği
+
+Site tek alan adı olarak kalır; hangi üniversitenin kurallarının uygulanacağını **yüklenen transkript**
+belirler. Her üniversite kendini bir profil nesnesiyle kaydeder ve "bu belge bana ait mi" sorusuna
+puan verir (`detect`). En yüksek puanı alan profilin ayrıştırıcısı ve not tablosu kullanılır;
+seçim tarayıcıda saklanır, planlayıcı ve analitik sayfaları hesaplarını buna göre yapar.
+
+Yeni bir üniversite eklemek için iki dosya yeterlidir:
+
+| Dosya | İçeriği |
+|---|---|
+| `uni-<id>.js` | Profil: ad, harf notu tablosu ve katsayıları, geçme/koşullu geçme kuralları, ders yükü sınırı, onur dereceleri, belge imzası (`detect`) |
+| `parser-<id>.js` | O üniversitenin transkript biçimini okuyan ayrıştırıcı; profile `parse` olarak bağlanır |
+
+Ayrıştırıcıya verilen belge hem düz metni hem de her metin parçasının sayfa üzerindeki konumunu içerir
+(`{ text, pages: [{ items: [{ str, x, y, w }] }] }`), böylece çok sütunlu transkriptler de çözülebilir.
+
+Desteklenen üniversiteler ve kural belgeleri `docs/` klasöründedir.
+
 ## 🎯 Hesaplama Kuralları (`gpa.js`)
 
-Resmi Boğaziçi transkript mantığı birebir uygulanır ve gerçek bir transkriptin basılı DNO/GNO değerleriyle doğrulanmıştır:
+Not tablosu ve kurallar aktif üniversite profilinden gelir. Boğaziçi için resmi transkript mantığı
+birebir uygulanır ve gerçek bir transkriptin basılı DNO/GNO değerleriyle doğrulanmıştır:
 
 - Bir ders birden çok kez alındıysa kümülatif ortalamaya yalnızca **son sonuçlanmış** alınışı girer (TKR); YRN derslerde yerine geçtiği ders eşleştirilir.
 - Devam eden (notu girilmemiş) veya çekilen (W) bir tekrar, önceki notu **silmez**.
 - Teorik saati 0 olan dersler (PE vb.) ve kredisiz dersler ortalamaya girmez.
 - F / KL notları FF (0.00) olarak sayılır.
+- Profil `excludeFromCumulative` tanımlarsa, son notu bu listede olan ders kümülatif ortalamaya
+  hiç girmez ama dönem ortalamasına normal girer (YTÜ'deki F0 davranışı).
 
 ## 🔄 Veri Akışı
 
 ```
-PDF ──► pdf.js (metin) ──► parser.js (ayrıştırma) ──► tarayıcı localStorage
-        └────────── tümü tarayıcıda ──────────┘             │
+PDF ──► pdf.js ──► universities.js ──► parser-<uni>.js ──► tarayıcı localStorage
+        (metin+konum)   (hangi üniversite?)   (ayrıştırma)          │
+        └───────────────── tümü tarayıcıda ──────────────────┘      │
               ┌─────────────────────────────────────────────┼─────────────┐
               ▼                                             ▼             ▼
         Ders Planlayıcı  ◄────── otomatik senkron ──► İstatistikler   JSON yedeği
@@ -78,8 +102,11 @@ python -m http.server 8000
 ├── app.js             # Planlayıcı mantığı (state tabanlı)
 ├── upload.js          # Yükleyici mantığı (pdf.js entegrasyonu)
 ├── stats.js           # Analitik/grafik mantığı
-├── parser.js          # GPAParser — transkript metni ayrıştırıcısı
-├── gpa.js             # GPACalc — ortalama hesaplama modülü (saf fonksiyonlar)
+├── universities.js    # GPAUniversities — üniversite profili kayıt defteri ve belge tespiti
+├── uni-bogazici.js    # Boğaziçi profili (not tablosu, kurallar, belge imzası)
+├── parser-bogazici.js # Boğaziçi transkript ayrıştırıcısı
+├── parser.js          # GPAParser — belgeyi tespit edip ilgili ayrıştırıcıya devreden cephe
+├── gpa.js             # GPACalc — ortalama hesaplama modülü (saf fonksiyonlar, profil tabanlı)
 ├── storage.js         # GPAStorage — localStorage veri katmanı
 ├── i18n.js            # GPAI18N — TR/EN çeviri katmanı
 ├── ui.js              # GPAUI — tema, toast, onay penceresi, scroll reveal, mobil menü
@@ -94,7 +121,8 @@ python -m http.server 8000
 
 ## 🤝 Katkıda Bulunma
 
-Pull request ve issue'lara açığız. Özellikle farklı transkript biçimleri (ör. Erasmus dönemleri, diğer üniversiteler) için `parser.js` içindeki desenlere katkılar memnuniyetle karşılanır.
+Pull request ve issue'lara açığız. Yeni bir üniversite eklemek için `parser.js`'e dokunmak gerekmez —
+"Çoklu üniversite desteği" bölümündeki iki dosyayı eklemek yeterlidir.
 
 ## 📄 Lisans
 
