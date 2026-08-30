@@ -40,6 +40,14 @@
     return isNaN(num) ? NaN : num;
   }
 
+  /* "Tamamlanan kredi"ye sayılan en düşük not. Profil belirtmezse sıfırın üstündeki
+     her not tamamlanmış sayılır (eski davranış). YTÜ'de eşik DC (1.5): FD (0.5) ve
+     DD (1.0) alan ders tamamlanmış sayılmaz. */
+  function isCompleted(gradeVal, profile) {
+    var min = profile && profile.rules && profile.rules.completedMinGrade;
+    return typeof min === 'number' ? gradeVal >= min : gradeVal > 0;
+  }
+
   function courseCredit(course) {
     var cr = parseFloat(course.credit);
     return (isNaN(cr) || cr <= 0) ? null : cr;
@@ -130,7 +138,7 @@
           var g = gradeValue(c.grade, profile);
           points += g * cr;
           credits += cr;
-          if (g > 0) completed += cr;
+          if (isCompleted(g, profile)) completed += cr;
         }
       }
       // Denenen kredi: dersin en son denemesinin durumuna göre
@@ -169,7 +177,7 @@
         if (countsForGpa(course.status) && !isNaN(g)) {
           points += g * cr;
           credits += cr;
-          if (g > 0) completed += cr;
+          if (isCompleted(g, profile)) completed += cr;
         }
       });
       var running = cumulative(semesters, idx, profile);

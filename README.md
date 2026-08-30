@@ -51,7 +51,18 @@ Yeni bir üniversite eklemek için iki dosya yeterlidir:
 Ayrıştırıcıya verilen belge hem düz metni hem de her metin parçasının sayfa üzerindeki konumunu içerir
 (`{ text, pages: [{ items: [{ str, x, y, w }] }] }`), böylece çok sütunlu transkriptler de çözülebilir.
 
-Desteklenen üniversiteler ve kural belgeleri `docs/` klasöründedir.
+### Desteklenen üniversiteler
+
+| Üniversite | Belge | Kural belgesi |
+|---|---|---|
+| Boğaziçi Üniversitesi | Not Döküm Belgesi / Öğrenci Durum Belgesi | — |
+| Yıldız Teknik Üniversitesi | Öğrenci Not Çizelgesi | [docs/ytu-notlandirma.md](docs/ytu-notlandirma.md) |
+
+YTÜ'nün transkripti sayfada iki sütunludur (solda Güz, sağda Bahar); düz metne çevrildiğinde
+iki tablonun satırları iç içe geçer. `parser-ytu.js` bu yüzden metin yerine her parçanın sayfa
+üzerindeki konumunu kullanır. Hesapta yerel kredi esas alınır, F0 (devamsız) dönem ortalamasına
+girer ama genel ortalamadan çıkarılır — ikisi de gerçek bir transkriptin basılı değerleriyle
+doğrulanmıştır.
 
 ## 🎯 Hesaplama Kuralları (`gpa.js`)
 
@@ -104,7 +115,9 @@ python -m http.server 8000
 ├── stats.js           # Analitik/grafik mantığı
 ├── universities.js    # GPAUniversities — üniversite profili kayıt defteri ve belge tespiti
 ├── uni-bogazici.js    # Boğaziçi profili (not tablosu, kurallar, belge imzası)
-├── parser-bogazici.js # Boğaziçi transkript ayrıştırıcısı
+├── uni-ytu.js         # Yıldız Teknik Üniversitesi profili
+├── parser-bogazici.js # Boğaziçi transkript ayrıştırıcısı (düz metin)
+├── parser-ytu.js      # YTÜ "Öğrenci Not Çizelgesi" ayrıştırıcısı (iki sütunlu, konum tabanlı)
 ├── parser.js          # GPAParser — belgeyi tespit edip ilgili ayrıştırıcıya devreden cephe
 ├── gpa.js             # GPACalc — ortalama hesaplama modülü (saf fonksiyonlar, profil tabanlı)
 ├── storage.js         # GPAStorage — localStorage veri katmanı

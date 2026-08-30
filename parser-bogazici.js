@@ -54,45 +54,16 @@
     return { tr: 'Yaz Okulu', rank: 3 };
   }
 
-  /* Kart/dönem biriktirici: iki biçim de aynı çıktıyı üretsin diye ortak. */
+  /* Kart/dönem biriktirici: ortak toplayıcının (universities.js) Boğaziçi'ye özgü
+     "atlanacak dersler" filtresiyle sarılmış hâli. İki belge biçimi de bunu kullanır. */
   function createCollector() {
-    var semesterMap = {};   // kanonik ad -> { name, sortKey, cards: [] }
-    var cards = [];
-    var idCounter = 1;
-
+    var base = global.GPAUniversities.createCollector();
     return {
       add: function (semKey, sortKey, fields) {
-        if (!fields.lesson || !fields.credit) return;
-        if (SKIP_CODES.indexOf(fields.lesson) !== -1) return;
-
-        var card = {
-          id: 'card-' + (idCounter++),
-          lesson: fields.lesson,
-          lessonInputType: fields.status === 'repeated with' ? 'select' : 'input',
-          status: fields.status,
-          grade: fields.grade,
-          credit: fields.credit,
-          repeatedLesson: fields.repeatedLesson || '',
-          top: '',
-          left: '',
-          origin: ''
-        };
-        cards.push(card);
-
-        if (!semesterMap[semKey]) {
-          semesterMap[semKey] = { name: semKey, sortKey: sortKey, cards: [] };
-        }
-        semesterMap[semKey].cards.push(card.id);
+        if (SKIP_CODES.indexOf(fields.lesson) !== -1) return null;
+        return base.add(semKey, sortKey, fields);
       },
-
-      result: function () {
-        var semesters = Object.keys(semesterMap).map(function (k) { return semesterMap[k]; });
-        semesters.sort(function (a, b) { return a.sortKey - b.sortKey; });
-        return {
-          semesters: semesters.map(function (s) { return { name: s.name, cards: s.cards }; }),
-          cards: cards
-        };
-      }
+      result: function () { return base.result(); }
     };
   }
 

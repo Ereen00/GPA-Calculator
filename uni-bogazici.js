@@ -28,6 +28,9 @@
 
     rules: {
       excludeFromCumulative: [],   // kümülatif ortalamadan tamamen dışlanan not yok
+      // Tamamlanmış sayılan en düşük not: DD (1.00). Boğaziçi'de D geçer nottur,
+      // dersin tekrar alınması gerekmez.
+      completedMinGrade: 1.0,
       maxCreditsPerTerm: null,
       graduationGpa: null,
       honors: []

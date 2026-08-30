@@ -58,6 +58,52 @@
     return byId[id] || null;
   }
 
+  /* Ortak kart/dönem biriktirici — her üniversitenin ayrıştırıcısı aynı çıktı
+     biçimini (GPAStorage v1) üretsin diye burada tutulur.
+     Dönemler sortKey'e göre kronolojik sıralanır. */
+  function createCollector() {
+    var semesterMap = {};   // dönem adı -> { name, sortKey, cards: [] }
+    var cards = [];
+    var idCounter = 1;
+
+    return {
+      add: function (semKey, sortKey, fields) {
+        if (!fields.lesson || !fields.credit) return null;
+
+        var card = {
+          id: 'card-' + (idCounter++),
+          lesson: fields.lesson,
+          lessonInputType: fields.status === 'repeated with' ? 'select' : 'input',
+          status: fields.status,
+          grade: fields.grade,
+          credit: fields.credit,
+          repeatedLesson: fields.repeatedLesson || '',
+          top: '',
+          left: '',
+          origin: ''
+        };
+        cards.push(card);
+
+        if (!semesterMap[semKey]) {
+          semesterMap[semKey] = { name: semKey, sortKey: sortKey, cards: [] };
+        }
+        semesterMap[semKey].cards.push(card.id);
+        return card;
+      },
+
+      cards: function () { return cards; },
+
+      result: function () {
+        var semesters = Object.keys(semesterMap).map(function (k) { return semesterMap[k]; });
+        semesters.sort(function (a, b) { return a.sortKey - b.sortKey; });
+        return {
+          semesters: semesters.map(function (s) { return { name: s.name, cards: s.cards }; }),
+          cards: cards
+        };
+      }
+    };
+  }
+
   /* Ham girdiyi (düz metin ya da {text, pages}) tek biçime indirger. */
   function toDoc(input) {
     if (input && typeof input === 'object' && typeof input.text === 'string') {
@@ -122,6 +168,7 @@
 
   global.GPAUniversities = {
     register: register,
+    createCollector: createCollector,
     list: list,
     get: get,
     toDoc: toDoc,

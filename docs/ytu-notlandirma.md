@@ -186,7 +186,19 @@ Boğaziçi'nin `[A-Z]{2,6}\s?\d{2,3}` deseninden farklı, boşluksuz ve 4 haneli
 | Onur | — | Onur 3.00–3.49, Yüksek onur 3.50–4.00 | İstatistik sayfasında rozet |
 | Mezuniyet | — | AGNO ≥ 2.00 + 240 AKTS | Hedef hesaplayıcı |
 
-## 9. Çözülmemiş / doğrulanması gereken
+## 9. Uygulama durumu
+
+Bu spesifikasyon `uni-ytu.js` (kurallar) ve `parser-ytu.js` (belge okuma) olarak koda geçti.
+Ayrıştırıcı, örnek transkriptin 54 dersini elle okunan listeyle birebir üretiyor; hesap motoru
+belgede basılı 8 YANO değerini, AGNO'yu (2,51), alınan toplam krediyi (92) ve tamamlanan
+yerel krediyi (82) tutturuyor.
+
+Koda geçen kurallar: yerel kredi tabanı, 0 kredili derslerin dışlanması, tekrarda son notun
+geçerliliği, F0'ın YANO'ya girip AGNO'dan çıkması, tamamlanan kredi eşiğinin DC olması,
+harf notu tablosu (her iki skala), koşullu başarı notları, ders yükü sınırları ve onur eşikleri.
+Son üçü şimdilik yalnız profilde duruyor; arayüzde gösterilmesi ayrı bir iş.
+
+## 10. Çözülmemiş / doğrulanması gereken
 
 - **F0 asimetrisi** tek bir transkriptten türetildi; ikinci bir YTÜ transkriptiyle teyit edilmeli.
   (Alternatif okuma: dışlanan iki ders F0 olduğu için değil, "başarısız olunup yerine başka
@@ -196,3 +208,7 @@ Boğaziçi'nin `[A-Z]{2,6}\s?\d{2,3}` deseninden farklı, boşluksuz ve 4 haneli
   transkriptten çıkarılamıyor. Öğretim planı verisi olmadan hesaplanamaz, kapsam dışı bırakılabilir.
 - Artı/eksili skalanın hangi giriş yılından itibaren uygulandığı bulunamadı.
 - Yaz okulu ders/kredi sınırı (YÖ-007 Yaz Okulu Yönergesi) okunamadı — eski `.doc` biçimi.
+- Ayrıştırıcı tek bir transkript üzerinde doğrulandı. Sınanmamış durumlar: notu henüz
+  girilmemiş (devam eden) dönem, M / M(i) muafiyet işaretli ders, artı/eksili skalayla
+  basılmış transkript, tek dönem bloğunun sayfa sonunda bölünmesi. Kod bu durumları
+  gözeterek yazıldı ama gerçek belgeyle görülmedi.
