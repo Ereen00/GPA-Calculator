@@ -4,12 +4,6 @@
    İmza öğe: logodaki baklava (elmas) motifi bölüm işaretçisi olarak.
    ============================================================ */
 
-.wrap {
-  max-width: 1140px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-
 /* ============================================================
    HERO
    ============================================================ */
@@ -193,41 +187,6 @@
   color: var(--text-muted);
   font-weight: 500;
   margin-top: 2px;
-}
-
-/* ============================================================
-   BÖLÜM BAŞLIĞI (ortak)
-   ============================================================ */
-.section {
-  padding: 64px 0;
-}
-
-.section-head {
-  max-width: 620px;
-  margin-bottom: 40px;
-}
-
-.section-head.center {
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-}
-
-.section-head.center .eyebrow {
-  justify-content: center;
-}
-
-.section-title {
-  font-size: clamp(1.9rem, 3.5vw, 2.7rem);
-  margin: 16px 0 12px;
-  letter-spacing: -0.015em;
-}
-
-.section-lead {
-  font-size: 1.05rem;
-  line-height: 1.65;
-  color: var(--text-muted);
-  margin: 0;
 }
 
 /* ============================================================
@@ -652,10 +611,6 @@
 
   .features-list {
     grid-template-columns: 1fr;
-  }
-
-  .section {
-    padding: 48px 0;
   }
 
   .closing-inner {

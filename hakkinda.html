@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hakkında &amp; İletişim – Boğaziçi GPA</title>
+  <meta name="description" content="Boğaziçi GPA nedir, neden yapıldı ve teknik olarak nasıl çalışır? Bağımsız bir öğrenci projesi; kaynak kodu açık. Soru ve hata bildirimleri için iletişim bilgileri.">
+  <link rel="canonical" href="https://bogazicitranscriptmanager.vercel.app/hakkinda.html">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <script>
+    // Tema tercihini CSS yüklenmeden uygula (açılışta beyaz parlama olmasın)
+    (function () {
+      var theme;
+      try { theme = localStorage.getItem('gpa-planner:theme'); } catch (e) {}
+      if (theme !== 'dark' && theme !== 'light') {
+        theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="content.css">
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7872183586463318" crossorigin="anonymous"></script>
+</head>
+<body>
+  <a href="#main" class="skip-link" data-i18n="common.skipToContent">İçeriğe geç</a>
+
+  <nav class="navbar">
+    <a href="index.html" class="logo">
+      <img src="assets/bu-logo.png" alt="Boğaziçi Üniversitesi logosu" width="38" height="38">
+      <span>
+        <span class="logo-name" data-i18n="brand.name">Boğaziçi GPA</span>
+        <span class="logo-sub" data-i18n="brand.sub">Akademik Planlayıcı</span>
+      </span>
+    </a>
+    <div class="nav-links" id="primary-nav">
+      <a href="index.html" class="nav-link" data-i18n="nav.home">Ana Sayfa</a>
+      <a href="planner.html" class="nav-link" data-i18n="nav.planner">Ders Planlayıcı</a>
+      <a href="statistics.html" class="nav-link" data-i18n="nav.stats">Analitik</a>
+      <a href="pdf_upload.html" class="nav-link" data-i18n="nav.upload">Transkript Yükleyici</a>
+    </div>
+    <div class="nav-buttons">
+      <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language / Dili değiştir">EN</button>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Temayı değiştir"></button>
+      <button id="nav-menu-toggle" class="nav-menu-toggle" type="button" aria-label="Menüyü aç" aria-expanded="false" aria-controls="primary-nav"></button>
+    </div>
+  </nav>
+
+  <main id="main">
+    <header class="page-hero">
+      <div class="wrap">
+        <nav class="hero-breadcrumb" aria-label="breadcrumb">
+          <a href="index.html" data-i18n="nav.home">Ana Sayfa</a>
+          <span class="sep">/</span>
+          <span class="here" data-i18n="nav.about">Hakkında &amp; İletişim</span>
+        </nav>
+        <h1 class="page-title" data-i18n="about.title">Hakkında &amp; İletişim</h1>
+        <p class="page-lead" data-i18n="about.lead">
+          Boğaziçi GPA, ortalamasını hesaplamak için her dönem aynı tabloyu yeniden kurmaktan sıkılmış bir
+          öğrencinin yazdığı bağımsız bir araçtır.
+        </p>
+        <p class="page-meta" data-i18n="about.updated">Son güncelleme: 31 Ağustos 2026</p>
+      </div>
+    </header>
+
+    <section class="section" style="padding-top:40px;">
+      <div class="wrap">
+        <article class="prose">
+          <h2 id="proje" data-i18n="about.h1">Bu proje ne?</h2>
+          <div data-i18n="about.b1" data-i18n-html>
+            <p>Boğaziçi GPA, Boğaziçi Üniversitesi öğrencileri için üç işi bir araya getiren ücretsiz bir web aracıdır.</p>
+          </div>
+
+          <h2 id="neden" data-i18n="about.h2">Neden yapıldı?</h2>
+          <div data-i18n="about.b2" data-i18n-html>
+            <p>Ortalama hesabı, ders seçimi döneminde herkesin başına gelen tekrarlayan bir iştir.</p>
+          </div>
+
+          <h2 id="nasil" data-i18n="about.h3">Nasıl çalışıyor?</h2>
+          <div data-i18n="about.b3" data-i18n-html>
+            <p>Site tamamen statiktir: HTML, CSS ve JavaScript dosyalarından ibarettir.</p>
+          </div>
+
+          <h2 id="bagimsizlik" data-i18n="about.h4">Bağımsızlık</h2>
+          <div data-i18n="about.b4" data-i18n-html>
+            <p>Bu proje Boğaziçi Üniversitesi ile bağlantılı değildir.</p>
+          </div>
+
+          <h2 id="acik-kaynak" data-i18n="about.h5">Açık kaynak</h2>
+          <div data-i18n="about.b5" data-i18n-html>
+            <p>Projenin tüm kaynak kodu herkese açıktır.</p>
+          </div>
+
+          <h2 id="iletisim" data-i18n="about.h6">İletişim</h2>
+          <div data-i18n="about.b6" data-i18n-html>
+            <p>Soru, geri bildirim ve hata bildirimleri için bize ulaşabilirsiniz.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="assets/bu-logo.png" alt="Boğaziçi Üniversitesi logosu" width="34" height="34">
+        <div>
+          <strong data-i18n="brand.name">Boğaziçi GPA</strong>
+          <span data-i18n="brand.sub">Akademik Planlayıcı</span>
+        </div>
+      </div>
+      <div class="footer-cols">
+        <nav class="footer-col" aria-labelledby="footer-tools">
+          <h4 id="footer-tools" data-i18n="footer.tools">Araçlar</h4>
+          <a href="index.html" data-i18n="nav.home">Ana Sayfa</a>
+          <a href="planner.html" data-i18n="nav.planner">Ders Planlayıcı</a>
+          <a href="statistics.html" data-i18n="nav.stats">Analitik</a>
+          <a href="pdf_upload.html" data-i18n="nav.upload">Transkript Yükleyici</a>
+        </nav>
+        <nav class="footer-col" aria-labelledby="footer-site">
+          <h4 id="footer-site" data-i18n="footer.site">Site</h4>
+          <a href="hakkinda.html" data-i18n="nav.about">Hakkında &amp; İletişim</a>
+          <a href="gizlilik.html" data-i18n="nav.privacy">Gizlilik Politikası</a>
+          <a href="kullanim-kosullari.html" data-i18n="nav.terms">Kullanım Koşulları</a>
+        </nav>
+      </div>
+    </div>
+    <p class="footer-note" data-i18n="common.footerNote">
+      Bu proje Boğaziçi Üniversitesi ile bağlantılı değildir; bağımsız bir öğrenci aracıdır.
+      Tüm veriler yalnızca tarayıcınızda saklanır.
+    </p>
+  </footer>
+
+  <script src="i18n.js"></script>
+  <script src="i18n-content.js"></script>
+  <script src="ui.js"></script>
+</body>
+</html>

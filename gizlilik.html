@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gizlilik Politikası – Boğaziçi GPA</title>
+  <meta name="description" content="Boğaziçi GPA gizlilik politikası: transkriptiniz sunucuya gönderilmez, veriler yalnızca tarayıcınızda saklanır. Çerezler, Google AdSense ve üçüncü taraf hizmetleri hakkında ayrıntılı bilgi.">
+  <link rel="canonical" href="https://bogazicitranscriptmanager.vercel.app/gizlilik.html">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <script>
+    // Tema tercihini CSS yüklenmeden uygula (açılışta beyaz parlama olmasın)
+    (function () {
+      var theme;
+      try { theme = localStorage.getItem('gpa-planner:theme'); } catch (e) {}
+      if (theme !== 'dark' && theme !== 'light') {
+        theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="content.css">
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7872183586463318" crossorigin="anonymous"></script>
+</head>
+<body>
+  <a href="#main" class="skip-link" data-i18n="common.skipToContent">İçeriğe geç</a>
+
+  <nav class="navbar">
+    <a href="index.html" class="logo">
+      <img src="assets/bu-logo.png" alt="Boğaziçi Üniversitesi logosu" width="38" height="38">
+      <span>
+        <span class="logo-name" data-i18n="brand.name">Boğaziçi GPA</span>
+        <span class="logo-sub" data-i18n="brand.sub">Akademik Planlayıcı</span>
+      </span>
+    </a>
+    <div class="nav-links" id="primary-nav">
+      <a href="index.html" class="nav-link" data-i18n="nav.home">Ana Sayfa</a>
+      <a href="planner.html" class="nav-link" data-i18n="nav.planner">Ders Planlayıcı</a>
+      <a href="statistics.html" class="nav-link" data-i18n="nav.stats">Analitik</a>
+      <a href="pdf_upload.html" class="nav-link" data-i18n="nav.upload">Transkript Yükleyici</a>
+    </div>
+    <div class="nav-buttons">
+      <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language / Dili değiştir">EN</button>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Temayı değiştir"></button>
+      <button id="nav-menu-toggle" class="nav-menu-toggle" type="button" aria-label="Menüyü aç" aria-expanded="false" aria-controls="primary-nav"></button>
+    </div>
+  </nav>
+
+  <main id="main">
+    <header class="page-hero">
+      <div class="wrap">
+        <nav class="hero-breadcrumb" aria-label="breadcrumb">
+          <a href="index.html" data-i18n="nav.home">Ana Sayfa</a>
+          <span class="sep">/</span>
+          <span class="here" data-i18n="nav.privacy">Gizlilik Politikası</span>
+        </nav>
+        <h1 class="page-title" data-i18n="privacy.title">Gizlilik Politikası</h1>
+        <p class="page-lead" data-i18n="privacy.lead">
+          Bu sitenin çalışma biçimi gizlilik açısından sıra dışıdır: transkript verilerinizi toplayan bir sunucu
+          yoktur, çünkü sitenin arka ucu hiç yoktur.
+        </p>
+        <p class="page-meta" data-i18n="privacy.updated">Son güncelleme: 31 Ağustos 2026</p>
+      </div>
+    </header>
+
+    <section class="section" style="padding-top:40px;">
+      <div class="wrap">
+        <article class="prose">
+          <nav class="toc" aria-label="İçindekiler">
+            <h2 data-i18n="privacy.toc">İçindekiler</h2>
+            <ol>
+              <li><a href="#ozet" data-i18n="privacy.h1">Kısaca özet</a></li>
+              <li><a href="#veriler" data-i18n="privacy.h2">Hangi verileri işliyoruz?</a></li>
+              <li><a href="#saklama" data-i18n="privacy.h3">Verileriniz nerede saklanıyor?</a></li>
+              <li><a href="#sunucu" data-i18n="privacy.h4">Sunucuya ne gidiyor?</a></li>
+              <li><a href="#ucuncu-taraf" data-i18n="privacy.h5">Üçüncü taraf hizmetleri</a></li>
+              <li><a href="#cerezler" data-i18n="privacy.h6">Çerezler ve Google AdSense</a></li>
+              <li><a href="#silme" data-i18n="privacy.h7">Verilerinizi silme</a></li>
+              <li><a href="#cocuklar" data-i18n="privacy.h8">Çocukların gizliliği</a></li>
+              <li><a href="#degisiklik" data-i18n="privacy.h9">Bu politikadaki değişiklikler</a></li>
+              <li><a href="#iletisim" data-i18n="privacy.h10">İletişim</a></li>
+            </ol>
+          </nav>
+
+          <h2 id="ozet" data-i18n="privacy.h1">Kısaca özet</h2>
+          <div data-i18n="privacy.b1" data-i18n-html>
+            <p>Bu site sizden hiçbir kişisel veri toplamaz, saklamaz veya üçüncü taraflara aktarmaz.</p>
+          </div>
+
+          <h2 id="veriler" data-i18n="privacy.h2">Hangi verileri işliyoruz?</h2>
+          <div data-i18n="privacy.b2" data-i18n-html>
+            <p>Araç üç tür veriyle çalışır ve üçü de cihazınızdan çıkmaz.</p>
+          </div>
+
+          <h2 id="saklama" data-i18n="privacy.h3">Verileriniz nerede saklanıyor?</h2>
+          <div data-i18n="privacy.b3" data-i18n-html>
+            <p>Tarayıcınızın localStorage alanında, yalnızca o cihaz ve o tarayıcıda.</p>
+          </div>
+
+          <h2 id="sunucu" data-i18n="privacy.h4">Sunucuya ne gidiyor?</h2>
+          <div data-i18n="privacy.b4" data-i18n-html>
+            <p>Akademik verilerinizden hiçbiri.</p>
+          </div>
+
+          <h2 id="ucuncu-taraf" data-i18n="privacy.h5">Üçüncü taraf hizmetleri</h2>
+          <div data-i18n="privacy.b5" data-i18n-html>
+            <p>Sayfalar düzgün çalışsın diye birkaç dış kaynak yüklenir.</p>
+          </div>
+
+          <h2 id="cerezler" data-i18n="privacy.h6">Çerezler ve Google AdSense</h2>
+          <div data-i18n="privacy.b6" data-i18n-html>
+            <p>Bu site kendi adına hiçbir çerez yerleştirmez.</p>
+          </div>
+
+          <h2 id="silme" data-i18n="privacy.h7">Verilerinizi silme</h2>
+          <div data-i18n="privacy.b7" data-i18n-html>
+            <p>Verileriniz sizde olduğu için silme işlemi de tamamen sizin elinizdedir.</p>
+          </div>
+
+          <h2 id="cocuklar" data-i18n="privacy.h8">Çocukların gizliliği</h2>
+          <div data-i18n="privacy.b8" data-i18n-html>
+            <p>Bu araç üniversite öğrencilerine yöneliktir.</p>
+          </div>
+
+          <h2 id="degisiklik" data-i18n="privacy.h9">Bu politikadaki değişiklikler</h2>
+          <div data-i18n="privacy.b9" data-i18n-html>
+            <p>Araca yeni bir özellik eklendiğinde bu sayfa güncellenir.</p>
+          </div>
+
+          <h2 id="iletisim" data-i18n="privacy.h10">İletişim</h2>
+          <div data-i18n="privacy.b10" data-i18n-html>
+            <p>Gizlilikle ilgili soru, talep veya endişeleriniz için bize yazabilirsiniz.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="assets/bu-logo.png" alt="Boğaziçi Üniversitesi logosu" width="34" height="34">
+        <div>
+          <strong data-i18n="brand.name">Boğaziçi GPA</strong>
+          <span data-i18n="brand.sub">Akademik Planlayıcı</span>
+        </div>
+      </div>
+      <div class="footer-cols">
+        <nav class="footer-col" aria-labelledby="footer-tools">
+          <h4 id="footer-tools" data-i18n="footer.tools">Araçlar</h4>
+          <a href="index.html" data-i18n="nav.home">Ana Sayfa</a>
+          <a href="planner.html" data-i18n="nav.planner">Ders Planlayıcı</a>
+          <a href="statistics.html" data-i18n="nav.stats">Analitik</a>
+          <a href="pdf_upload.html" data-i18n="nav.upload">Transkript Yükleyici</a>
+        </nav>
+        <nav class="footer-col" aria-labelledby="footer-site">
+          <h4 id="footer-site" data-i18n="footer.site">Site</h4>
+          <a href="hakkinda.html" data-i18n="nav.about">Hakkında &amp; İletişim</a>
+          <a href="gizlilik.html" data-i18n="nav.privacy">Gizlilik Politikası</a>
+          <a href="kullanim-kosullari.html" data-i18n="nav.terms">Kullanım Koşulları</a>
+        </nav>
+      </div>
+    </div>
+    <p class="footer-note" data-i18n="common.footerNote">
+      Bu proje Boğaziçi Üniversitesi ile bağlantılı değildir; bağımsız bir öğrenci aracıdır.
+      Tüm veriler yalnızca tarayıcınızda saklanır.
+    </p>
+  </footer>
+
+  <script src="i18n.js"></script>
+  <script src="i18n-content.js"></script>
+  <script src="ui.js"></script>
+</body>
+</html>
