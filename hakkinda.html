@@ -56,13 +56,10 @@
         <nav class="hero-breadcrumb" aria-label="breadcrumb">
           <a href="index.html" data-i18n="nav.home">Ana Sayfa</a>
           <span class="sep">/</span>
-          <span class="here" data-i18n="nav.about">Hakkında &amp; İletişim</span>
+          <span class="here" data-i18n="nav.about">Hakkında & İletişim</span>
         </nav>
-        <h1 class="page-title" data-i18n="about.title">Hakkında &amp; İletişim</h1>
-        <p class="page-lead" data-i18n="about.lead">
-          Boğaziçi GPA, ortalamasını hesaplamak için her dönem aynı tabloyu yeniden kurmaktan sıkılmış bir
-          öğrencinin yazdığı bağımsız bir araçtır.
-        </p>
+        <h1 class="page-title" data-i18n="about.title">Hakkında & İletişim</h1>
+        <p class="page-lead" data-i18n="about.lead">Boğaziçi GPA, ortalamasını hesaplamak için her dönem aynı tabloyu yeniden kurmaktan sıkılmış bir öğrencinin yazdığı bağımsız bir araçtır. Ne yaptığı, nasıl çalıştığı ve nasıl ulaşabileceğiniz aşağıda.</p>
         <p class="page-meta" data-i18n="about.updated">Son güncelleme: 31 Ağustos 2026</p>
       </div>
     </header>
@@ -72,32 +69,45 @@
         <article class="prose">
           <h2 id="proje" data-i18n="about.h1">Bu proje ne?</h2>
           <div data-i18n="about.b1" data-i18n-html>
-            <p>Boğaziçi GPA, Boğaziçi Üniversitesi öğrencileri için üç işi bir araya getiren ücretsiz bir web aracıdır.</p>
+            <p>Boğaziçi GPA, Boğaziçi Üniversitesi öğrencileri için üç işi bir araya getiren ücretsiz bir web aracıdır: resmî transkript PDF'inizi okunabilir bir ders listesine çevirir, dersleri dönem dönem planlamanızı sağlar ve akademik geçmişinizi grafiklerle analiz eder.</p>
+            <p>Kurulum gerektirmez, üyelik istemez ve bir arka uç sunucusu yoktur. Açtığınız sekmede çalışan bir programdır — tıpkı bir hesap makinesi gibi, ama transkriptinizi okuyabilen ve Boğaziçi'nin not kurallarını bilen bir hesap makinesi.</p>
           </div>
 
           <h2 id="neden" data-i18n="about.h2">Neden yapıldı?</h2>
           <div data-i18n="about.b2" data-i18n-html>
-            <p>Ortalama hesabı, ders seçimi döneminde herkesin başına gelen tekrarlayan bir iştir.</p>
+            <p>Ortalama hesabı, ders seçimi döneminde herkesin başına gelen tekrarlayan bir iştir. Öğrencilerin çoğu bunu elektronik tabloyla çözer; her seferinde krediler yeniden yazılır, katsayılar elle girilir, tekrar edilen dersler unutulur ve çıkan sayı çoğu zaman resmî transkriptle tutmaz.</p>
+            <p>Bu araç o döngüyü kırmak için yazıldı. Transkript zaten elinizde bir PDF olarak duruyor; onu bir kez okuyup doğru kurallarla hesaplamak, insanın elle yapmasından hem daha hızlı hem daha güvenilir. Buna "peki şu dersten şu notu alırsam ne olur?" sorusunu anında denemek de eklenince, ders seçimi kararları tahmine değil sayıya dayanır hale geliyor.</p>
           </div>
 
           <h2 id="nasil" data-i18n="about.h3">Nasıl çalışıyor?</h2>
           <div data-i18n="about.b3" data-i18n-html>
-            <p>Site tamamen statiktir: HTML, CSS ve JavaScript dosyalarından ibarettir.</p>
+            <p>Site tamamen statiktir: HTML, CSS ve JavaScript dosyalarından ibarettir, veritabanı ya da uygulama sunucusu yoktur. PDF'iniz tarayıcıda <code>pdf.js</code> kütüphanesiyle açılır, metin katmanı çıkarılır ve projeye özel bir ayrıştırıcı bu metinden ders kodlarını, kredileri, harf notlarını ve dönem başlıklarını tanır.</p>
+            <p>Ayrıştırıcı yalnızca satırları okumakla kalmaz; çekilen dersleri (W), tekrar edilen dersleri, yerine sayılan dersleri ve kredisiz dersleri de ayırt eder. Ortalama hesabı ayrı bir modülde tutulur ve gerçek transkriptlerdeki basılı değerlerle karşılaştırılarak doğrulanmıştır.</p>
+            <p>Verileriniz tarayıcınızın yerel depolama alanında saklanır; üç sayfa da aynı veriyi paylaşır. Bu yüzden transkriptinizi bir kez aktarmanız yeterlidir, planlayıcı ve analitik anında dolar.</p>
           </div>
 
           <h2 id="bagimsizlik" data-i18n="about.h4">Bağımsızlık</h2>
           <div data-i18n="about.b4" data-i18n-html>
-            <p>Bu proje Boğaziçi Üniversitesi ile bağlantılı değildir.</p>
+            <p>Bu proje Boğaziçi Üniversitesi ile bağlantılı değildir ve üniversite tarafından onaylanmamıştır. Bağımsız, kâr amacı gütmeyen bir öğrenci çalışmasıdır. Üniversitenin adı ve görselleri yalnızca aracın hangi not sistemine göre hesap yaptığını göstermek için kullanılır.</p>
+            <p>Araç ücretsizdir ve öyle kalacaktır. Sitede gösterilen reklamlar alan adı ve barındırma giderlerini karşılamak içindir; ücretli bir sürüm, abonelik ya da ödeme duvarı bulunmamaktadır.</p>
           </div>
 
           <h2 id="acik-kaynak" data-i18n="about.h5">Açık kaynak</h2>
           <div data-i18n="about.b5" data-i18n-html>
-            <p>Projenin tüm kaynak kodu herkese açıktır.</p>
+            <p>Projenin tüm kaynak kodu herkese açıktır: <a href='https://github.com/Ereen00/GPA-Calculator' target='_blank' rel='noopener noreferrer'>github.com/Ereen00/GPA-Calculator</a>. Gizlilik politikasında anlatılan "veriler cihazınızdan çıkmıyor" iddiasını da dahil olmak üzere, aracın ne yaptığını doğrudan koddan doğrulayabilirsiniz.</p>
+            <p>Hata bildirimi ve öneriler için depodaki <em>Issues</em> bölümünü kullanabilir, katkıda bulunmak isterseniz pull request gönderebilirsiniz.</p>
           </div>
 
           <h2 id="iletisim" data-i18n="about.h6">İletişim</h2>
           <div data-i18n="about.b6" data-i18n-html>
-            <p>Soru, geri bildirim ve hata bildirimleri için bize ulaşabilirsiniz.</p>
+            <p>Soru, geri bildirim, hata bildirimi ve iş birliği önerileri için:</p>
+            <ul>
+              <li><strong>E-posta:</strong><a href='mailto:yunuscr31526301@gmail.com'>yunuscr31526301@gmail.com</a>
+              </li>
+              <li><strong>GitHub:</strong><a href='https://github.com/Ereen00/GPA-Calculator/issues' target='_blank' rel='noopener noreferrer'>Issues bölümü</a>
+              </li>
+            </ul>
+            <p>Transkriptiniz doğru ayrıştırılmadıysa bu özellikle duymak istediğimiz bir şeydir. Yazarken hangi belge türünü kullandığınızı (Öğrenci Durum Belgesi ya da resmî TRANSCRIPT) ve neyin yanlış çıktığını belirtirseniz sorunu bulmak çok daha kolay olur. <strong>Lütfen transkriptinizin kendisini e-postayla göndermeyin</strong> — kişisel verilerinizi paylaşmanıza gerek yok, sorunun tarifi yeterli.</p>
           </div>
         </article>
       </div>
@@ -123,7 +133,7 @@
         </nav>
         <nav class="footer-col" aria-labelledby="footer-site">
           <h4 id="footer-site" data-i18n="footer.site">Site</h4>
-          <a href="hakkinda.html" data-i18n="nav.about">Hakkında &amp; İletişim</a>
+          <a href="hakkinda.html" data-i18n="nav.about">Hakkında & İletişim</a>
           <a href="gizlilik.html" data-i18n="nav.privacy">Gizlilik Politikası</a>
           <a href="kullanim-kosullari.html" data-i18n="nav.terms">Kullanım Koşulları</a>
         </nav>

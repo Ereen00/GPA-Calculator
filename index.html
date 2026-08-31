@@ -223,31 +223,21 @@
       <div class="section-head center">
         <span class="eyebrow"><span class="diamond"></span><span data-i18n="steps.eyebrow">Nasıl Çalışır</span></span>
         <h2 class="section-title" data-i18n="steps.title">Üç adımda transkriptinizden analize</h2>
-        <p class="section-lead" data-i18n="steps.lead">
-          Hesap makinesine tek tek not girmek zorunda değilsiniz. Resmî belgenizi bırakmanız yeterli;
-          geri kalanı araç hallediyor.
-        </p>
+        <p class="section-lead" data-i18n="steps.lead">Hesap makinesine tek tek not girmek zorunda değilsiniz. Resmî belgenizi bırakmanız yeterli; geri kalanı araç hallediyor.</p>
       </div>
 
       <ol class="steps">
         <li>
           <h3 data-i18n="steps.s1.title">Transkriptinizi bırakın</h3>
-          <p data-i18n="steps.s1.desc">
-            PDF belgenizi yükleme alanına sürükleyin. Dosya tarayıcınızda açılır, metni çıkarılır ve
-            dersler, krediler, harf notları ve dönemler otomatik tanınır.
-          </p>
+          <p data-i18n="steps.s1.desc">PDF belgenizi yükleme alanına sürükleyin. Dosya tarayıcınızda açılır, metni çıkarılır ve dersler, krediler, harf notları ve dönemler otomatik tanınır. Dosya hiçbir sunucuya gönderilmez.</p>
         </li>
         <li>
           <h3 data-i18n="steps.s2.title">Planlayıcıda düzenleyin</h3>
-          <p data-i18n="steps.s2.desc">
-            Aktarılan dersleri dönem dönem görün, eksik olanı ekleyin, gelecek dönem için hedef not girin.
-          </p>
+          <p data-i18n="steps.s2.desc">Aktarılan dersleri dönem dönem görün, eksik olanı ekleyin, gelecek dönem için hedef not girin. Her değişiklikte ortalamanız anında yeniden hesaplanır ve tarayıcınıza otomatik kaydedilir.</p>
         </li>
         <li>
           <h3 data-i18n="steps.s3.title">Analitikte yorumlayın</h3>
-          <p data-i18n="steps.s3.desc">
-            Dönemlik trendinizi, not dağılımınızı, kredi birikiminizi ve mezuniyet simülasyonunu grafiklerle görün.
-          </p>
+          <p data-i18n="steps.s3.desc">Dönemlik trendinizi, not dağılımınızı, kredi birikiminizi ve mezuniyet ortalaması simülasyonunu grafiklerle görün. Hangi dönemin ortalamanızı ne kadar taşıdığını sayılarla anlayın.</p>
         </li>
       </ol>
     </div>
@@ -259,22 +249,17 @@
       <div class="section-head">
         <span class="eyebrow"><span class="diamond"></span><span data-i18n="guide.eyebrow">Rehber</span></span>
         <h2 class="section-title" data-i18n="guide.title">Harf notundan ortalamaya: sistem nasıl işliyor?</h2>
-        <p class="section-lead" data-i18n="guide.lead">
-          Ortalamanızı bu araca hesaplatmadan önce, hesabın arkasındaki kuralları bilmek işinize yarar.
-        </p>
+        <p class="section-lead" data-i18n="guide.lead">Ortalamanızı bu araca hesaplatmadan önce, hesabın arkasındaki kuralları bilmek işinize yarar. Aşağıda Boğaziçi Üniversitesi'nin harf notu katsayıları, ağırlıklı ortalama formülü ve tekrar edilen derslerin ortalamaya nasıl yansıdığı anlatılıyor.</p>
       </div>
 
       <div class="prose">
         <div data-i18n="guide.p1" data-i18n-html>
-          <p>Boğaziçi Üniversitesi'nde her ders, dönem sonunda bir harf notuyla sonuçlanır.</p>
+          <p>Boğaziçi Üniversitesi'nde her ders, dönem sonunda bir harf notuyla sonuçlanır. Bu harfin kendi başına sayısal bir değeri yoktur; ortalamaya girerken önce bir <strong>katsayıya</strong> çevrilir. Ortalamanız da aldığınız harf notlarının basit aritmetik ortalaması değildir — her dersin <strong>kredisi</strong> o dersin ortalamadaki ağırlığını belirler. Bu yüzden 3 kredilik bir dersten aldığınız AA ile 1 kredilik bir dersten aldığınız AA ortalamanızı aynı ölçüde etkilemez.</p>
         </div>
 
         <div class="table-scroll">
           <table class="grade-table">
-            <caption data-i18n="guide.table.caption">
-              Bu araç hesaplamalarını yukarıdaki katsayı tablosuna göre yapar. Bağlayıcı olan, üniversitenin
-              yürürlükteki lisans eğitim-öğretim yönetmeliğidir.
-            </caption>
+            <caption data-i18n="guide.table.caption">Bu araç hesaplamalarını yukarıdaki katsayı tablosuna göre yapar. Bağlayıcı olan, üniversitenin yürürlükteki lisans eğitim-öğretim yönetmeliğidir.</caption>
             <thead>
               <tr>
                 <th scope="col" data-i18n="guide.table.grade">Harf notu</th>
@@ -298,7 +283,8 @@
 
         <h3 data-i18n="guide.h.formula">Ağırlıklı ortalama nasıl hesaplanır?</h3>
         <div data-i18n="guide.formula" data-i18n-html>
-          <p>Hesap iki adımdan oluşur: önce her ders için kredi × katsayı çarpımı bulunur, sonra toplam krediye bölünür.</p>
+          <p>Hesap iki adımdan oluşur. Önce her ders için <strong>kredi × katsayı</strong> çarpımı bulunur; buna o dersin ağırlıklı puanı denir. Sonra tüm ağırlıklı puanlar toplanır ve <strong>toplam krediye</strong> bölünür. Sonuç, iki ondalık basamağa yuvarlanan ortalamanızdır.</p>
+          <p>Somut bir örnek: 3 kredilik bir dersten BA (3.50), 4 kredilik bir dersten CC (2.00) ve 3 kredilik bir dersten AA (4.00) aldığınızı varsayalım. Ağırlıklı puanlar sırasıyla 10.50 — 8.00 — 12.00 olur; toplamı 30.50'dir. Toplam krediniz 10 olduğuna göre ortalamanız 30.50 ÷ 10 = <strong>3.05</strong> çıkar. Dikkat edin: üç dersin harf notlarının düz ortalaması 3.17 olurdu. Aradaki fark, en düşük notu en yüksek kredili dersten almanızdan kaynaklanıyor.</p>
         </div>
 
         <div class="callout">
@@ -306,13 +292,14 @@
             <circle cx="12" cy="12" r="9"></circle><path d="M12 16v-5M12 8h.01"></path>
           </svg>
           <div data-i18n="guide.callout.credit" data-i18n-html>
-            <p><strong>Kredisiz dersler ortalamaya girmez.</strong></p>
+            <p><strong>Kredisiz dersler ortalamaya girmez.</strong> Transkriptinizde kredisi 0 olarak görünen dersler (bazı seminer, laboratuvar ve zorunlu hazırlık dersleri) ortalama hesabına dahil edilmez; araç bunları listede gösterir ama ağırlıklandırmaz. Aynı şekilde <strong>W</strong> (çekilme) notu alınan dersler de ortalamaya girmez.</p>
           </div>
         </div>
 
         <h3 data-i18n="guide.h.repeat">Tekrar edilen dersler ne oluyor?</h3>
         <div data-i18n="guide.repeat" data-i18n-html>
-          <p>Bir dersi tekrar aldığınızda kümülatif ortalamada yalnızca son geçerli not sayılır.</p>
+          <p>Bir dersi tekrar aldığınızda, kümülatif ortalamanızda o dersin yalnızca <strong>son geçerli notu</strong> sayılır ve kredisi tek bir kez hesaba katılır. Eski not transkriptte kalmaya devam eder ama genel ortalamayı artık etkilemez. Bu, ortalamasını yükseltmeye çalışan öğrenciler için en çok karıştırılan noktalardan biridir: FF aldığınız 3 kredilik bir dersi tekrar edip BB alırsanız, toplam krediniz 3 artmaz — yalnızca o dersin ortalamaya katkısı 0.00'dan 3.00'a yükselir.</p>
+          <p>Araç bu kuralı otomatik uygular. Transkriptinizde bir dersin yerine sayılan başka bir ders varsa (ders kodu değişmiş olsa bile) zinciri kökene kadar izler ve krediyi mükerrer saymaz. Dönem not ortalamanız ise değişmez: her dönem, o dönemde aldığınız notlarla hesaplanmaya devam eder.</p>
         </div>
       </div>
     </div>
@@ -324,9 +311,7 @@
       <div class="section-head center">
         <span class="eyebrow"><span class="diamond"></span><span data-i18n="concept.eyebrow">İki Farklı Ortalama</span></span>
         <h2 class="section-title" data-i18n="concept.title">GPA ile SPA arasındaki fark ne?</h2>
-        <p class="section-lead" data-i18n="concept.lead">
-          Transkriptinizde iki ayrı ortalama basılıdır ve ikisi farklı sorulara cevap verir.
-        </p>
+        <p class="section-lead" data-i18n="concept.lead">Transkriptinizde iki ayrı ortalama basılıdır ve ikisi farklı sorulara cevap verir. Hangisinin nerede kullanıldığını bilmek, hedef koyarken işinizi kolaylaştırır.</p>
       </div>
 
       <div class="concept-grid">
@@ -334,14 +319,16 @@
           <span class="concept-tag"><span class="diamond"></span><span data-i18n="concept.spa.tag">Dönemlik</span></span>
           <h3 data-i18n="concept.spa.title">SPA — Dönem Not Ortalaması</h3>
           <div data-i18n="concept.spa.body" data-i18n-html>
-            <p>Tek bir dönemde aldığınız derslerin ağırlıklı ortalamasıdır.</p>
+            <p>Tek bir dönemde aldığınız derslerin ağırlıklı ortalamasıdır; transkriptte <strong>DNO</strong> olarak da geçer. Yalnızca o döneme ait dersleri ve kredileri kapsar, önceki dönemlerden etkilenmez.</p>
+            <p>Dönem içindeki performansınızın ölçüsüdür: onur ve yüksek onur listeleri, bir sonraki dönem alabileceğiniz ders yükü ve bazı burs değerlendirmeleri bu sayıya bakar. Kötü geçen tek bir dönem SPA'nızı sert biçimde düşürür, ama genel ortalamanıza etkisi kredi payı kadardır.</p>
           </div>
         </article>
         <article class="concept-card">
           <span class="concept-tag"><span class="diamond"></span><span data-i18n="concept.gpa.tag">Kümülatif</span></span>
           <h3 data-i18n="concept.gpa.title">GPA — Genel Not Ortalaması</h3>
           <div data-i18n="concept.gpa.body" data-i18n-html>
-            <p>Öğrenciliğiniz boyunca aldığınız tüm derslerin kümülatif ağırlıklı ortalamasıdır.</p>
+            <p>Öğrenciliğiniz boyunca aldığınız <strong>tüm</strong> derslerin kümülatif ağırlıklı ortalamasıdır; transkriptte <strong>GNO</strong> olarak geçer. Tekrar edilen derslerde yalnızca son not sayılır.</p>
+            <p>Kurumların baktığı sayı büyük ölçüde budur: mezuniyet koşulu, çift anadal ve yandal başvuruları, Erasmus ve değişim programı sıralamaları, lisansüstü başvuruları ve birçok staj başvurusu GPA üzerinden değerlendirilir. Kredi biriktikçe hareket ettirmesi zorlaşır — ilk yıllardaki notların ağırlığı bu yüzden hissedilir.</p>
           </div>
         </article>
       </div>
@@ -377,51 +364,55 @@
 
       <div class="faq">
         <details class="faq-item">
-          <summary data-i18n="faq.q1">Soru 1</summary>
+          <summary data-i18n="faq.q1">Transkriptim bir sunucuya yükleniyor mu?</summary>
           <div class="faq-answer" data-i18n="faq.a1" data-i18n-html>
-            <p>Cevap 1</p>
+            <p>Hayır. Bu sitenin arka ucu (backend) yok; dosyanızı alıp işleyecek bir sunucu hiç bulunmuyor. PDF'iniz tarayıcınızın içinde, sizin cihazınızda açılır ve metni orada çıkarılır. Ne dosyanın kendisi ne de içinden çıkan dersleriniz ağ üzerinden hiçbir yere gönderilmez. İsterseniz internet bağlantınızı kesip sayfayı yeniden yükleyerek deneyebilirsiniz: araç yine çalışır.</p>
           </div>
         </details>
         <details class="faq-item">
-          <summary data-i18n="faq.q2">Soru 2</summary>
+          <summary data-i18n="faq.q2">Hesaplanan ortalama resmî transkriptimle birebir aynı mı olacak?</summary>
           <div class="faq-answer" data-i18n="faq.a2" data-i18n-html>
-            <p>Cevap 2</p>
+            <p>Amaç bu ve araç, üzerinde geliştirildiği gerçek transkriptlerdeki tüm basılı dönem ve genel ortalama değerlerini birebir üretiyor. Yine de bu araç bağımsız bir öğrenci projesidir; kenar durumlarda (alışılmadık ders kodları, yatay geçiş kayıtları, muafiyetler, yönetmelik değişiklikleri) sapma olabilir. <strong>Resmî ve bağlayıcı olan, üniversitenin verdiği transkripttir.</strong> Buradaki sonucu bir tahmin ve planlama aracı olarak kullanın, resmî belge yerine geçirmeyin.</p>
           </div>
         </details>
         <details class="faq-item">
-          <summary data-i18n="faq.q3">Soru 3</summary>
+          <summary data-i18n="faq.q3">Verilerim nerede saklanıyor? Kaybolur mu?</summary>
           <div class="faq-answer" data-i18n="faq.a3" data-i18n-html>
-            <p>Cevap 3</p>
+            <p>Dersleriniz tarayıcınızın <strong>yerel depolama</strong> (localStorage) alanında, yalnızca kullandığınız cihaz ve tarayıcıda tutulur. Sekmeyi kapatsanız da kalır, ertesi gün geri geldiğinizde yerinde durur.</p>
+            <p>Ama bu kalıcı bir yedek değildir: tarayıcı verilerini temizlerseniz, gizli sekmede çalışıyorsanız ya da başka bir cihaza geçerseniz veriler gelmez. Planlayıcıdaki <strong>Yedek İndir</strong> düğmesi tüm verinizi bir JSON dosyası olarak indirir; önemli bir planınız varsa ara ara yedek almanızı öneririz.</p>
           </div>
         </details>
         <details class="faq-item">
-          <summary data-i18n="faq.q4">Soru 4</summary>
+          <summary data-i18n="faq.q4">Hangi belgeyi yükleyebilirim?</summary>
           <div class="faq-answer" data-i18n="faq.a4" data-i18n-html>
-            <p>Cevap 4</p>
+            <p>Boğaziçi Üniversitesi'nin PDF biçimindeki not döküm belgeleri desteklenir: e-Devlet üzerinden alınan <strong>Öğrenci Durum Belgesi</strong> ve öğrenci işlerinden alınan resmî <strong>TRANSCRIPT</strong> çıktısı. Araç hangi biçimle karşılaştığını kendisi anlar.</p>
+            <p>Belgenin metin katmanı içermesi gerekir. Ekran görüntüsü, fotoğraf ya da taranmış (görüntü olarak kaydedilmiş) bir PDF'ten metin çıkarılamaz. Belgeniz okunamazsa dersleri planlayıcıdan elle de girebilirsiniz.</p>
           </div>
         </details>
         <details class="faq-item">
-          <summary data-i18n="faq.q5">Soru 5</summary>
+          <summary data-i18n="faq.q5">Çekilme (W) ve tekrar edilen dersler doğru işleniyor mu?</summary>
           <div class="faq-answer" data-i18n="faq.a5" data-i18n-html>
-            <p>Cevap 5</p>
+            <p>Evet, ikisi de otomatik ele alınır. <strong>W</strong> notu alınan dersler listede görünür ama ortalamaya ve tamamlanan krediye katılmaz. Tekrar edilen derslerde kümülatif ortalamaya yalnızca son geçerli not girer ve kredi bir kez sayılır — ders kodu değişerek yerine başka bir ders sayılmış olsa bile zincir izlenir.</p>
+            <p>Henüz sonuçlanmamış bir tekrar (notu girilmemiş ya da W ile biten) eski notunuzu silmez; ortalamanız o ders için önceki notla hesaplanmaya devam eder.</p>
           </div>
         </details>
         <details class="faq-item">
-          <summary data-i18n="faq.q6">Soru 6</summary>
+          <summary data-i18n="faq.q6">"Bu dersten AA alırsam ortalamam ne olur?" diye deneyebilir miyim?</summary>
           <div class="faq-answer" data-i18n="faq.a6" data-i18n-html>
-            <p>Cevap 6</p>
+            <p>Evet, planlayıcı tam olarak bunun için var. Gelecek dönem için bir dönem kartı açıp alacağınız dersleri kredileriyle girin, sonra not alanlarında farklı harfler deneyin. Genel ortalamanız her değişiklikte alt çubukta anında güncellenir.</p>
+            <p>Analitik sayfasındaki mezuniyet simülasyonu ise tersinden bakar: hedeflediğiniz ortalamaya ulaşmak için kalan derslerde ortalama kaç almanız gerektiğini gösterir.</p>
           </div>
         </details>
         <details class="faq-item">
-          <summary data-i18n="faq.q7">Soru 7</summary>
+          <summary data-i18n="faq.q7">Araç ücretli mi? Reklamlar neden var?</summary>
           <div class="faq-answer" data-i18n="faq.a7" data-i18n-html>
-            <p>Cevap 7</p>
+            <p>Araç tamamen ücretsizdir, üyelik veya hesap açmanız gerekmez. Sitede gösterilen reklamlar yalnızca alan adı ve barındırma masraflarını karşılamak içindir. Reklamların hesaplamalara, verilerinize veya araçların çalışmasına hiçbir etkisi yoktur; reklam ağının transkript verilerinize erişimi yoktur, çünkü o veriler zaten cihazınızdan çıkmaz.</p>
           </div>
         </details>
         <details class="faq-item">
-          <summary data-i18n="faq.q8">Soru 8</summary>
+          <summary data-i18n="faq.q8">Bu, Boğaziçi Üniversitesi'nin resmî aracı mı?</summary>
           <div class="faq-answer" data-i18n="faq.a8" data-i18n-html>
-            <p>Cevap 8</p>
+            <p>Hayır. Bu site Boğaziçi Üniversitesi ile bağlantılı değildir, üniversite tarafından desteklenmez ve onaylanmamıştır. Bağımsız bir öğrenci projesidir. Üniversitenin adı ve görselleri yalnızca aracın hangi kurumun not sistemine göre hesap yaptığını belirtmek için kullanılmaktadır.</p>
           </div>
         </details>
       </div>
@@ -478,7 +469,7 @@
         </nav>
         <nav class="footer-col" aria-labelledby="footer-site">
           <h4 id="footer-site" data-i18n="footer.site">Site</h4>
-          <a href="hakkinda.html" data-i18n="nav.about">Hakkında &amp; İletişim</a>
+          <a href="hakkinda.html" data-i18n="nav.about">Hakkında & İletişim</a>
           <a href="gizlilik.html" data-i18n="nav.privacy">Gizlilik Politikası</a>
           <a href="kullanim-kosullari.html" data-i18n="nav.terms">Kullanım Koşulları</a>
         </nav>
