@@ -167,6 +167,45 @@ h1, h2, h3 {
   color: var(--text-muted);
 }
 
+/* ---------- Sayfa düzeni (tüm sayfalarda ortak) ---------- */
+.wrap {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.section {
+  padding: 64px 0;
+}
+
+.section-head {
+  max-width: 620px;
+  margin-bottom: 40px;
+}
+
+.section-head.center {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.section-head.center .eyebrow {
+  justify-content: center;
+}
+
+.section-title {
+  font-size: clamp(1.9rem, 3.5vw, 2.7rem);
+  margin: 16px 0 12px;
+  letter-spacing: -0.015em;
+}
+
+.section-lead {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+  margin: 0;
+}
+
 /* ---------- Erişilebilirlik ---------- */
 .skip-link {
   position: absolute;
@@ -428,6 +467,41 @@ h1, h2, h3 {
   color: var(--primary);
 }
 
+/* Footer bağlantı sütunları (Araçlar / Site) */
+.footer-cols {
+  display: flex;
+  gap: 56px;
+  flex-wrap: wrap;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.footer-col h4 {
+  font-family: var(--font);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin: 0 0 3px;
+}
+
+.footer-col a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.footer-col a:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
 .footer-note {
   max-width: 1140px;
   margin: 20px auto 0;
@@ -649,6 +723,14 @@ html.reveal-on .reveal.visible {
 
   .footer-inner {
     flex-direction: column;
+  }
+
+  .footer-cols {
+    gap: 28px;
+  }
+
+  .section {
+    padding: 48px 0;
   }
 
   #gpa-toast-container {

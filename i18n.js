@@ -420,12 +420,22 @@
     if (btn) btn.addEventListener('click', toggleLang);
   });
 
+  /* Sözlüğü dışarıdan genişletir (ör. i18n-content.js). Aynı anahtar gelirse üzerine yazar. */
+  function extend(extraDict) {
+    if (!extraDict) return;
+    for (var key in extraDict) {
+      if (Object.prototype.hasOwnProperty.call(extraDict, key)) DICT[key] = extraDict[key];
+    }
+    if (document.readyState !== 'loading') applyToDom();
+  }
+
   global.GPAI18N = {
     t: t,
     lang: function () { return currentLang; },
     set: setLang,
     toggle: toggleLang,
     onChange: onChange,
+    extend: extend,
     refresh: applyToDom
   };
 })(window);

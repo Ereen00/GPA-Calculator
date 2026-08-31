@@ -487,3 +487,8 @@
     font-size: 1.5rem;
   }
 }
+
+/* ---------- Site footer'ı sabit alt çubuğun altında kalmasın ---------- */
+.site-footer {
+  padding-bottom: 120px;
+}
