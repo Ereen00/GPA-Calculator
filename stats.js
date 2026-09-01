@@ -15,6 +15,21 @@
   const gradeOrder = ['AA', 'BA', 'BB', 'CB', 'CC', 'DC', 'DD', 'FF'];
   const statusOrder = ['taken', 'repeated with', 'withdrawed', 'not taken'];
 
+  // Ortalamanın alabileceği sınırlar, not tablosundaki en düşük/en yüksek katsayıdan gelir
+  // (4'lük sistemde 0–4). Trendden gelen tahminler bu aralığın dışına çıkamaz: doğrusal
+  // regresyon matematiksel olarak 4'ün üstünü verebilir ama böyle bir not ortalaması yoktur.
+  const gradeValues = Object.keys(gradeMap).map(g => gradeMap[g]);
+  const GRADE_MIN = Math.min(...gradeValues);
+  const GRADE_MAX = Math.max(...gradeValues);
+  const clampGpa = (v) => (isFinite(v) ? Math.min(GRADE_MAX, Math.max(GRADE_MIN, v)) : GRADE_MIN);
+
+  /* Tek dönemde (ya da tüm dönemler aynı noktadaysa) regresyonun eğimi tanımsızdır.
+     Böyle bir durumda trend uydurmak yerine son dönem ortalaması aynen tahmin sayılır. */
+  const hasTrend = (reg) => isFinite(reg.m);
+  const predictSpa = (reg, metrics, i) => clampGpa(
+    hasTrend(reg) ? reg.predict(i) : (metrics.length ? metrics[metrics.length - 1].spa : GRADE_MIN)
+  );
+
   // Boğaziçi markasına göre grafik paleti (lacivert + Boğaz mavisi çekirdek).
   // Anahtar adları eski kodla uyumlu tutuldu; değerler markaya güncellendi.
   const COLORS = {
@@ -316,13 +331,19 @@
 
   function renderSummaryCards(metrics, cumGPA, reg) {
     const current = cumGPA[cumGPA.length - 1] || 0;
-    const nextPred = reg.predict(metrics.length).toFixed(2);
+    const nextPred = predictSpa(reg, metrics, metrics.length).toFixed(2);
     const best = Math.max(...metrics.map(m => m.spa));
     const totalW = metrics.reduce((a, b) => a + b.withdrawals, 0);
 
+    // Kartın rengi eğimin işaretine bakar: tahmin tavana (4.00) dayandığında
+    // "yükseliyor" bilgisi kaybolmasın diye tahminle ortalama karşılaştırılmaz.
+    // Trend yoksa (tek dönem) kart nötr kalır.
+    const trendClass = !hasTrend(reg) ? '' : (reg.m > 0 ? 'success' : 'danger');
+    const predDesc = hasTrend(reg) ? tr('stats.card.nextSpaDesc') : tr('stats.card.nextSpaNoTrend');
+
     document.getElementById('summary-cards').innerHTML = `
         <div class="summary-card"><h3>${tr('stats.card.cumGpa')}</h3><div class="value">${current.toFixed(2)}</div><div class="desc">${tr('stats.card.cumGpaDesc')}</div></div>
-        <div class="summary-card ${parseFloat(nextPred) > current ? 'success' : 'danger'}"><h3>${tr('stats.card.nextSpa')}</h3><div class="value">${nextPred}</div><div class="desc">${tr('stats.card.nextSpaDesc')}</div></div>
+        <div class="summary-card ${trendClass}"><h3>${tr('stats.card.nextSpa')}</h3><div class="value">${nextPred}</div><div class="desc">${predDesc}</div></div>
         <div class="summary-card success"><h3>${tr('stats.card.bestSpa')}</h3><div class="value">${best.toFixed(2)}</div><div class="desc">${tr('stats.card.bestSpaDesc')}</div></div>
         <div class="summary-card ${totalW > 0 ? 'danger' : ''}"><h3>${tr('stats.card.totalW')}</h3><div class="value">${totalW}</div><div class="desc">${tr('stats.card.totalWDesc')}</div></div>
     `;
@@ -361,20 +382,22 @@
         responsive: true,
         maintainAspectRatio: false,
         scales: {
-          y: { type: 'linear', display: true, position: 'left', title: { display: true, text: tr('stats.axis.spa') }, min: 0, max: 4 },
+          y: { type: 'linear', display: true, position: 'left', title: { display: true, text: tr('stats.axis.spa') }, min: GRADE_MIN, max: GRADE_MAX },
           y1: { type: 'linear', display: true, position: 'right', title: { display: true, text: tr('stats.axis.load') }, grid: { drawOnChartArea: false } }
         }
       }
     });
 
-    // 2. Trend
-    const trendData = labels.map((_, i) => reg.predict(i));
-    const currentGPA = cumGPA[cumGPA.length - 1];
-    const nextPred = reg.predict(metrics.length);
-    const trendMsg = tr('stats.trend.slope').replace('{m}', reg.m.toFixed(3));
-    document.getElementById('trend-analysis').textContent = nextPred > currentGPA
-      ? tr('stats.trend.positive').replace('{slope}', trendMsg)
-      : tr('stats.trend.negative').replace('{slope}', trendMsg);
+    // 2. Trend — regresyon çizgisi geçerli not aralığına kırpılır
+    const trendData = labels.map((_, i) => predictSpa(reg, metrics, i));
+    if (!hasTrend(reg)) {
+      document.getElementById('trend-analysis').textContent = tr('stats.trend.insufficient');
+    } else {
+      const trendMsg = tr('stats.trend.slope').replace('{m}', reg.m.toFixed(3));
+      document.getElementById('trend-analysis').textContent = reg.m > 0
+        ? tr('stats.trend.positive').replace('{slope}', trendMsg)
+        : tr('stats.trend.negative').replace('{slope}', trendMsg);
+    }
 
     makeChart('gpaChart', {
       type: 'line',
@@ -388,7 +411,7 @@
       },
       options: {
         maintainAspectRatio: false,
-        scales: { y: { min: 0, max: 4 } }
+        scales: { y: { min: GRADE_MIN, max: GRADE_MAX } }
       }
     });
 
@@ -437,14 +460,14 @@
     makeChart('difficultyChart', {
       type: 'bar',
       data: { labels: hardest.map(c => c.name), datasets: [{ label: tr('stats.ds.avgGrade'), data: hardest.map(c => c.avg), backgroundColor: COLORS.redDark }] },
-      options: { indexAxis: 'y', maintainAspectRatio: false, scales: { x: { min: 0, max: 4 } } }
+      options: { indexAxis: 'y', maintainAspectRatio: false, scales: { x: { min: GRADE_MIN, max: GRADE_MAX } } }
     });
 
     // 9. Mastery
     makeChart('masteryChart', {
       type: 'bar',
       data: { labels: easiest.map(c => c.name), datasets: [{ label: tr('stats.ds.avgGrade'), data: easiest.map(c => c.avg), backgroundColor: COLORS.green }] },
-      options: { indexAxis: 'y', maintainAspectRatio: false, scales: { x: { min: 0, max: 4 } } }
+      options: { indexAxis: 'y', maintainAspectRatio: false, scales: { x: { min: GRADE_MIN, max: GRADE_MAX } } }
     });
 
     // 10. Global Grade Dist
@@ -492,7 +515,7 @@
         maintainAspectRatio: false,
         scales: {
           x: { title: { display: true, text: tr('stats.axis.creditsTaken') } },
-          y: { title: { display: true, text: tr('stats.axis.spa') }, min: 0, max: 4 }
+          y: { title: { display: true, text: tr('stats.axis.spa') }, min: GRADE_MIN, max: GRADE_MAX }
         }
       }
     });
