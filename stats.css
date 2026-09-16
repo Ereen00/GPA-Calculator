@@ -285,7 +285,8 @@ p.subtitle {
   height: 1.5rem;
 }
 
-#sim-info {
+#sim-info,
+#required-info {
   font-size: 0.8rem;
   margin-top: 5px;
   opacity: 0.9;
@@ -327,6 +328,23 @@ p.subtitle {
 .sim-input-group select:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.simulator-grid-reverse {
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px dashed var(--border);
+}
+
+.sim-help {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.sim-result-secondary {
+  background: var(--primary-dark);
 }
 
 .sim-result {

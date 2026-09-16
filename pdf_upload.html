@@ -22,6 +22,8 @@
   <link rel="stylesheet" href="base.css">
   <link rel="stylesheet" href="upload.css">
   <link rel="stylesheet" href="content.css">
+  <link rel="stylesheet" href="guide.css">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Başka bir üniversitenin transkriptini yükleyebilir miyim?", "acceptedAnswer": {"@type": "Answer", "text": "Bu sürüm yalnızca Boğaziçi Üniversitesi'nin iki belge biçimini tanır ve Boğaziçi yönetmeliğinin katsayılarını kullanır. Başka bir belge bırakırsanız büyük olasılıkla ders bulunamaz; dersleri planlayıcıya elle girebilirsiniz ama katsayılar Boğaziçi'ninki olur."}}, {"@type": "Question", "name": "Belgem şifreli; ne yapmalıyım?", "acceptedAnswer": {"@type": "Answer", "text": "Şifreli PDF'ler açılamaz. Öğrenci bilgi sisteminden şifresiz bir kopya indirin ya da PDF'i kendi cihazınızda şifresiz olarak yeniden kaydedin. Şifreyi araca girmenizi isteyen bir alan yoktur ve olmayacaktır."}}, {"@type": "Question", "name": "Hazırlık sınıfı dersleri neden görünmüyor?", "acceptedAnswer": {"@type": "Answer", "text": "Yabancı dil hazırlık dersleri (SFL 11A/11B/12A/12B gibi) lisans ortalamasına girmediği için ayrıştırıcı bunları bilerek atlar. Transkriptte görünmeye devam ederler ama planlayıcıya aktarılmazlar."}}]}</script>
   <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7872183586463318" crossorigin="anonymous"></script>
 </head>
@@ -41,6 +43,7 @@
       <a href="planner.html" class="nav-link" data-i18n="nav.planner">Ders Planlayıcı</a>
       <a href="statistics.html" class="nav-link" data-i18n="nav.stats">Analitik</a>
       <a href="pdf_upload.html" class="nav-link" aria-current="page" data-i18n="nav.upload">Transkript Yükleyici</a>
+      <a href="rehber.html" class="nav-link" data-i18n="nav.guide">Rehber</a>
     </div>
     <div class="nav-buttons">
       <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language / Dili değiştir">EN</button>
@@ -127,6 +130,90 @@
 
   </main>
 
+  <!-- ============ KULLANIM REHBERİ ============ -->
+  <section class="section tool-guide" id="rehber" aria-labelledby="tool-guide-title">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow"><span class="diamond"></span><span data-i18n="tg.upload.eyebrow">Kullanım rehberi</span></span>
+        <h2 class="section-title" id="tool-guide-title" data-i18n="tg.upload.title">Transkript yükleyici nasıl çalışır?</h2>
+        <p class="section-lead" data-i18n="tg.upload.lead">Hangi belgeyi nereden alacağınız, ayrıştırıcının her satırı nasıl yorumladığı ve bir şey ters gittiğinde ne yapacağınız.</p>
+      </div>
+      <div class="prose">
+
+          <h2 id="tg-belge" data-i18n="tg.upload.h.belge">1. Doğru belgeyi edinin</h2>
+          <div data-i18n="tg.upload.b.belge" data-i18n-html>
+<p>Araç iki resmî belge biçimini tanır ve hangisini yüklediğinizi kendisi anlar:</p>
+<ul>
+<li><strong>Öğrenci Durum Belgesi</strong> — e-Devlet üzerinden "Yükseköğretim Kurulu Transkript Belgesi Sorgulama" hizmetiyle ya da öğrenci bilgi sisteminden alınan, Türkçe-İngilizce karışık belge. Sütunları Z/S, T, U, UK, AKTS, PUAN, NOT ve AÇIKLAMA'dır; tekrar ve yerine sayma bilgisi AÇIKLAMA sütunundaki TKR / YRN ifadelerinden ve dipnot cümlelerinden okunur.</li>
+<li><strong>Resmî TRANSCRIPT</strong> — Kayıt İşleri'nden alınan, tümüyle İngilizce belge. Sütunları COURSE CODE, COURSE TITLE, CREDITS, ECTS, GRADE ve REPEAT'tir; dönem başlıkları "2024/2025-2 4th SEMESTER" biçimindedir ve yerine sayılan dersin kodu REPEAT sütununda yer alır.</li>
+</ul>
+<p>Belgenin <strong>metin katmanı</strong> olmalıdır. e-Devlet ve öğrenci bilgi sisteminden indirilen PDF'ler bu katmanı içerir; taranmış kâğıt, fotoğraf ya da ekran görüntüsünden üretilmiş PDF'lerde metin yoktur ve araç dersleri bulamaz. Emin değilseniz PDF'i açıp bir ders kodunu fareyle seçmeyi deneyin: seçilebiliyorsa metin katmanı vardır.</p>
+          </div>
+
+          <h2 id="tg-ayristirma" data-i18n="tg.upload.h.ayristirma">2. Ayrıştırıcı her satırı nasıl yorumlar?</h2>
+          <div data-i18n="tg.upload.b.ayristirma" data-i18n-html>
+<p>Belge tarayıcınızda <code>pdf.js</code> kütüphanesiyle açılır, metni çıkarılır ve satır satır okunur. Her ders satırı için ders kodu, kredi, harf notu ve dönem belirlenir; sonra satıra aşağıdaki kurallarla bir <em>durum</em> atanır. Bu durumlar planlayıcıda değiştirilebilir.</p>
+<div class="table-scroll"><table class="grade-table">
+<caption>Ayrıştırıcının durum kuralları. "Ortalamaya etkisi" sütunu yönetmelik kurallarıyla birebir aynıdır; ayrıntılar <a href="rehber-not-sistemi.html">harf notu sistemi</a> rehberinde.</caption>
+<thead><tr><th scope="col">Belgede görülen</th><th scope="col">Araçtaki durum</th><th scope="col">Ortalamaya etkisi</th></tr></thead>
+<tbody>
+<tr><td>AA … DD harf notu</td><td>Alındı</td><td>Kredi × katsayı ile girer</td></tr>
+<tr><td>F, KL, NP</td><td>Alındı, not <strong>FF</strong></td><td>Sıfır katsayıyla girer</td></tr>
+<tr><td>W notu, DÇ açıklaması, L</td><td>Çekildi (W)</td><td>Girmez; denenen krediye de sayılmaz</td></tr>
+<tr><td>Kredi 0, teorik saat 0, NC / P / RM notu</td><td>Kredisiz</td><td>Girmez</td></tr>
+<tr><td>TKR açıklaması, R işareti (aynı kod)</td><td>Tekrar — dersin kendisi</td><td>Yalnızca son not sayılır, kredi bir kez</td></tr>
+<tr><td>YRN açıklaması, R işareti (farklı kod), REPEAT sütunu</td><td>Tekrar — başka dersin yerine</td><td>Yerine geçtiği dersle gruplanır, son not sayılır</td></tr>
+<tr><td>Not alanı boş (devam eden ders)</td><td>Alındı, not boş</td><td>Not girilene kadar hesaba girmez</td></tr>
+</tbody></table></div>
+<p>Yerine sayma zincirleri kökene kadar izlenir: A dersi yerine B, B yerine C alınmışsa üçü tek ders sayılır. Sonuçlanmamış bir tekrar (notu girilmemiş ya da W ile biten) eski notu silmez; ortalama önceki notla hesaplanmaya devam eder. Bu davranışların tümü, üzerinde geliştirildiği gerçek transkriptlerin basılı dönem ve genel ortalamalarıyla karşılaştırılarak doğrulanmıştır.</p>
+          </div>
+
+          <h2 id="tg-sonrasi" data-i18n="tg.upload.h.sonrasi">3. Yüklemeden sonra ne olur?</h2>
+          <div data-i18n="tg.upload.b.sonrasi" data-i18n-html>
+<p>Ayrıştırma bitince kaç dönem ve kaç ders bulunduğu gösterilir, veriler tarayıcınızın yerel depolama alanına kaydedilir ve iki kısayol sunulur: <strong>Planlayıcıyı Aç</strong> ve <strong>İstatistikleri Gör</strong>. İsterseniz aynı anda bir JSON yedeği de indirebilirsiniz.</p>
+<p>Planlayıcıda zaten ders varsa araç üzerine yazmadan önce onay ister; "Vazgeç" derseniz mevcut planınız korunur. Aynı transkripti sonradan yeniden yüklemek, elle yaptığınız değişiklikleri (senaryo dersleri, düzeltmeler) siler — bu yüzden önemli bir planınız varsa önce planlayıcıdan <strong>Yedek İndir</strong> ile JSON alın.</p>
+          </div>
+
+          <h2 id="tg-sorunlar" data-i18n="tg.upload.h.sorunlar">4. Bir şey ters giderse</h2>
+          <div data-i18n="tg.upload.b.sorunlar" data-i18n-html>
+<ul>
+<li><strong>"Ders bulunamadı" uyarısı.</strong> Çoğu zaman belgede metin katmanı yoktur (taranmış PDF) ya da belge yukarıdaki iki biçimden biri değildir. Öğrenci bilgi sisteminden ya da e-Devlet'ten yeni bir PDF indirip tekrar deneyin.</li>
+<li><strong>Bir dönem ya da ders eksik.</strong> Alışılmadık ders kodları (örneğin üç harfli olmayan bölüm kodları) ya da satır kırılmaları ayrıştırıcıyı yanıltabilir. Eksik dersi planlayıcıda elle ekleyin; hesap aynı kurallarla yapılır.</li>
+<li><strong>Yerine sayılan ders yanlış eşleşti.</strong> Planlayıcıda dersin durumunu "Tekrar (Yerine)" olarak bırakıp "yerine geçtiği ders" listesinden doğru dersi seçin.</li>
+<li><strong>Ortalama transkriptle tutmuyor.</strong> Önce kredisi 0 görünen dersleri ve tekrar durumlarını kontrol edin; çoğu fark bu ikisinden çıkar. Fark devam ediyorsa belge türünü ve neyin yanlış çıktığını belirterek <a href="hakkinda.html#iletisim">bize yazın</a> — transkriptinizin kendisini göndermeyin, tarif yeterli.</li>
+</ul>
+          </div>
+
+          <h2 id="tg-gizlilik" data-i18n="tg.upload.h.gizlilik">5. Dosyanız nereye gidiyor? Hiçbir yere.</h2>
+          <div data-i18n="tg.upload.b.gizlilik" data-i18n-html>
+<p>Bu sayfada "yükleme" kelimesi alışkanlıktan kullanılır; teknik olarak bir yükleme yoktur. PDF, tarayıcınızın <code>FileReader</code> arayüzüyle bellekte açılır, <code>pdf.js</code> metni yerel olarak çıkarır ve ayrıştırıcı aynı sekmede çalışır. Sitenin arka ucu (sunucu tarafı) yoktur; dosyanın ya da içindeki derslerin gönderilebileceği bir adres bile bulunmaz. Bunu doğrulamak için internet bağlantınızı kesip sayfayı yenileyebilir ve dosyayı yine bırakabilirsiniz: <code>pdf.js</code> daha önce yüklendiyse araç çevrimdışı da çalışır. Ayrıntılar <a href="gizlilik.html">gizlilik politikasında</a>.</p>
+          </div>
+
+          <h2 id="tg-sss" data-i18n="guide.faqTitle">Sıkça sorulan sorular</h2>
+          <div class="faq">
+            <details class="faq-item">
+              <summary data-i18n="tg.upload.faq.q1">Başka bir üniversitenin transkriptini yükleyebilir miyim?</summary>
+              <div class="faq-answer" data-i18n="tg.upload.faq.a1" data-i18n-html>
+<p>Bu sürüm yalnızca Boğaziçi Üniversitesi'nin iki belge biçimini tanır ve Boğaziçi yönetmeliğinin katsayılarını kullanır. Başka bir belge bırakırsanız büyük olasılıkla ders bulunamaz; dersleri planlayıcıya elle girebilirsiniz ama katsayılar Boğaziçi'ninki olur.</p>
+              </div>
+            </details>
+            <details class="faq-item">
+              <summary data-i18n="tg.upload.faq.q2">Belgem şifreli; ne yapmalıyım?</summary>
+              <div class="faq-answer" data-i18n="tg.upload.faq.a2" data-i18n-html>
+<p>Şifreli PDF'ler açılamaz. Öğrenci bilgi sisteminden şifresiz bir kopya indirin ya da PDF'i kendi cihazınızda şifresiz olarak yeniden kaydedin. Şifreyi araca girmenizi isteyen bir alan yoktur ve olmayacaktır.</p>
+              </div>
+            </details>
+            <details class="faq-item">
+              <summary data-i18n="tg.upload.faq.q3">Hazırlık sınıfı dersleri neden görünmüyor?</summary>
+              <div class="faq-answer" data-i18n="tg.upload.faq.a3" data-i18n-html>
+<p>Yabancı dil hazırlık dersleri (SFL 11A/11B/12A/12B gibi) lisans ortalamasına girmediği için ayrıştırıcı bunları bilerek atlar. Transkriptte görünmeye devam ederler ama planlayıcıya aktarılmazlar.</p>
+              </div>
+            </details>
+          </div>
+      </div>
+    </div>
+  </section>
+
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-brand">
@@ -143,6 +230,15 @@
           <a href="planner.html" data-i18n="nav.planner">Ders Planlayıcı</a>
           <a href="statistics.html" data-i18n="nav.stats">Analitik</a>
           <a href="pdf_upload.html" data-i18n="nav.upload">Transkript Yükleyici</a>
+        </nav>
+        <nav class="footer-col" aria-labelledby="footer-guide">
+          <h4 id="footer-guide" data-i18n="nav.guide">Rehber</h4>
+          <a href="rehber-not-sistemi.html" data-i18n="g.rehber-not-sistemi.short">Harf notu sistemi</a>
+          <a href="rehber-gno-hesaplama.html" data-i18n="g.rehber-gno-hesaplama.short">GNO nasıl hesaplanır</a>
+          <a href="rehber-ders-tekrari.html" data-i18n="g.rehber-ders-tekrari.short">Ders tekrarı</a>
+          <a href="rehber-onur-listesi.html" data-i18n="g.rehber-onur-listesi.short">Onur listesi</a>
+          <a href="rehber-100luk-donusum.html" data-i18n="g.rehber-100luk-donusum.short">4'lükten 100'lüğe</a>
+          <a href="rehber.html" data-i18n="footer.allGuides">Tüm rehber →</a>
         </nav>
         <nav class="footer-col" aria-labelledby="footer-site">
           <h4 id="footer-site" data-i18n="footer.site">Site</h4>
@@ -162,7 +258,70 @@
   <script src="storage.js"></script>
   <script src="i18n.js"></script>
   <script src="i18n-content.js"></script>
+  <script src="i18n-guide-index.js"></script>
   <script src="parser.js"></script>
+  <script>
+    /* Kullanım rehberinin İngilizce çevirisi; Türkçe metin HTML'de. */
+    GPAI18N.extend({
+  "tg.upload.eyebrow": {
+    "en": "How-to guide"
+  },
+  "tg.upload.title": {
+    "en": "How the transcript loader works"
+  },
+  "tg.upload.lead": {
+    "en": "Which document to get and from where, how the parser interprets each line, and what to do when something goes wrong."
+  },
+  "tg.upload.h.belge": {
+    "en": "1. Get the right document"
+  },
+  "tg.upload.b.belge": {
+    "en": "<p>The tool recognises two official document formats and works out by itself which one you uploaded:</p>\n<ul>\n<li><strong>Student Status Document (Öğrenci Durum Belgesi)</strong> — the mixed Turkish-English document obtained through e-Devlet's \"Higher Education Council Transcript Query\" service or from the student information system. Its columns are Z/S, T, U, UK, AKTS, PUAN, NOT and AÇIKLAMA; repeat and substitution information is read from the TKR / YRN expressions in the AÇIKLAMA column and from the footnote sentences.</li>\n<li><strong>Official TRANSCRIPT</strong> — the all-English document issued by the Registrar. Its columns are COURSE CODE, COURSE TITLE, CREDITS, ECTS, GRADE and REPEAT; term headings look like \"2024/2025-2 4th SEMESTER\" and the code of a substituted course appears in the REPEAT column.</li>\n</ul>\n<p>The document must have a <strong>text layer</strong>. PDFs downloaded from e-Devlet and the student information system contain one; PDFs produced from scanned paper, photos or screenshots have no text, and the tool cannot find the courses. If unsure, open the PDF and try selecting a course code with the mouse: if it can be selected, there is a text layer.</p>"
+  },
+  "tg.upload.h.ayristirma": {
+    "en": "2. How the parser interprets each line"
+  },
+  "tg.upload.b.ayristirma": {
+    "en": "<p>The document is opened in your browser with the <code>pdf.js</code> library, its text is extracted and read line by line. For each course line the course code, credits, letter grade and term are determined; then a <em>status</em> is assigned to the line by the rules below. These statuses can be changed in the planner.</p>\n<div class=\"table-scroll\"><table class=\"grade-table\">\n<caption>The parser's status rules. The \"effect on average\" column matches the regulation rules exactly; details in the <a href=\"rehber-not-sistemi.html\">letter grade system</a> guide.</caption>\n<thead><tr><th scope=\"col\">Seen in the document</th><th scope=\"col\">Status in the tool</th><th scope=\"col\">Effect on average</th></tr></thead>\n<tbody>\n<tr><td>AA … DD letter grade</td><td>Taken</td><td>Enters as credits × coefficient</td></tr>\n<tr><td>F, KL, NP</td><td>Taken, grade <strong>FF</strong></td><td>Enters with a zero coefficient</td></tr>\n<tr><td>W grade, DÇ note, L</td><td>Withdrawn (W)</td><td>Excluded; not counted as attempted credits either</td></tr>\n<tr><td>0 credits, 0 lecture hours, NC / P / RM grade</td><td>Non-credit</td><td>Excluded</td></tr>\n<tr><td>TKR note, R mark (same code)</td><td>Retake — same course</td><td>Only the last grade counts, credits once</td></tr>\n<tr><td>YRN note, R mark (different code), REPEAT column</td><td>Retake — substitutes another course</td><td>Grouped with the course it replaces, last grade counts</td></tr>\n<tr><td>Empty grade field (course in progress)</td><td>Taken, grade empty</td><td>Excluded until a grade is entered</td></tr>\n</tbody></table></div>\n<p>Substitution chains are followed back to their root: if B was taken in place of A and C in place of B, the three count as one course. An unresolved retake (no grade yet, or ended with W) does not erase the old grade; the average continues to be computed with the previous grade. All of these behaviours were verified against the printed term and cumulative averages of the real transcripts the tool was developed on.</p>"
+  },
+  "tg.upload.h.sonrasi": {
+    "en": "3. What happens after loading"
+  },
+  "tg.upload.b.sonrasi": {
+    "en": "<p>When parsing finishes, the number of terms and courses found is shown, the data is saved to your browser's local storage, and two shortcuts are offered: <strong>Open Planner</strong> and <strong>View Analytics</strong>. You can also download a JSON backup at the same time.</p>\n<p>If the planner already contains courses, the tool asks for confirmation before overwriting; choosing \"Cancel\" keeps your current plan. Re-loading the same transcript later erases the changes you made by hand (scenario courses, corrections) — so if you have an important plan, first take a JSON backup from the planner with <strong>Download Backup</strong>.</p>"
+  },
+  "tg.upload.h.sorunlar": {
+    "en": "4. If something goes wrong"
+  },
+  "tg.upload.b.sorunlar": {
+    "en": "<ul>\n<li><strong>\"No courses found\" warning.</strong> Usually the document has no text layer (scanned PDF) or is not one of the two formats above. Download a fresh PDF from the student information system or e-Devlet and try again.</li>\n<li><strong>A term or course is missing.</strong> Unusual course codes (for example department codes that are not three letters) or line breaks can confuse the parser. Add the missing course by hand in the planner; the calculation uses the same rules.</li>\n<li><strong>A substituted course matched the wrong course.</strong> In the planner, leave the course's status as \"Retake (Substitutes)\" and pick the correct course from the \"course it substitutes\" list.</li>\n<li><strong>The average does not match the transcript.</strong> First check courses that show 0 credits and the retake statuses; most differences come from these two. If the difference persists, <a href=\"hakkinda.html#iletisim\">write to us</a> stating the document type and what came out wrong — do not send the transcript itself, a description is enough.</li>\n</ul>"
+  },
+  "tg.upload.h.gizlilik": {
+    "en": "5. Where does your file go? Nowhere."
+  },
+  "tg.upload.b.gizlilik": {
+    "en": "<p>The word \"upload\" is used on this page out of habit; technically there is no upload. The PDF is opened in memory through your browser's <code>FileReader</code> interface, <code>pdf.js</code> extracts the text locally, and the parser runs in the same tab. The site has no back end (server side); there is not even an address to which the file or the courses in it could be sent. To verify this, you can disconnect from the internet, refresh the page and drop the file again: if <code>pdf.js</code> was loaded earlier, the tool works offline too. Details in the <a href=\"gizlilik.html\">privacy policy</a>.</p>"
+  },
+  "tg.upload.faq.q1": {
+    "en": "Can I load another university's transcript?"
+  },
+  "tg.upload.faq.a1": {
+    "en": "<p>This version recognises only Boğaziçi University's two document formats and uses the coefficients of the Boğaziçi regulation. If you drop another document, most likely no courses will be found; you can enter courses by hand in the planner, but the coefficients will be Boğaziçi's.</p>"
+  },
+  "tg.upload.faq.q2": {
+    "en": "My document is password-protected; what should I do?"
+  },
+  "tg.upload.faq.a2": {
+    "en": "<p>Password-protected PDFs cannot be opened. Download an unprotected copy from the student information system, or re-save the PDF without a password on your own device. There is no field asking you to enter the password into the tool, and there will not be one.</p>"
+  },
+  "tg.upload.faq.q3": {
+    "en": "Why do preparatory-year courses not appear?"
+  },
+  "tg.upload.faq.a3": {
+    "en": "<p>Foreign-language preparatory courses (such as SFL 11A/11B/12A/12B) do not enter the undergraduate average, so the parser deliberately skips them. They remain on the transcript but are not imported into the planner.</p>"
+  }
+});
+  </script>
   <script src="ui.js"></script>
   <script src="upload.js"></script>
 </body>

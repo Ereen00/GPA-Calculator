@@ -22,6 +22,8 @@
   <link rel="stylesheet" href="base.css">
   <link rel="stylesheet" href="stats.css">
   <link rel="stylesheet" href="content.css">
+  <link rel="stylesheet" href="guide.css">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Bazı grafikler boş görünüyor; neden?", "acceptedAnswer": {"@type": "Answer", "text": "Grafik, verinizde ilgili durum yoksa boş kalır: hiç dersten çekilmediyseniz çekilme grafiği, hiç ders tekrar etmediyseniz tekrar grafiği boştur. Trend ve korelasyon grafikleri en az iki dönem ister."}}, {"@type": "Question", "name": "Korelasyon katsayısı ne anlama geliyor?", "acceptedAnswer": {"@type": "Answer", "text": "−1 ile +1 arasında bir sayıdır. Sıfıra yakınsa kredi yükü ile dönem ortalamanız arasında doğrusal bir ilişki yoktur; negatifse yük arttıkça ortalama düşme eğilimindedir; pozitifse tersi. Az sayıda dönemle hesaplanan katsayı gürültülüdür; dört-beş dönemden az veride yoruma temkinli yaklaşın."}}]}</script>
   <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7872183586463318" crossorigin="anonymous"></script>
 </head>
@@ -41,6 +43,7 @@
       <a href="planner.html" class="nav-link" data-i18n="nav.planner">Ders Planlayıcı</a>
       <a href="statistics.html" class="nav-link" aria-current="page" data-i18n="nav.stats">Analitik</a>
       <a href="pdf_upload.html" class="nav-link" data-i18n="nav.upload">Transkript Yükleyici</a>
+      <a href="rehber.html" class="nav-link" data-i18n="nav.guide">Rehber</a>
     </div>
     <div class="nav-buttons">
       <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language / Dili değiştir">EN</button>
@@ -223,11 +226,91 @@
             <div id="sim-info"></div>
           </div>
         </div>
+
+        <div class="simulator-grid simulator-grid-reverse">
+          <div class="sim-input-group">
+            <label for="target-gpa" data-i18n="stats.sim.targetGpa">Hedef Genel Not Ortalaması</label>
+            <input type="number" id="target-gpa" value="3.00" min="0" max="4" step="0.01" placeholder="3.00">
+          </div>
+          <p class="sim-help" data-i18n="stats.sim.reverseHelp">Tersten hesap: hedeflediğiniz mezuniyet ortalamasını girin; kalan kredide tutturmanız gereken ağırlıklı ortalamayı görün. Onur için 3.00, yüksek onur için 3.50, mezuniyet için 2.00 deneyin.</p>
+          <div class="sim-result sim-result-secondary">
+            <div class="sim-result-value" id="required-avg">--</div>
+            <div class="sim-result-label" data-i18n="stats.sim.requiredLabel">Kalan Derslerde Gereken Ortalama</div>
+            <div id="required-info"></div>
+          </div>
+        </div>
       </div>
 
     </div>
 
   </main>
+
+  <!-- ============ KULLANIM REHBERİ ============ -->
+  <section class="section tool-guide" id="rehber" aria-labelledby="tool-guide-title">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow"><span class="diamond"></span><span data-i18n="tg.stats.eyebrow">Kullanım rehberi</span></span>
+        <h2 class="section-title" id="tool-guide-title" data-i18n="tg.stats.title">Grafikler ne anlatıyor?</h2>
+        <p class="section-lead" data-i18n="tg.stats.lead">On iki grafiğin her birinin hangi soruya cevap verdiği, nasıl hesaplandığı ve simülatörün formülü.</p>
+      </div>
+      <div class="prose">
+
+          <h2 id="tg-ozet" data-i18n="tg.stats.h.ozet">1. Özet kartları</h2>
+          <div data-i18n="tg.stats.b.ozet" data-i18n-html>
+<p>Sayfanın üstündeki dört kart bir bakışta durumu verir: <strong>kümülatif GPA</strong> (planlayıcının alt çubuğundaki değerle aynıdır ve <a href="rehber-gno-hesaplama.html">yönetmelikteki formülle</a> hesaplanır), <strong>tahmini sonraki SPA</strong> (dönem ortalamalarınıza uydurulan doğrusal trendin bir sonraki dönem için öngörüsü; tek dönem varsa son dönemin ortalaması gösterilir), <strong>en yüksek SPA</strong> ve <strong>toplam çekilen ders</strong> sayısı.</p>
+          </div>
+
+          <h2 id="tg-grafikler" data-i18n="tg.stats.h.grafikler">2. Grafikler tek tek</h2>
+          <div data-i18n="tg.stats.b.grafikler" data-i18n-html>
+<div class="table-scroll"><table class="grade-table">
+<caption>Bütün grafikler planlayıcıdaki veriden, tarayıcınızda üretilir. Tekrar edilen derslerde kümülatif değerler "son not" kuralıyla, dönemlik değerler o dönemin kendi notlarıyla hesaplanır.</caption>
+<thead><tr><th scope="col">Grafik</th><th scope="col">Cevapladığı soru</th><th scope="col">Nasıl hesaplanır</th></tr></thead>
+<tbody>
+<tr><td><strong>Akademik Performans Trendi</strong></td><td>Dönemlik ortalamam ve kümülatif ortalamam zaman içinde nereye gidiyor?</td><td>Üç çizgi: her dönemin SPA'sı, o dönem sonundaki kümülatif GPA (kesikli) ve SPA'ya uydurulmuş doğrusal trend; altındaki metin trendin eğimini "puan/dönem" olarak verir</td></tr>
+<tr><td><strong>Dönemlere Göre Not Dağılımı</strong></td><td>Hangi dönemde hangi harflerden kaç tane aldım?</td><td>Dönem başına harf notu sayıları, yığılmış sütun</td></tr>
+<tr><td><strong>Dönemler Arası Değişim</strong></td><td>Bu dönem geçen döneme göre iyi mi kötü mü geçti?</td><td>Ardışık dönemlerin SPA farkı; pozitif sütun yükseliş</td></tr>
+<tr><td><strong>Performans Stabilitesi</strong></td><td>Notlarım ne kadar dalgalı?</td><td>Dönem içindeki not katsayılarının standart sapması; düşük değer tutarlılık demektir</td></tr>
+<tr><td><strong>En Çok Tekrar Edilen Dersler</strong></td><td>Hangi dersleri birden çok kez aldım?</td><td>Aynı ders adı (ya da yerine sayma zinciri) altındaki alınış sayısı</td></tr>
+<tr><td><strong>Dönemlere Göre Çekilen Dersler</strong></td><td>W haklarımı ne zaman kullandım?</td><td>Dönem başına "Çekildi" durumundaki ders sayısı; toplamı beşten çıkarınca kalan hakkınız bulunur</td></tr>
+<tr><td><strong>En Zor Dersler</strong></td><td>En düşük ortalamayla geçtiğim dersler hangileri?</td><td>Tekrarlar dahil, dersin bütün alınışlarının ortalama katsayısı — en düşükler</td></tr>
+<tr><td><strong>En Güçlü Dersler</strong></td><td>Hangi derslerde en iyiyim?</td><td>Aynı hesap, en yüksekler</td></tr>
+<tr><td><strong>Genel Not Dağılımı</strong></td><td>Bütün notlarımın yüzde kaçı AA, BB…?</td><td>Tüm derslerin harf notu sayıları, halka grafik</td></tr>
+<tr><td><strong>Duruma Göre Krediler</strong></td><td>Kredimin ne kadarı normal, tekrar, çekilme?</td><td>Durum başına kredi toplamı, pasta grafik</td></tr>
+<tr><td><strong>Kredi Yükü vs Başarı Korelasyonu</strong></td><td>Daha çok ders alınca ortalamam düşüyor mu?</td><td>Her dönem bir nokta: kredi yükü (x) ve SPA (y); altındaki metin Pearson korelasyon katsayısını yorumlar</td></tr>
+<tr><td><strong>Mevsimsel Performans ve Yük</strong></td><td>Güz, bahar ve yazda farklı mı performans gösteriyorum?</td><td>Dönem adından mevsim tanınır; mevsim başına ortalama SPA ve ortalama kredi yükü</td></tr>
+</tbody></table></div>
+          </div>
+
+          <h2 id="tg-simulator" data-i18n="tg.stats.h.simulator">3. Mezuniyet simülatörü</h2>
+          <div data-i18n="tg.stats.b.simulator" data-i18n-html>
+<p>Simülatör iki yönde çalışır. <strong>İleri yön:</strong> mezuniyet için gereken toplam krediyi ve kalan derslerden beklediğiniz tek bir notu girersiniz; araç kalan krediyi (toplam − biriken) bulur ve tahmini mezuniyet ortalamasını hesaplar. <strong>Ters yön:</strong> hedef bir GNO girersiniz; araç kalan kredide tutturmanız gereken ağırlıklı ortalamayı hesaplar ve hedef 4.00 ile bile ulaşılamıyorsa bunu söyler.</p>
+<div class="example"><p class="example-title">Formüller</p><p><strong>İleri:</strong> tahmini GNO = (mevcut kredi-puan + kalan kredi × beklenen katsayı) ÷ toplam kredi</p><p><strong>Ters:</strong> gereken ortalama = (hedef GNO × toplam kredi − mevcut kredi-puan) ÷ kalan kredi</p><p>Ters hesapta gösterilen değer yukarı yuvarlanır; gösterilenin altında kalmak hedefi kaçırır.</p></div>
+<p>Toplam kredi alanına kendi bölümünüzün mezuniyet kredisini yazın; varsayılan değer yalnızca bir örnektir. Ters hesabın arkasındaki mantık ve elle örnekler <a href="rehber-ortalama-yukseltme.html#hedef">ortalama yükseltme</a> rehberinde; onur eşikleri için <a href="rehber-onur-listesi.html#hesap">onur listesi</a> rehberine bakın.</p>
+          </div>
+
+          <h2 id="tg-veri" data-i18n="tg.stats.h.veri">4. Veri kaynağı ve JSON yükleme</h2>
+          <div data-i18n="tg.stats.b.veri" data-i18n-html>
+<p>Sayfa açıldığında planlayıcıdaki veriyi otomatik yükler; ayrı bir işlem gerekmez. "JSON Yedeği Yükle" alanı, başka bir cihazda ya da geçmişte alınmış bir yedeği planlayıcıya dokunmadan analiz etmek içindir: dosya yalnızca bu sayfada, bellekte okunur ve planlayıcıdaki veriyi değiştirmez. Böylece "geçen yılki halim" ile "şimdiki halim"i yan yana koyabilirsiniz.</p>
+          </div>
+
+          <h2 id="tg-sss" data-i18n="guide.faqTitle">Sıkça sorulan sorular</h2>
+          <div class="faq">
+            <details class="faq-item">
+              <summary data-i18n="tg.stats.faq.q1">Bazı grafikler boş görünüyor; neden?</summary>
+              <div class="faq-answer" data-i18n="tg.stats.faq.a1" data-i18n-html>
+<p>Grafik, verinizde ilgili durum yoksa boş kalır: hiç dersten çekilmediyseniz çekilme grafiği, hiç ders tekrar etmediyseniz tekrar grafiği boştur. Trend ve korelasyon grafikleri en az iki dönem ister.</p>
+              </div>
+            </details>
+            <details class="faq-item">
+              <summary data-i18n="tg.stats.faq.q2">Korelasyon katsayısı ne anlama geliyor?</summary>
+              <div class="faq-answer" data-i18n="tg.stats.faq.a2" data-i18n-html>
+<p>−1 ile +1 arasında bir sayıdır. Sıfıra yakınsa kredi yükü ile dönem ortalamanız arasında doğrusal bir ilişki yoktur; negatifse yük arttıkça ortalama düşme eğilimindedir; pozitifse tersi. Az sayıda dönemle hesaplanan katsayı gürültülüdür; dört-beş dönemden az veride yoruma temkinli yaklaşın.</p>
+              </div>
+            </details>
+          </div>
+      </div>
+    </div>
+  </section>
 
   <footer class="site-footer">
     <div class="footer-inner">
@@ -245,6 +328,15 @@
           <a href="planner.html" data-i18n="nav.planner">Ders Planlayıcı</a>
           <a href="statistics.html" data-i18n="nav.stats">Analitik</a>
           <a href="pdf_upload.html" data-i18n="nav.upload">Transkript Yükleyici</a>
+        </nav>
+        <nav class="footer-col" aria-labelledby="footer-guide">
+          <h4 id="footer-guide" data-i18n="nav.guide">Rehber</h4>
+          <a href="rehber-not-sistemi.html" data-i18n="g.rehber-not-sistemi.short">Harf notu sistemi</a>
+          <a href="rehber-gno-hesaplama.html" data-i18n="g.rehber-gno-hesaplama.short">GNO nasıl hesaplanır</a>
+          <a href="rehber-ders-tekrari.html" data-i18n="g.rehber-ders-tekrari.short">Ders tekrarı</a>
+          <a href="rehber-onur-listesi.html" data-i18n="g.rehber-onur-listesi.short">Onur listesi</a>
+          <a href="rehber-100luk-donusum.html" data-i18n="g.rehber-100luk-donusum.short">4'lükten 100'lüğe</a>
+          <a href="rehber.html" data-i18n="footer.allGuides">Tüm rehber →</a>
         </nav>
         <nav class="footer-col" aria-labelledby="footer-site">
           <h4 id="footer-site" data-i18n="footer.site">Site</h4>
@@ -264,7 +356,58 @@
   <script src="storage.js"></script>
   <script src="i18n.js"></script>
   <script src="i18n-content.js"></script>
+  <script src="i18n-guide-index.js"></script>
   <script src="gpa.js"></script>
+  <script>
+    /* Kullanım rehberinin İngilizce çevirisi; Türkçe metin HTML'de. */
+    GPAI18N.extend({
+  "tg.stats.eyebrow": {
+    "en": "How-to guide"
+  },
+  "tg.stats.title": {
+    "en": "What the charts tell you"
+  },
+  "tg.stats.lead": {
+    "en": "Which question each of the twelve charts answers, how it is computed, and the simulator's formula."
+  },
+  "tg.stats.h.ozet": {
+    "en": "1. Summary cards"
+  },
+  "tg.stats.b.ozet": {
+    "en": "<p>The four cards at the top give the picture at a glance: <strong>cumulative GPA</strong> (the same value as in the planner's bottom bar, calculated with the <a href=\"rehber-gno-hesaplama.html\">formula in the regulation</a>), <strong>projected next SPA</strong> (the next-term forecast of a linear trend fitted to your term averages; with a single term, the last term's average is shown), <strong>highest SPA</strong> and the <strong>total number of withdrawals</strong>.</p>"
+  },
+  "tg.stats.h.grafikler": {
+    "en": "2. The charts one by one"
+  },
+  "tg.stats.b.grafikler": {
+    "en": "<div class=\"table-scroll\"><table class=\"grade-table\">\n<caption>All charts are produced in your browser from the planner data. For repeated courses, cumulative values use the \"last grade\" rule and term values use that term's own grades.</caption>\n<thead><tr><th scope=\"col\">Chart</th><th scope=\"col\">Question it answers</th><th scope=\"col\">How it is computed</th></tr></thead>\n<tbody>\n<tr><td><strong>Academic Performance Trend</strong></td><td>Where are my term average and cumulative average heading over time?</td><td>Three lines: each term's SPA, the cumulative GPA as of that term's end (dashed) and a linear trend fitted to the SPA; the text below gives the trend's slope in \"points/term\"</td></tr>\n<tr><td><strong>Grade Distribution by Term</strong></td><td>How many of each letter did I get in which term?</td><td>Letter grade counts per term, stacked columns</td></tr>\n<tr><td><strong>Term-over-Term Change</strong></td><td>Did this term go better or worse than the last?</td><td>Difference of SPA between consecutive terms; a positive bar is a rise</td></tr>\n<tr><td><strong>Performance Stability</strong></td><td>How volatile are my grades?</td><td>Standard deviation of grade coefficients within a term; a low value means consistency</td></tr>\n<tr><td><strong>Most Repeated Courses</strong></td><td>Which courses did I take more than once?</td><td>Number of attempts under the same course name (or substitution chain)</td></tr>\n<tr><td><strong>Withdrawals by Term</strong></td><td>When did I use my W rights?</td><td>Number of \"Withdrawn\" courses per term; subtract the total from five for your remaining rights</td></tr>\n<tr><td><strong>Hardest Courses</strong></td><td>Which courses did I pass with the lowest average?</td><td>Average coefficient over all attempts at the course, retakes included — the lowest</td></tr>\n<tr><td><strong>Strongest Courses</strong></td><td>Which courses am I best at?</td><td>Same computation, the highest</td></tr>\n<tr><td><strong>Overall Grade Distribution</strong></td><td>What percentage of all my grades are AA, BB…?</td><td>Letter grade counts over all courses, doughnut chart</td></tr>\n<tr><td><strong>Credits by Status</strong></td><td>How much of my credit is normal, retake, withdrawal?</td><td>Credit totals per status, pie chart</td></tr>\n<tr><td><strong>Credit Load vs Performance Correlation</strong></td><td>Does my average drop when I take more courses?</td><td>One point per term: credit load (x) and SPA (y); the text below interprets the Pearson correlation coefficient</td></tr>\n<tr><td><strong>Seasonal Performance and Load</strong></td><td>Do I perform differently in autumn, spring and summer?</td><td>The season is recognised from the term name; average SPA and average credit load per season</td></tr>\n</tbody></table></div>"
+  },
+  "tg.stats.h.simulator": {
+    "en": "3. The graduation simulator"
+  },
+  "tg.stats.b.simulator": {
+    "en": "<p>The simulator works in two directions. <strong>Forward:</strong> you enter the total credits required for graduation and a single grade you expect in the remaining courses; the tool finds the remaining credits (total − accumulated) and calculates the projected graduation GPA. <strong>Reverse:</strong> you enter a target GPA; the tool calculates the weighted average you must achieve over the remaining credits, and tells you if the target is unreachable even with 4.00.</p>\n<div class=\"example\"><p class=\"example-title\">Formulas</p><p><strong>Forward:</strong> projected GPA = (current credit-points + remaining credits × expected coefficient) ÷ total credits</p><p><strong>Reverse:</strong> required average = (target GPA × total credits − current credit-points) ÷ remaining credits</p><p>In the reverse calculation the displayed value is rounded up; falling below it misses the target.</p></div>\n<p>Enter your own department's graduation credits in the total credits field; the default value is only an example. The logic behind the reverse calculation and hand-worked examples are in the <a href=\"rehber-ortalama-yukseltme.html#hedef\">raising your GPA</a> guide; for honours thresholds see the <a href=\"rehber-onur-listesi.html#hesap\">honour lists</a> guide.</p>"
+  },
+  "tg.stats.h.veri": {
+    "en": "4. Data source and JSON loading"
+  },
+  "tg.stats.b.veri": {
+    "en": "<p>When the page opens it automatically loads the planner data; no separate action is needed. The \"Load JSON Backup\" field is for analysing a backup taken on another device or in the past without touching the planner: the file is read in memory on this page only and does not change the planner data. That lets you put \"me last year\" and \"me now\" side by side.</p>"
+  },
+  "tg.stats.faq.q1": {
+    "en": "Some charts look empty; why?"
+  },
+  "tg.stats.faq.a1": {
+    "en": "<p>A chart stays empty if the relevant situation does not occur in your data: no withdrawals means an empty withdrawal chart, no retakes an empty retake chart. The trend and correlation charts need at least two terms.</p>"
+  },
+  "tg.stats.faq.q2": {
+    "en": "What does the correlation coefficient mean?"
+  },
+  "tg.stats.faq.a2": {
+    "en": "<p>It is a number between −1 and +1. Near zero, there is no linear relationship between credit load and term average; negative means the average tends to fall as the load rises; positive the reverse. A coefficient computed from few terms is noisy; with fewer than four or five terms, interpret it cautiously.</p>"
+  }
+});
+  </script>
   <script src="ui.js"></script>
   <script src="stats.js"></script>
 </body>

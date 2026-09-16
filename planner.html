@@ -22,6 +22,8 @@
   <link rel="stylesheet" href="base.css">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="content.css">
+  <link rel="stylesheet" href="guide.css">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Bir dersi yanlışlıkla sildim; geri alabilir miyim?", "acceptedAnswer": {"@type": "Answer", "text": "Tek bir dersin silinmesi geri alınamaz; dersi yeniden ekleyin. Dönem silme işlemi onay ister. Büyük değişikliklerden önce JSON yedeği almak en güvenli yoldur."}}, {"@type": "Question", "name": "SPA ile kart altındaki GPA neden farklı?", "acceptedAnswer": {"@type": "Answer", "text": "SPA yalnızca o dönemin derslerinden hesaplanır; GPA ise ilk dönemden o dönemin sonuna kadar bütün derslerin kümülatif ortalamasıdır. İkisinin farkı normaldir ve transkriptteki DNO / GNO sütunlarına karşılık gelir. Ayrıntı: GNO nasıl hesaplanır."}}, {"@type": "Question", "name": "Ders adını yazmak zorunda mıyım?", "acceptedAnswer": {"@type": "Answer", "text": "Hesap için gerekli olanlar kredi ve nottur. Ders adı yalnızca tekrar eşlemesi için önemlidir: tekrar edilen dersle eski ders aynı adla yazılmalıdır ki araç ikisini gruplayabilsin."}}]}</script>
   <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7872183586463318" crossorigin="anonymous"></script>
 </head>
@@ -41,6 +43,7 @@
       <a href="planner.html" class="nav-link" aria-current="page" data-i18n="nav.planner">Ders Planlayıcı</a>
       <a href="statistics.html" class="nav-link" data-i18n="nav.stats">Analitik</a>
       <a href="pdf_upload.html" class="nav-link" data-i18n="nav.upload">Transkript Yükleyici</a>
+      <a href="rehber.html" class="nav-link" data-i18n="nav.guide">Rehber</a>
     </div>
     <div class="nav-buttons">
       <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language / Dili değiştir">EN</button>
@@ -97,6 +100,79 @@
     </button>
   </main>
 
+  <!-- ============ KULLANIM REHBERİ ============ -->
+  <section class="section tool-guide" id="rehber" aria-labelledby="tool-guide-title">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow"><span class="diamond"></span><span data-i18n="tg.planner.eyebrow">Kullanım rehberi</span></span>
+        <h2 class="section-title" id="tool-guide-title" data-i18n="tg.planner.title">Planlayıcı nasıl kullanılır?</h2>
+        <p class="section-lead" data-i18n="tg.planner.lead">Dönem kartları, ders durumları, senaryo denemeleri ve yedekleme — ekranda gördüğünüz her öğenin ne yaptığı ve hesaba nasıl girdiği.</p>
+      </div>
+      <div class="prose">
+
+          <h2 id="tg-arayuz" data-i18n="tg.planner.h.arayuz">1. Ekrandakiler</h2>
+          <div data-i18n="tg.planner.b.arayuz" data-i18n-html>
+<p>Her <strong>dönem</strong> bir karttır. Kart başlığına tıklayarak adını değiştirebilir (örneğin "2025-2026 Güz"), kartı sürükleyerek dönemlerin sırasını düzenleyebilirsiniz. Sıra önemlidir: kümülatif ortalama dönem sırasına göre hesaplanır ve tekrar edilen derslerde "son not" bu sıraya göre belirlenir.</p>
+<p>Her <strong>ders satırında</strong> dört alan vardır: ders kodu/adı, durum, not ve kredi. Kart altında o dönemin <strong>SPA</strong>'sı (dönem ortalaması) ile o dönem sonundaki <strong>kümülatif GPA</strong> görünür; ayrıca denenen ve tamamlanan kredi yazılır. Sayfanın altındaki çubuk bütün dönemlerin toplamını gösterir: genel ortalama, toplam kredi, denenen ve tamamlanan kredi.</p>
+<p>Her değişiklik anında yeniden hesaplanır ve tarayıcınıza otomatik kaydedilir; kaydetme durumu çubukta "Kaydedildi" olarak görünür.</p>
+          </div>
+
+          <h2 id="tg-durumlar" data-i18n="tg.planner.h.durumlar">2. Ders durumları ve hesaba etkileri</h2>
+          <div data-i18n="tg.planner.b.durumlar" data-i18n-html>
+<div class="table-scroll"><table class="grade-table">
+<caption>Durum alanındaki dört seçenek. Kurallar Boğaziçi yönetmeliğinin 27 ve 28. maddelerinden gelir; ayrıntılar <a href="rehber-ders-tekrari.html">ders tekrarı</a> ve <a href="rehber-dersten-cekilme.html">dersten çekilme</a> rehberlerinde.</caption>
+<thead><tr><th scope="col">Durum</th><th scope="col">Ne zaman kullanılır</th><th scope="col">Hesaba etkisi</th></tr></thead>
+<tbody>
+<tr><td><strong>Alındı</strong></td><td>Normal olarak alınan ve notlanan ders</td><td>SPA ve GPA'ya kredi × katsayı ile girer</td></tr>
+<tr><td><strong>Tekrar (Yerine)</strong></td><td>Daha önce alınan bir dersin kendisi ya da yerine sayılan başka ders</td><td>Yerine geçtiği dersle gruplanır; GPA'da yalnızca son not sayılır, kredi bir kez; SPA'ya kendi dönemi içinde normal girer</td></tr>
+<tr><td><strong>Çekildi (W)</strong></td><td>Dersten çekilme</td><td>Hiçbir ortalamaya ve denenen krediye girmez; listede kalır</td></tr>
+<tr><td><strong>Kredisiz</strong></td><td>Kredisi 0 olan, P/F ya da NC dersler</td><td>Ortalamaya girmez</td></tr>
+</tbody></table></div>
+<p>"Tekrar (Yerine)" seçildiğinde ders satırında ek bir liste açılır: <em>hangi dersin yerine sayılıyor?</em> Aynı dersi tekrar ediyorsanız kendisini, seçmeli yerine başka ders aldıysanız o dersi seçin. Bu eşleme yapılmazsa araç dersi yeni bir ders gibi sayar ve krediyi iki kez toplar — transkriptle tutmayan ortalamaların en sık nedeni budur.</p>
+          </div>
+
+          <h2 id="tg-senaryo" data-i18n="tg.planner.h.senaryo">3. "Şu dersten şunu alırsam" senaryoları</h2>
+          <div data-i18n="tg.planner.b.senaryo" data-i18n-html>
+<p>Planlayıcının asıl amacı ileriye bakmaktır. Üç yaygın senaryo:</p>
+<ol>
+<li><strong>Gelecek dönem.</strong> <em>Dönem Ekle</em> ile boş bir kart açın, alacağınız dersleri kredileriyle girin ve not alanlarında farklı harfler deneyin. Alt çubuktaki genel ortalama her seçimde güncellenir. Dersleri "Alındı" durumunda bırakın; notu boş olanlar hesaba girmez, böylece yalnızca doldurduğunuz dersler senaryoyu etkiler.</li>
+<li><strong>Tekrar.</strong> Yeni dönem kartında dersi ekleyin, durumunu "Tekrar (Yerine)" yapın, listeden eski dersi seçin ve beklediğiniz notu girin. Eski not otomatik olarak devreden çıkar; farkı alt çubukta görürsünüz. Beklediğiniz notu dürüst girin: <a href="rehber-ders-tekrari.html#son-not">son not geçerli</a> olduğundan düşük bir tekrar ortalamayı düşürür.</li>
+<li><strong>Çekilme.</strong> Bir dersin durumunu "Çekildi (W)" yapın; ders ortalamadan çıkar. "Çekilsem mi, bitirsem mi?" sorusunu iki durumu ard arda deneyerek cevaplayabilirsiniz.</li>
+</ol>
+<div class="callout"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 16v-5M12 8h.01"></path></svg><div><p>Senaryolarınızı gerçek transkript verisiyle karıştırmamak için önce <strong>Yedek İndir</strong> ile temiz bir JSON alın. Denemeler bitince <strong>Yedekten Yükle</strong> ile geri dönersiniz.</p></div></div>
+          </div>
+
+          <h2 id="tg-yedek" data-i18n="tg.planner.h.yedek">4. Verileriniz nerede ve nasıl yedeklenir?</h2>
+          <div data-i18n="tg.planner.b.yedek" data-i18n-html>
+<p>Dersleriniz tarayıcınızın <strong>yerel depolama</strong> (localStorage) alanında tutulur; sekmeyi kapatsanız da kalır, ama başka bir tarayıcıya ya da cihaza geçince gelmez ve tarayıcı verilerini temizlerseniz silinir. Kalıcı bir kopya için <strong>Yedek İndir</strong> düğmesi planınızı tek bir JSON dosyası olarak indirir; <strong>Yedekten Yükle</strong> ile aynı dosyayı bu ya da başka bir cihazda geri getirirsiniz. Analitik sayfası da aynı JSON'u doğrudan okuyabilir.</p>
+<p>JSON dosyası düz metindir: dönem adları, ders kodları, durumlar, notlar ve krediler dışında hiçbir şey içermez — ad, numara ya da kimlik bilgisi yoktur, çünkü araç bunları hiç okumaz.</p>
+          </div>
+
+          <h2 id="tg-sss" data-i18n="guide.faqTitle">Sıkça sorulan sorular</h2>
+          <div class="faq">
+            <details class="faq-item">
+              <summary data-i18n="tg.planner.faq.q1">Bir dersi yanlışlıkla sildim; geri alabilir miyim?</summary>
+              <div class="faq-answer" data-i18n="tg.planner.faq.a1" data-i18n-html>
+<p>Tek bir dersin silinmesi geri alınamaz; dersi yeniden ekleyin. Dönem silme işlemi onay ister. Büyük değişikliklerden önce JSON yedeği almak en güvenli yoldur.</p>
+              </div>
+            </details>
+            <details class="faq-item">
+              <summary data-i18n="tg.planner.faq.q2">SPA ile kart altındaki GPA neden farklı?</summary>
+              <div class="faq-answer" data-i18n="tg.planner.faq.a2" data-i18n-html>
+<p>SPA yalnızca o dönemin derslerinden hesaplanır; GPA ise ilk dönemden o dönemin sonuna kadar bütün derslerin kümülatif ortalamasıdır. İkisinin farkı normaldir ve transkriptteki DNO / GNO sütunlarına karşılık gelir. Ayrıntı: <a href="rehber-gno-hesaplama.html">GNO nasıl hesaplanır</a>.</p>
+              </div>
+            </details>
+            <details class="faq-item">
+              <summary data-i18n="tg.planner.faq.q3">Ders adını yazmak zorunda mıyım?</summary>
+              <div class="faq-answer" data-i18n="tg.planner.faq.a3" data-i18n-html>
+<p>Hesap için gerekli olanlar kredi ve nottur. Ders adı yalnızca tekrar eşlemesi için önemlidir: tekrar edilen dersle eski ders aynı adla yazılmalıdır ki araç ikisini gruplayabilsin.</p>
+              </div>
+            </details>
+          </div>
+      </div>
+    </div>
+  </section>
+
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-brand">
@@ -113,6 +189,15 @@
           <a href="planner.html" data-i18n="nav.planner">Ders Planlayıcı</a>
           <a href="statistics.html" data-i18n="nav.stats">Analitik</a>
           <a href="pdf_upload.html" data-i18n="nav.upload">Transkript Yükleyici</a>
+        </nav>
+        <nav class="footer-col" aria-labelledby="footer-guide">
+          <h4 id="footer-guide" data-i18n="nav.guide">Rehber</h4>
+          <a href="rehber-not-sistemi.html" data-i18n="g.rehber-not-sistemi.short">Harf notu sistemi</a>
+          <a href="rehber-gno-hesaplama.html" data-i18n="g.rehber-gno-hesaplama.short">GNO nasıl hesaplanır</a>
+          <a href="rehber-ders-tekrari.html" data-i18n="g.rehber-ders-tekrari.short">Ders tekrarı</a>
+          <a href="rehber-onur-listesi.html" data-i18n="g.rehber-onur-listesi.short">Onur listesi</a>
+          <a href="rehber-100luk-donusum.html" data-i18n="g.rehber-100luk-donusum.short">4'lükten 100'lüğe</a>
+          <a href="rehber.html" data-i18n="footer.allGuides">Tüm rehber →</a>
         </nav>
         <nav class="footer-col" aria-labelledby="footer-site">
           <h4 id="footer-site" data-i18n="footer.site">Site</h4>
@@ -158,7 +243,64 @@
   <script src="storage.js"></script>
   <script src="i18n.js"></script>
   <script src="i18n-content.js"></script>
+  <script src="i18n-guide-index.js"></script>
   <script src="gpa.js"></script>
+  <script>
+    /* Kullanım rehberinin İngilizce çevirisi; Türkçe metin HTML'de. */
+    GPAI18N.extend({
+  "tg.planner.eyebrow": {
+    "en": "How-to guide"
+  },
+  "tg.planner.title": {
+    "en": "How to use the planner"
+  },
+  "tg.planner.lead": {
+    "en": "Term cards, course statuses, what-if scenarios and backups — what every element on the screen does and how it enters the calculation."
+  },
+  "tg.planner.h.arayuz": {
+    "en": "1. What is on the screen"
+  },
+  "tg.planner.b.arayuz": {
+    "en": "<p>Each <strong>term</strong> is a card. Click the card heading to rename it (for example \"2025-2026 Fall\") and drag the card to reorder terms. Order matters: the cumulative average is calculated in term order, and for repeated courses the \"last grade\" is determined by this order.</p>\n<p>Each <strong>course line</strong> has four fields: course code/name, status, grade and credits. Below the card you see that term's <strong>SPA</strong> (term average) and the <strong>cumulative GPA</strong> as of the end of that term, plus attempted and completed credits. The bar at the bottom of the page shows the totals across all terms: cumulative average, total credits, attempted and completed credits.</p>\n<p>Every change is recalculated instantly and saved automatically to your browser; the save state shows as \"Saved\" in the bar.</p>"
+  },
+  "tg.planner.h.durumlar": {
+    "en": "2. Course statuses and their effect on the calculation"
+  },
+  "tg.planner.b.durumlar": {
+    "en": "<div class=\"table-scroll\"><table class=\"grade-table\">\n<caption>The four options in the status field. The rules come from Articles 27 and 28 of the Boğaziçi regulation; details in the <a href=\"rehber-ders-tekrari.html\">course repeat</a> and <a href=\"rehber-dersten-cekilme.html\">withdrawal</a> guides.</caption>\n<thead><tr><th scope=\"col\">Status</th><th scope=\"col\">When to use it</th><th scope=\"col\">Effect on the calculation</th></tr></thead>\n<tbody>\n<tr><td><strong>Taken</strong></td><td>A course taken and graded normally</td><td>Enters SPA and GPA as credits × coefficient</td></tr>\n<tr><td><strong>Retake (Substitutes)</strong></td><td>A previously taken course itself, or another course counted in its place</td><td>Grouped with the course it replaces; only the last grade counts in the GPA, credits once; enters the SPA of its own term normally</td></tr>\n<tr><td><strong>Withdrawn (W)</strong></td><td>Withdrawal from the course</td><td>Enters no average and no attempted credits; stays in the list</td></tr>\n<tr><td><strong>Non-Credit</strong></td><td>Courses with 0 credits, P/F or NC</td><td>Excluded from the average</td></tr>\n</tbody></table></div>\n<p>When \"Retake (Substitutes)\" is selected, an extra list opens in the course line: <em>which course does this substitute?</em> If you are retaking the same course, choose itself; if you took another course in place of an elective, choose that one. Without this mapping the tool counts the course as a new one and adds the credits twice — the most common reason for averages that do not match the transcript.</p>"
+  },
+  "tg.planner.h.senaryo": {
+    "en": "3. \"What if I get X in this course\" scenarios"
+  },
+  "tg.planner.b.senaryo": {
+    "en": "<p>The planner's real purpose is looking ahead. Three common scenarios:</p>\n<ol>\n<li><strong>Next term.</strong> Open an empty card with <em>Add Term</em>, enter the courses you will take with their credits, and try different letters in the grade fields. The cumulative average in the bottom bar updates with every choice. Leave the courses in \"Taken\" status; courses with an empty grade are excluded, so only the ones you fill in affect the scenario.</li>\n<li><strong>Retake.</strong> Add the course in the new term card, set its status to \"Retake (Substitutes)\", pick the old course from the list and enter the grade you expect. The old grade automatically drops out; you see the difference in the bottom bar. Enter your expected grade honestly: since <a href=\"rehber-ders-tekrari.html#son-not\">the last grade counts</a>, a poor retake lowers the average.</li>\n<li><strong>Withdrawal.</strong> Set a course's status to \"Withdrawn (W)\"; the course leaves the average. You can answer \"withdraw or finish?\" by trying the two states one after the other.</li>\n</ol>\n<div class=\"callout\"><svg class=\"icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"9\"></circle><path d=\"M12 16v-5M12 8h.01\"></path></svg><div><p>To keep your scenarios separate from your real transcript data, first take a clean JSON with <strong>Download Backup</strong>. When you are done experimenting, return with <strong>Load Backup</strong>.</p></div></div>"
+  },
+  "tg.planner.h.yedek": {
+    "en": "4. Where your data lives and how to back it up"
+  },
+  "tg.planner.b.yedek": {
+    "en": "<p>Your courses are kept in your browser's <strong>local storage</strong> (localStorage); they remain when you close the tab, but do not follow you to another browser or device, and are erased if you clear browser data. For a permanent copy, the <strong>Download Backup</strong> button saves your plan as a single JSON file; <strong>Load Backup</strong> restores the same file on this or another device. The analytics page can also read the same JSON directly.</p>\n<p>The JSON file is plain text: it contains nothing but term names, course codes, statuses, grades and credits — no name, student number or identity information, because the tool never reads those.</p>"
+  },
+  "tg.planner.faq.q1": {
+    "en": "I deleted a course by mistake; can I undo it?"
+  },
+  "tg.planner.faq.a1": {
+    "en": "<p>Deleting a single course cannot be undone; add the course again. Deleting a term asks for confirmation. Taking a JSON backup before big changes is the safest approach.</p>"
+  },
+  "tg.planner.faq.q2": {
+    "en": "Why do the SPA and the GPA under the card differ?"
+  },
+  "tg.planner.faq.a2": {
+    "en": "<p>The SPA is calculated only from that term's courses; the GPA is the cumulative average of all courses from the first term to the end of that term. A difference between the two is normal and corresponds to the term / cumulative columns on the transcript. Details: <a href=\"rehber-gno-hesaplama.html\">how the GPA is calculated</a>.</p>"
+  },
+  "tg.planner.faq.q3": {
+    "en": "Do I have to type the course name?"
+  },
+  "tg.planner.faq.a3": {
+    "en": "<p>What the calculation needs are the credits and the grade. The course name only matters for retake matching: the retaken course and the old course must carry the same name so the tool can group them.</p>"
+  }
+});
+  </script>
   <script src="ui.js"></script>
   <script src="app.js"></script>
 </body>

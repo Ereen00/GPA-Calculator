@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sayfa bulunamadı – Boğaziçi GPA</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <script>
+    // Tema tercihini CSS yüklenmeden uygula (açılışta beyaz parlama olmasın)
+    (function () {
+      var theme;
+      try { theme = localStorage.getItem('gpa-planner:theme'); } catch (e) {}
+      if (theme !== 'dark' && theme !== 'light') {
+        theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/base.css">
+  <link rel="stylesheet" href="/content.css">
+  <link rel="stylesheet" href="/guide.css">
+  <!-- Bu sayfada reklam kodu bilerek yok: içeriksiz "çıkmaz" ekranlarda reklam gösterilmez. -->
+</head>
+<body>
+  <a href="#main" class="skip-link" data-i18n="common.skipToContent">İçeriğe geç</a>
+
+  <nav class="navbar">
+    <a href="/" class="logo">
+      <img src="/assets/bu-logo.png" alt="Boğaziçi Üniversitesi logosu" width="38" height="38">
+      <span>
+        <span class="logo-name" data-i18n="brand.name">Boğaziçi GPA</span>
+        <span class="logo-sub" data-i18n="brand.sub">Akademik Planlayıcı</span>
+      </span>
+    </a>
+    <div class="nav-links" id="primary-nav">
+      <a href="/" class="nav-link" data-i18n="nav.home">Ana Sayfa</a>
+      <a href="/planner.html" class="nav-link" data-i18n="nav.planner">Ders Planlayıcı</a>
+      <a href="/statistics.html" class="nav-link" data-i18n="nav.stats">Analitik</a>
+      <a href="/pdf_upload.html" class="nav-link" data-i18n="nav.upload">Transkript Yükleyici</a>
+      <a href="/rehber.html" class="nav-link" data-i18n="nav.guide">Rehber</a>
+    </div>
+    <div class="nav-buttons">
+      <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language / Dili değiştir">EN</button>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Temayı değiştir"></button>
+      <button id="nav-menu-toggle" class="nav-menu-toggle" type="button" aria-label="Menüyü aç" aria-expanded="false" aria-controls="primary-nav"></button>
+    </div>
+  </nav>
+
+  <main id="main">
+    <header class="page-hero">
+      <div class="wrap">
+        <span class="eyebrow"><span class="diamond"></span><span data-i18n="notfound.eyebrow">404</span></span>
+        <h1 class="page-title" data-i18n="notfound.title">Bu sayfa yok.</h1>
+        <p class="page-lead" data-i18n="notfound.lead">Aradığınız adres taşınmış, yeniden adlandırılmış ya da hiç var olmamış olabilir. Aşağıdan devam edebilirsiniz.</p>
+      </div>
+    </header>
+    <section class="section" style="padding-top:24px;">
+      <div class="wrap">
+        <div class="guide-grid">
+          <a href="/" class="guide-card">
+            <span class="guide-tag"><span class="diamond"></span><span data-i18n="nav.home">Ana Sayfa</span></span>
+            <h3 data-i18n="notfound.home.title">GPA hesaplayıcıya dön</h3>
+            <p data-i18n="notfound.home.desc">Transkript yükleyici, ders planlayıcı ve analitik — hepsi tarayıcınızda.</p>
+          </a>
+          <a href="/rehber.html" class="guide-card">
+            <span class="guide-tag"><span class="diamond"></span><span data-i18n="nav.guide">Rehber</span></span>
+            <h3 data-i18n="notfound.guide.title">Not sistemi rehberi</h3>
+            <p data-i18n="notfound.guide.desc">Harf notları, GNO hesabı, ders tekrarı, onur listesi, mezuniyet ve daha fazlası.</p>
+          </a>
+          <a href="/hakkinda.html" class="guide-card">
+            <span class="guide-tag"><span class="diamond"></span><span data-i18n="nav.about">Hakkında & İletişim</span></span>
+            <h3 data-i18n="notfound.about.title">Bir bağlantı mı kırık?</h3>
+            <p data-i18n="notfound.about.desc">Hangi adresten geldiğinizi yazarsanız düzeltelim.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="/assets/bu-logo.png" alt="Boğaziçi Üniversitesi logosu" width="34" height="34">
+        <div>
+          <strong data-i18n="brand.name">Boğaziçi GPA</strong>
+          <span data-i18n="brand.sub">Akademik Planlayıcı</span>
+        </div>
+      </div>
+      <div class="footer-cols">
+        <nav class="footer-col" aria-labelledby="footer-tools">
+          <h4 id="footer-tools" data-i18n="footer.tools">Araçlar</h4>
+          <a href="/" data-i18n="nav.home">Ana Sayfa</a>
+          <a href="/planner.html" data-i18n="nav.planner">Ders Planlayıcı</a>
+          <a href="/statistics.html" data-i18n="nav.stats">Analitik</a>
+          <a href="/pdf_upload.html" data-i18n="nav.upload">Transkript Yükleyici</a>
+        </nav>
+        <nav class="footer-col" aria-labelledby="footer-guide">
+          <h4 id="footer-guide" data-i18n="nav.guide">Rehber</h4>
+          <a href="/rehber-not-sistemi.html" data-i18n="g.rehber-not-sistemi.short">Harf notu sistemi</a>
+          <a href="/rehber-gno-hesaplama.html" data-i18n="g.rehber-gno-hesaplama.short">GNO nasıl hesaplanır</a>
+          <a href="/rehber-ders-tekrari.html" data-i18n="g.rehber-ders-tekrari.short">Ders tekrarı</a>
+          <a href="/rehber-onur-listesi.html" data-i18n="g.rehber-onur-listesi.short">Onur listesi</a>
+          <a href="/rehber-100luk-donusum.html" data-i18n="g.rehber-100luk-donusum.short">4'lükten 100'lüğe</a>
+          <a href="/rehber.html" data-i18n="footer.allGuides">Tüm rehber →</a>
+        </nav>
+        <nav class="footer-col" aria-labelledby="footer-site">
+          <h4 id="footer-site" data-i18n="footer.site">Site</h4>
+          <a href="/hakkinda.html" data-i18n="nav.about">Hakkında & İletişim</a>
+          <a href="/gizlilik.html" data-i18n="nav.privacy">Gizlilik Politikası</a>
+          <a href="/kullanim-kosullari.html" data-i18n="nav.terms">Kullanım Koşulları</a>
+        </nav>
+      </div>
+    </div>
+    <p class="footer-note" data-i18n="common.footerNote">
+      Bu proje Boğaziçi Üniversitesi ile bağlantılı değildir; bağımsız bir öğrenci aracıdır.
+      Tüm veriler yalnızca tarayıcınızda saklanır.
+    </p>
+  </footer>
+
+  <script src="/i18n.js"></script>
+  <script src="/i18n-content.js"></script>
+  <script src="/i18n-guide-index.js"></script>
+  <script>
+    GPAI18N.extend({
+      'notfound.eyebrow': { tr: '404', en: '404' },
+      'notfound.title': { tr: 'Bu sayfa yok.', en: 'This page does not exist.' },
+      'notfound.lead': { tr: 'Aradığınız adres taşınmış, yeniden adlandırılmış ya da hiç var olmamış olabilir. Aşağıdan devam edebilirsiniz.', en: 'The address you were looking for may have moved, been renamed, or never existed. You can continue from below.' },
+      'notfound.home.title': { tr: 'GPA hesaplayıcıya dön', en: 'Back to the GPA calculator' },
+      'notfound.home.desc': { tr: 'Transkript yükleyici, ders planlayıcı ve analitik — hepsi tarayıcınızda.', en: 'Transcript loader, course planner and analytics — all in your browser.' },
+      'notfound.guide.title': { tr: 'Not sistemi rehberi', en: 'Grading system guide' },
+      'notfound.guide.desc': { tr: 'Harf notları, GNO hesabı, ders tekrarı, onur listesi, mezuniyet ve daha fazlası.', en: 'Letter grades, GPA calculation, course repeats, honour lists, graduation and more.' },
+      'notfound.about.title': { tr: 'Bir bağlantı mı kırık?', en: 'Is a link broken?' },
+      'notfound.about.desc': { tr: 'Hangi adresten geldiğinizi yazarsanız düzeltelim.', en: 'Tell us which address you came from and we will fix it.' }
+    });
+  </script>
+  <script src="/ui.js"></script>
+</body>
+</html>

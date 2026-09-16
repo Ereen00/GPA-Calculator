@@ -196,8 +196,50 @@
     }
   }
 
-  document.getElementById('grad-credits').addEventListener('input', updateSimulation);
+  // Tersten simülasyon: hedef GNO için kalan kredide gereken ağırlıklı ortalama.
+  // gereken = (hedef × mezuniyet kredisi − mevcut kredi-puan) ÷ kalan kredi
+  function updateReverseSimulation() {
+    if (globalTotalCredits === 0) return;
+
+    const targetCredits = parseFloat(document.getElementById('grad-credits').value) || 146;
+    const targetInput = parseFloat(document.getElementById('target-gpa').value);
+    const targetGpa = isNaN(targetInput) ? 3.0 : Math.min(4, Math.max(0, targetInput));
+    const remainingCredits = targetCredits - globalTotalCredits;
+
+    const resDiv = document.getElementById('required-avg');
+    const infoDiv = document.getElementById('required-info');
+
+    if (remainingCredits <= 0) {
+      resDiv.textContent = '--';
+      infoDiv.textContent = tr('stats.sim.done');
+      return;
+    }
+
+    const required = (targetGpa * targetCredits - globalTotalPoints) / remainingCredits;
+    const maxPossible = (globalTotalPoints + 4 * remainingCredits) / targetCredits;
+
+    if (required > 4) {
+      resDiv.textContent = '> 4.00';
+      infoDiv.textContent = tr('stats.sim.unreachable').replace('{max}', maxPossible.toFixed(2));
+    } else if (required <= 0) {
+      resDiv.textContent = '0.00';
+      infoDiv.textContent = tr('stats.sim.secured').replace('{t}', targetGpa.toFixed(2));
+    } else {
+      // Yukarı yuvarla: gösterilen değerin altında kalmak hedefi kaçırır
+      const shown = (Math.ceil(required * 100) / 100).toFixed(2);
+      resDiv.textContent = shown;
+      infoDiv.textContent = tr('stats.sim.required').replace('{n}', remainingCredits).replace('{x}', shown).replace('{t}', targetGpa.toFixed(2));
+    }
+  }
+
+  function updateSimulators() {
+    updateSimulation();
+    updateReverseSimulation();
+  }
+
+  document.getElementById('grad-credits').addEventListener('input', updateSimulators);
   document.getElementById('future-grade').addEventListener('change', updateSimulation);
+  document.getElementById('target-gpa').addEventListener('input', updateReverseSimulation);
 
   function runAnalysis(semesters, semNames, allCards) {
     // --- Calculate Global Totals for Simulator ---
@@ -252,7 +294,7 @@
     const cumulativeGPA = gpaStats.perSemester.map(p => p.runningGpa);
     globalTotalPoints = gpaStats.overall.points;
     globalTotalCredits = gpaStats.overall.credits;
-    updateSimulation();
+    updateSimulators();
 
     // --- 3. Seasonal Logic ---
     const seasons = ['Güz / Fall', 'Bahar / Spring', 'Yaz / Summer'];

@@ -42,6 +42,7 @@
       <a href="planner.html" class="nav-link" data-i18n="nav.planner">Ders Planlayıcı</a>
       <a href="statistics.html" class="nav-link" data-i18n="nav.stats">Analitik</a>
       <a href="pdf_upload.html" class="nav-link" data-i18n="nav.upload">Transkript Yükleyici</a>
+      <a href="rehber.html" class="nav-link" data-i18n="nav.guide">Rehber</a>
     </div>
     <div class="nav-buttons">
       <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language / Dili değiştir">EN</button>
@@ -60,7 +61,7 @@
         </nav>
         <h1 class="page-title" data-i18n="about.title">Hakkında & İletişim</h1>
         <p class="page-lead" data-i18n="about.lead">Boğaziçi GPA, ortalamasını hesaplamak için her dönem aynı tabloyu yeniden kurmaktan sıkılmış bir öğrencinin yazdığı bağımsız bir araçtır. Ne yaptığı, nasıl çalıştığı ve nasıl ulaşabileceğiniz aşağıda.</p>
-        <p class="page-meta" data-i18n="about.updated">Son güncelleme: 31 Ağustos 2026</p>
+        <p class="page-meta" data-i18n="about.updated">Son güncelleme: 16 Eylül 2026</p>
       </div>
     </header>
 
@@ -84,6 +85,13 @@
             <p>Site tamamen statiktir: HTML, CSS ve JavaScript dosyalarından ibarettir, veritabanı ya da uygulama sunucusu yoktur. PDF'iniz tarayıcıda <code>pdf.js</code> kütüphanesiyle açılır, metin katmanı çıkarılır ve projeye özel bir ayrıştırıcı bu metinden ders kodlarını, kredileri, harf notlarını ve dönem başlıklarını tanır.</p>
             <p>Ayrıştırıcı yalnızca satırları okumakla kalmaz; çekilen dersleri (W), tekrar edilen dersleri, yerine sayılan dersleri ve kredisiz dersleri de ayırt eder. Ortalama hesabı ayrı bir modülde tutulur ve gerçek transkriptlerdeki basılı değerlerle karşılaştırılarak doğrulanmıştır.</p>
             <p>Verileriniz tarayıcınızın yerel depolama alanında saklanır; üç sayfa da aynı veriyi paylaşır. Bu yüzden transkriptinizi bir kez aktarmanız yeterlidir, planlayıcı ve analitik anında dolar.</p>
+          </div>
+
+          <h2 id="rehber" data-i18n="about.h3b">Rehber bölümü nasıl hazırlanıyor?</h2>
+          <div data-i18n="about.b3b" data-i18n-html>
+            <p>Sitedeki <a href='rehber.html'>rehber</a>, aracın hesap yaparken uyguladığı kuralların yazılı hâlidir: harf notu katsayıları, GNO hesabı ve yuvarlama, ders tekrarı, dersten çekilme, ders yükü, sınamalı durum, onur dereceleri, mezuniyet, çift anadal, yan dal, yaz öğretimi, 100'lük dönüşüm ve ortalama yükseltme stratejisi.</p>
+            <p>Her makale, Boğaziçi Üniversitesi Lisans Eğitim ve Öğretim Yönetmeliği'nin (Resmî Gazete 11.06.2016, sayı 29739) ve ilgili yönergelerin yürürlükteki metni ile Akademik Danışmanlık Ofisi'nin resmî SSS sayfası okunarak yazılır; madde numaraları metinde verilir ve iki resmî kaynağın çeliştiği yerler gizlenmez, açıkça belirtilir. Sayısal örnekler elle hesaplanıp araçla doğrulanır. Yönetmelik değiştiğinde ilgili makale ve aracın hesap motoru birlikte güncellenir; her makalenin üstünde son güncelleme tarihi bulunur.</p>
+            <p>Rehber hukuki ya da resmî bir kaynak değildir. Bir kararı etkileyecek konuda son sözü her zaman Kayıt İşleri Şube Müdürlüğü ve akademik danışmanınız söyler; bir hata görürseniz aşağıdaki iletişim kanallarından bildirmenizi rica ederiz.</p>
           </div>
 
           <h2 id="bagimsizlik" data-i18n="about.h4">Bağımsızlık</h2>
@@ -131,6 +139,15 @@
           <a href="statistics.html" data-i18n="nav.stats">Analitik</a>
           <a href="pdf_upload.html" data-i18n="nav.upload">Transkript Yükleyici</a>
         </nav>
+        <nav class="footer-col" aria-labelledby="footer-guide">
+          <h4 id="footer-guide" data-i18n="nav.guide">Rehber</h4>
+          <a href="rehber-not-sistemi.html" data-i18n="g.rehber-not-sistemi.short">Harf notu sistemi</a>
+          <a href="rehber-gno-hesaplama.html" data-i18n="g.rehber-gno-hesaplama.short">GNO nasıl hesaplanır</a>
+          <a href="rehber-ders-tekrari.html" data-i18n="g.rehber-ders-tekrari.short">Ders tekrarı</a>
+          <a href="rehber-onur-listesi.html" data-i18n="g.rehber-onur-listesi.short">Onur listesi</a>
+          <a href="rehber-100luk-donusum.html" data-i18n="g.rehber-100luk-donusum.short">4'lükten 100'lüğe</a>
+          <a href="rehber.html" data-i18n="footer.allGuides">Tüm rehber →</a>
+        </nav>
         <nav class="footer-col" aria-labelledby="footer-site">
           <h4 id="footer-site" data-i18n="footer.site">Site</h4>
           <a href="hakkinda.html" data-i18n="nav.about">Hakkında & İletişim</a>
@@ -147,6 +164,7 @@
 
   <script src="i18n.js"></script>
   <script src="i18n-content.js"></script>
+  <script src="i18n-guide-index.js"></script>
   <script src="ui.js"></script>
 </body>
 </html>

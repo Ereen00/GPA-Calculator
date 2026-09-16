@@ -30,8 +30,14 @@ Boğaziçi Üniversitesi öğrencileri için geliştirilmiş açık kaynaklı bi
 
 ### 📊 Akademik Analitik (`statistics.html`)
 - Chart.js ile 12 grafik: performans trendi, not dağılımları, momentum, volatilite, mevsimsel analiz, kredi yükü korelasyonu ve daha fazlası.
-- Mezuniyet Ortalaması Simülatörü: kalan krediler ve hedef notla tahmini mezuniyet GPA'sı.
+- Mezuniyet Ortalaması Simülatörü: ileri yönde (kalan derslerde X alırsanız GPA ne olur) ve ters yönde (hedef GPA için kalan kredide gereken ortalama).
 - Veriler planlayıcıdan otomatik yüklenir; eski bir JSON yedeğini de analiz edebilirsiniz.
+
+### 📚 Rehber (`rehber.html`, `rehber-*.html`)
+- Boğaziçi Lisans Eğitim ve Öğretim Yönetmeliği ile ÇAP / Yan Dal / Yaz Öğretimi yönergelerine dayanan 13 makale: harf notu sistemi, GNO hesabı, ders tekrarı, dersten çekilme, ders yükü, sınamalı durum, onur listesi, mezuniyet, ÇAP, yan dal, yaz okulu, 100'lük dönüşüm, ortalama yükseltme.
+- Her makale madde numarası referanslı, hesaplı örnekli, kaynak listeli ve TR/EN'dir; JSON-LD (Article, FAQPage, BreadcrumbList) içerir.
+- Türkçe metin HTML'de durur; İngilizce çeviri her sayfanın altındaki `GPAI18N.extend(...)` sözlüğündedir. Sözlükte yalnızca `en` olan anahtarlar için Türkçe, DOM'daki özgün metinden geri yüklenir (`i18n.js`). Başlık/kart/etiket çevirileri `i18n-guide-index.js` içindedir.
+- Araç sayfalarının (yükleyici, planlayıcı, analitik) altında aynı yöntemle yazılmış kullanım rehberleri vardır.
 
 ## 🎯 Hesaplama Kuralları (`gpa.js`)
 

@@ -304,6 +304,24 @@
     'stats.sim.remaining': { tr: 'Kalan Kredi: {n}', en: 'Remaining Credit: {n}' },
     'stats.sim.done': { tr: 'Tebrikler! Mezuniyet kredisini zaten tamamladınız.', en: 'Congratulations! You have already completed the graduation credits.' },
     'stats.sim.projection': { tr: 'Kalan {n} kredinin hepsini {g} alırsanız.', en: 'If you get {g} in all {n} remaining credits.' },
+    'stats.sim.targetGpa': { tr: 'Hedef Genel Not Ortalaması', en: 'Target Cumulative GPA' },
+    'stats.sim.reverseHelp': {
+      tr: 'Tersten hesap: hedeflediğiniz mezuniyet ortalamasını girin; kalan kredide tutturmanız gereken ağırlıklı ortalamayı görün. Onur için 3.00, yüksek onur için 3.50, mezuniyet için 2.00 deneyin.',
+      en: 'Reverse calculation: enter the graduation GPA you are aiming for and see the weighted average you must achieve over the remaining credits. Try 3.00 for honour, 3.50 for high honour, 2.00 for graduation.'
+    },
+    'stats.sim.requiredLabel': { tr: 'Kalan Derslerde Gereken Ortalama', en: 'Average Required in Remaining Courses' },
+    'stats.sim.required': {
+      tr: '{t} hedefi için kalan {n} kredide ağırlıklı ortalamanız en az {x} olmalı.',
+      en: 'For a target of {t}, your weighted average over the remaining {n} credits must be at least {x}.'
+    },
+    'stats.sim.unreachable': {
+      tr: 'Bu hedefe kalan derslerle ulaşılamaz: hepsinden AA alsanız bile GNO en fazla {max} olur.',
+      en: 'This target cannot be reached with the remaining courses: even with AA in all of them the GPA tops out at {max}.'
+    },
+    'stats.sim.secured': {
+      tr: '{t} hedefi kalan derslerden alacağınız her notla korunur.',
+      en: 'The {t} target is secured whatever grades you get in the remaining courses.'
+    },
 
     /* ---- İstatistik: üretilen metinler (stats.js) ---- */
     'stats.info.auto': { tr: 'Kayıtlı verileriniz otomatik yüklendi ({s} dönem, {c} ders). Planlayıcı\'daki değişiklikler buraya otomatik yansır.', en: 'Your saved data loaded automatically ({s} terms, {c} courses). Changes in the Planner appear here automatically.' },
@@ -363,6 +381,21 @@
     return entry[currentLang] || entry.tr || key;
   }
 
+  /* HTML'deki özgün (Türkçe) metin, ilk uygulamada saklanır. Sözlükte yalnızca
+     'en' karşılığı olan anahtarlar (rehber makaleleri, araç sayfası rehberleri)
+     için Türkçe metin bu kaynaktan geri yüklenir; böylece uzun Türkçe metinler
+     hem HTML'de hem sözlükte taşınmaz ve tarayıcı botları tam metni HTML'de görür. */
+  var ORIGINAL_KEY = '__gpaI18nOriginal';
+
+  function domText(node, key) {
+    var isHtml = node.hasAttribute('data-i18n-html');
+    if (!(ORIGINAL_KEY in node)) node[ORIGINAL_KEY] = isHtml ? node.innerHTML : node.textContent;
+    var entry = DICT[key];
+    if (entry && entry[currentLang]) return entry[currentLang];
+    if (currentLang !== 'tr' && entry && entry.tr) return entry.tr;
+    return node[ORIGINAL_KEY];
+  }
+
   function applyToDom() {
     document.documentElement.setAttribute('lang', currentLang);
 
@@ -370,7 +403,7 @@
     for (var i = 0; i < nodes.length; i++) {
       var node = nodes[i];
       var key = node.getAttribute('data-i18n');
-      var text = t(key);
+      var text = domText(node, key);
       if (node.hasAttribute('data-i18n-html')) node.innerHTML = text;
       else node.textContent = text;
     }

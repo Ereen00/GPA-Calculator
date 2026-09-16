@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GNO ve DNO nasıl hesaplanır? Formül, yuvarlama kuralı ve elle hesap örnekleri – Boğaziçi GPA Rehberi</title>
+  <meta name="description" content="Boğaziçi Üniversitesi GNO (genel not ortalaması) ve DNO (dönem not ortalaması) hesaplama formülü, iki ondalık yuvarlama kuralı, kredi ağırlığı ve adım adım örnekler. Yönetmelik Madde 28.">
+  <link rel="canonical" href="https://bogazicitranscriptmanager.vercel.app/rehber-gno-hesaplama.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Boğaziçi GPA">
+  <meta property="og:title" content="GNO ve DNO nasıl hesaplanır? Formül, yuvarlama kuralı ve elle hesap örnekleri – Boğaziçi GPA Rehberi">
+  <meta property="og:description" content="Boğaziçi Üniversitesi GNO (genel not ortalaması) ve DNO (dönem not ortalaması) hesaplama formülü, iki ondalık yuvarlama kuralı, kredi ağırlığı ve adım adım örnekler. Yönetmelik Madde 28.">
+  <meta property="og:url" content="https://bogazicitranscriptmanager.vercel.app/rehber-gno-hesaplama.html">
+  <meta property="og:image" content="https://bogazicitranscriptmanager.vercel.app/assets/hero-campus.webp">
+  <meta property="og:locale" content="tr_TR">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <script>
+    // Tema tercihini CSS yüklenmeden uygula (açılışta beyaz parlama olmasın)
+    (function () {
+      var theme;
+      try { theme = localStorage.getItem('gpa-planner:theme'); } catch (e) {}
+      if (theme !== 'dark' && theme !== 'light') {
+        theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="content.css">
+  <link rel="stylesheet" href="guide.css">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "GNO ve DNO nasıl hesaplanır? Formül, yuvarlama kuralı ve elle hesap örnekleri", "description": "Boğaziçi Üniversitesi GNO (genel not ortalaması) ve DNO (dönem not ortalaması) hesaplama formülü, iki ondalık yuvarlama kuralı, kredi ağırlığı ve adım adım örnekler. Yönetmelik Madde 28.", "inLanguage": "tr", "datePublished": "2026-09-16", "dateModified": "2026-09-16", "author": {"@type": "Organization", "name": "Boğaziçi GPA", "url": "https://bogazicitranscriptmanager.vercel.app/hakkinda.html"}, "publisher": {"@type": "Organization", "name": "Boğaziçi GPA", "url": "https://bogazicitranscriptmanager.vercel.app", "logo": {"@type": "ImageObject", "url": "https://bogazicitranscriptmanager.vercel.app/assets/bu-logo.png"}}, "mainEntityOfPage": "https://bogazicitranscriptmanager.vercel.app/rehber-gno-hesaplama.html", "image": "https://bogazicitranscriptmanager.vercel.app/assets/hero-campus.webp", "isPartOf": {"@type": "WebSite", "name": "Boğaziçi GPA", "url": "https://bogazicitranscriptmanager.vercel.app"}}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Ana Sayfa", "item": "https://bogazicitranscriptmanager.vercel.app/"}, {"@type": "ListItem", "position": 2, "name": "Rehber", "item": "https://bogazicitranscriptmanager.vercel.app/rehber.html"}, {"@type": "ListItem", "position": 3, "name": "GNO ve DNO nasıl hesaplanır? Formül, yuvarlama kuralı ve elle hesap örnekleri", "item": "https://bogazicitranscriptmanager.vercel.app/rehber-gno-hesaplama.html"}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Transkriptteki GNO ile elle hesabım 0.01 farklı çıkıyor, neden?", "acceptedAnswer": {"@type": "Answer", "text": "Neredeyse her zaman yuvarlama sırasından kaynaklanır: dönem ortalamalarını yuvarlayıp sonra birleştirmek ya da ara toplamları yuvarlamak farkı yaratır. Doğru yöntem bütün kredi-puanları tam hassasiyetle toplayıp bölmeyi en sonda tek kez yuvarlamaktır. Fark daha büyükse tekrar edilen bir dersin eski notunu da toplama katmış olabilirsiniz."}}, {"@type": "Question", "name": "Yaz okulu dersleri GNO'ya girer mi?", "acceptedAnswer": {"@type": "Answer", "text": "Evet. Yaz öğretiminde alınan dersler kayıtlara ve hesaplara normal dönem dersleri gibi geçer (Yaz Öğretimi Yönergesi Madde 7/e). Yalnızca yaz DNO'su, yarıyıl başarı denetiminde (sınamalı/başarısız belirlemesinde) dikkate alınmaz; GNO'ya dahildir."}}, {"@type": "Question", "name": "GNO en fazla kaç olabilir?", "acceptedAnswer": {"@type": "Answer", "text": "4.00. Bütün derslerden AA alındığında her kredi 4.00 katsayıyla girer ve bölme sonucu tam 4.00 çıkar; bunun üstü matematiksel olarak mümkün değildir."}}]}</script>
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7872183586463318" crossorigin="anonymous"></script>
+</head>
+<body>
+  <a href="#main" class="skip-link" data-i18n="common.skipToContent">İçeriğe geç</a>
+
+  <nav class="navbar">
+    <a href="index.html" class="logo">
+      <img src="assets/bu-logo.png" alt="Boğaziçi Üniversitesi logosu" width="38" height="38">
+      <span>
+        <span class="logo-name" data-i18n="brand.name">Boğaziçi GPA</span>
+        <span class="logo-sub" data-i18n="brand.sub">Akademik Planlayıcı</span>
+      </span>
+    </a>
+    <div class="nav-links" id="primary-nav">
+      <a href="index.html" class="nav-link" data-i18n="nav.home">Ana Sayfa</a>
+      <a href="planner.html" class="nav-link" data-i18n="nav.planner">Ders Planlayıcı</a>
+      <a href="statistics.html" class="nav-link" data-i18n="nav.stats">Analitik</a>
+      <a href="pdf_upload.html" class="nav-link" data-i18n="nav.upload">Transkript Yükleyici</a>
+      <a href="rehber.html" class="nav-link" aria-current="page" data-i18n="nav.guide">Rehber</a>
+    </div>
+    <div class="nav-buttons">
+      <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language / Dili değiştir">EN</button>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Temayı değiştir"></button>
+      <button id="nav-menu-toggle" class="nav-menu-toggle" type="button" aria-label="Menüyü aç" aria-expanded="false" aria-controls="primary-nav"></button>
+    </div>
+  </nav>
+
+  <main id="main">
+    <header class="page-hero">
+      <div class="wrap">
+        <nav class="hero-breadcrumb" aria-label="breadcrumb">
+          <a href="index.html" data-i18n="nav.home">Ana Sayfa</a>
+          <span class="sep">/</span>
+          <a href="rehber.html" data-i18n="nav.guide">Rehber</a>
+          <span class="sep">/</span>
+          <span class="here" data-i18n="g.rehber-gno-hesaplama.tag">Temel kavramlar</span>
+        </nav>
+        <span class="eyebrow"><span class="diamond"></span><span data-i18n="g.rehber-gno-hesaplama.tag">Temel kavramlar</span></span>
+        <h1 class="page-title" style="max-width:22ch;" data-i18n="g.rehber-gno-hesaplama.title">GNO ve DNO nasıl hesaplanır? Formül, yuvarlama kuralı ve elle hesap örnekleri</h1>
+        <p class="page-lead" data-i18n="g.rehber-gno-hesaplama.lead">Ortalamanız harflerin ortalaması değil, kredilerle ağırlıklandırılmış bir bölme işlemidir. Yönetmeliğin 28. maddesindeki formülü, yuvarlama kuralını ve en sık yapılan hatayı — GNO'yu dönem ortalamalarının ortalaması sanmayı — sayılarla açıklıyoruz.</p>
+        <div class="article-meta">
+          <span data-i18n="guide.meta.updated" data-i18n-html><strong>Son güncelleme:</strong> 16 Eylül 2026</span>
+          <span data-i18n="g.rehber-gno-hesaplama.readMeta" data-i18n-html><strong>Okuma süresi:</strong> 4 dakika</span>
+          <span data-i18n="guide.meta.basis" data-i18n-html><strong>Dayanak:</strong> Boğaziçi Üniversitesi Lisans Eğitim ve Öğretim Yönetmeliği ve ilgili yönergeler</span>
+        </div>
+      </div>
+    </header>
+
+    <section class="section" style="padding-top:36px;">
+      <div class="wrap">
+        <div class="article-layout">
+          <article class="prose">
+            <p class="article-lang-note" data-i18n="guide.langNote">This guide is a translation of the Turkish original, which follows the wording of the university's Turkish-language regulation. Where the two differ, the Turkish regulation text prevails.</p>
+
+          <h2 id="iki-ortalama" data-i18n="g.rehber-gno-hesaplama.h.iki-ortalama">İki ortalama: DNO ve GNO</h2>
+          <div data-i18n="g.rehber-gno-hesaplama.b.iki-ortalama" data-i18n-html>
+<p>Transkriptinizde her dönemin altında iki sayı basılıdır. <strong>DNO</strong> (dönem not ortalaması; İngilizce transkriptte SPA) yalnızca o dönemde alınan dersleri kapsar. <strong>GNO</strong> (genel not ortalaması; GPA) ise öğrenciliğiniz boyunca aldığınız bütün derslerin kümülatif ortalamasıdır. İkisi de her yarıyıl ve yaz dönemi sonunda hesaplanır (Madde 28/1).</p>
+<p>Hangisinin nerede kullanıldığı önemlidir: mezuniyet, onur listesi, ÇAP ve yan dal koşulları GNO'ya bakar; sınamalı/başarısız durum ise hem GNO'ya hem DNO'ya bakar (Madde 30). Yaz dönemi için özel bir kural var: yaz DNO'su GNO'ya dahil edilir ama yarıyıl başarı denetimi hesaplarında dikkate alınmaz.</p>
+          </div>
+
+          <h2 id="formul" data-i18n="g.rehber-gno-hesaplama.h.formul">Formül</h2>
+          <div data-i18n="g.rehber-gno-hesaplama.b.formul" data-i18n-html>
+<p>Yönetmelik ortalamayı şöyle tanımlar: ilgili derslerden alınan notların katsayıları, dersin kredisiyle çarpılır; bu çarpımlar toplanır ve aynı derslerin kredi toplamına bölünür (Madde 28/2). Kısaca:</p>
+<div class="example"><p class="example-title">Formül</p><p><strong>Ortalama = Σ (katsayı × kredi) ÷ Σ kredi</strong></p><p>Toplama işlemi, ortalamaya giren derslerin tümü üzerinden yapılır: DNO için o dönemin dersleri, GNO için bütün dönemlerin dersleri. P, NC ve W dersleri ile kredisiz dersler toplama girmez (Madde 28/3–5).</p></div>
+<p>Formülün iki sonucu vardır. Birincisi, bir dersin ortalamadaki ağırlığı kredisiyle orantılıdır: 4 kredilik bir ders, 2 kredilik bir dersin iki katı söz sahibidir. İkincisi, GNO'yu hareket ettirmek kredi biriktikçe zorlaşır: payda büyüdükçe tek bir dersin çarpanı toplam içinde küçülür. Bu ikinci sonucun stratejik karşılığı <a href="rehber-ortalama-yukseltme.html">ortalama yükseltme</a> makalesinde.</p>
+          </div>
+
+          <h2 id="yuvarlama" data-i18n="g.rehber-gno-hesaplama.h.yuvarlama">Yuvarlama kuralı</h2>
+          <div data-i18n="g.rehber-gno-hesaplama.b.yuvarlama" data-i18n-html>
+<p>Bölme işleminin sonucu genellikle iki basamakta bitmez. Yönetmelik yuvarlamayı açıkça tanımlar: virgülden sonraki <strong>üçüncü hane 5'ten küçükse</strong> atılır, <strong>5 veya daha büyükse</strong> ikinci hane bir artırılır; iki hane esas alınır (Madde 28/2). Bu, okulda öğrendiğiniz standart yuvarlamadır — "her zaman aşağı" değil.</p>
+<div class="example"><p class="example-title">Örnek</p><p>Toplam 31.50 kredi-puanı 10 krediye bölerseniz 3.15 çıkar; yuvarlama gerekmez. 31.50 ÷ 11 = 2.8636… → üçüncü hane 3 olduğu için <strong>2.86</strong>. 33.00 ÷ 11 = 3.00. 32.00 ÷ 11 = 2.9090… → <strong>2.91</strong>.</p><p>Eşik değerlerde bu kural kritik olur: 2.995 → 3.00 (onur sınırının üstü), 2.994 → 2.99 (altı).</p></div>
+<p>Bu araç yuvarlamayı tam olarak bu kuralla yapar; elle hesaplayıp iki ondalıkta farklı bir sonuç görüyorsanız, çoğu zaman ara adımı erken yuvarlamışsınızdır. Yuvarlama yalnızca en sonda, tek bir kez yapılır.</p>
+          </div>
+
+          <h2 id="ornek-donem" data-i18n="g.rehber-gno-hesaplama.h.ornek-donem">Adım adım: bir dönemin DNO'su</h2>
+          <div data-i18n="g.rehber-gno-hesaplama.b.ornek-donem" data-i18n-html>
+<p>Beş dersli bir güz dönemi alalım. Her satırda katsayı × kredi çarpımını bulur, sonra toplarız.</p>
+<div class="example"><p class="example-title">Güz dönemi</p><table><thead><tr><th>Ders</th><th class="num">Kredi</th><th>Not</th><th class="num">Katsayı</th><th class="num">Kredi × katsayı</th></tr></thead>
+<tbody>
+<tr><td>MATH 101</td><td class="num">4</td><td>CB</td><td class="num">2.50</td><td class="num">10.00</td></tr>
+<tr><td>PHYS 121</td><td class="num">4</td><td>BB</td><td class="num">3.00</td><td class="num">12.00</td></tr>
+<tr><td>CMPE 150</td><td class="num">3</td><td>AA</td><td class="num">4.00</td><td class="num">12.00</td></tr>
+<tr><td>TK 101</td><td class="num">2</td><td>BA</td><td class="num">3.50</td><td class="num">7.00</td></tr>
+<tr><td>HTR 311</td><td class="num">2</td><td>DC</td><td class="num">1.50</td><td class="num">3.00</td></tr>
+<tr><td><strong>Toplam</strong></td><td class="num"><strong>15</strong></td><td></td><td></td><td class="num"><strong>44.00</strong></td></tr>
+</tbody></table>
+<p>DNO = 44.00 ÷ 15 = 2.9333… → <strong>2.93</strong></p>
+<p>Harflerin düz ortalaması (2.50+3.00+4.00+3.50+1.50) ÷ 5 = 2.90 olurdu. Fark küçük ama var: en yüksek not 3 kredilik, en düşük not 2 kredilik derste alındığı için ağırlıklı ortalama biraz daha yüksek çıkıyor.</p></div>
+          </div>
+
+          <h2 id="ornek-gno" data-i18n="g.rehber-gno-hesaplama.h.ornek-gno">GNO, DNO'ların ortalaması değildir</h2>
+          <div data-i18n="g.rehber-gno-hesaplama.b.ornek-gno" data-i18n-html>
+<p>En yaygın hata, GNO'yu dönem ortalamalarını toplayıp dönem sayısına bölerek bulmaya çalışmaktır. Bu yalnızca her dönem tam olarak aynı krediyi aldıysanız doğru sonucu verir. GNO, bütün derslerin kredi-puan toplamının bütün derslerin kredi toplamına bölümüdür — dönemler değil, dersler sayılır.</p>
+<div class="example"><p class="example-title">İkinci dönemi ekleyelim</p><p>Yukarıdaki güz dönemi (15 kredi, 44.00 kredi-puan, DNO 2.93) üstüne 18 kredilik bir bahar dönemi geldiğini düşünelim: bahar toplamı 63.00 kredi-puan olsun (DNO = 63.00 ÷ 18 = 3.50).</p>
+<p><strong>Yanlış:</strong> (2.93 + 3.50) ÷ 2 = 3.215 → 3.22</p>
+<p><strong>Doğru:</strong> (44.00 + 63.00) ÷ (15 + 18) = 107.00 ÷ 33 = 3.2424… → <strong>3.24</strong></p>
+<p>Bahar dönemi daha fazla kredi taşıdığı için GNO'yu daha çok etkiliyor; DNO'ların düz ortalaması bunu görmez.</p></div>
+<p>Bu yüzden transkriptinizdeki GNO sütununu elle doğrulamak istiyorsanız dönemleri değil, dersleri toplamalısınız. Bu araç tam olarak bunu yapar: her dönem sonu için o ana kadarki bütün dersleri (tekrar kuralını uygulayarak) yeniden toplar ve kümülatif değeri hesaplar.</p>
+          </div>
+
+          <h2 id="tekrar-ve-gno" data-i18n="g.rehber-gno-hesaplama.h.tekrar-ve-gno">Tekrar edilen dersler hesaba nasıl girer?</h2>
+          <div data-i18n="g.rehber-gno-hesaplama.b.tekrar-ve-gno" data-i18n-html>
+<p>Bir dersi ikinci kez aldığınızda GNO'da yalnızca <strong>son alınan not ve kredi</strong> sayılır; önceki not kayıtta kalır ama toplamdan çıkar (Madde 27/4). Kredi de bir kez sayılır. Yani F aldığınız 4 kredilik dersi tekrar alıp BB yaparsanız paydaya 4 kredi eklenmez; yalnızca o 4 kredinin katsayısı 0'dan 3.00'a yükselir.</p>
+<p>DNO için durum farklıdır: her dönem kendi içindeki notlarla hesaplanır. Tekrar aldığınız ders o dönemin DNO'suna yeni notuyla girer; eski dönemin DNO'su ise değişmez. Kuralın bütün ayrıntıları ve elle hesaplı örneği <a href="rehber-ders-tekrari.html">ders tekrarı</a> makalesinde.</p>
+          </div>
+
+          <h2 id="sss" data-i18n="guide.faqTitle">Sıkça sorulan sorular</h2>
+          <div class="faq">
+            <details class="faq-item">
+              <summary data-i18n="g.rehber-gno-hesaplama.faq.q1">Transkriptteki GNO ile elle hesabım 0.01 farklı çıkıyor, neden?</summary>
+              <div class="faq-answer" data-i18n="g.rehber-gno-hesaplama.faq.a1" data-i18n-html>
+<p>Neredeyse her zaman yuvarlama sırasından kaynaklanır: dönem ortalamalarını yuvarlayıp sonra birleştirmek ya da ara toplamları yuvarlamak farkı yaratır. Doğru yöntem bütün kredi-puanları tam hassasiyetle toplayıp bölmeyi en sonda tek kez yuvarlamaktır. Fark daha büyükse tekrar edilen bir dersin eski notunu da toplama katmış olabilirsiniz.</p>
+              </div>
+            </details>
+            <details class="faq-item">
+              <summary data-i18n="g.rehber-gno-hesaplama.faq.q2">Yaz okulu dersleri GNO'ya girer mi?</summary>
+              <div class="faq-answer" data-i18n="g.rehber-gno-hesaplama.faq.a2" data-i18n-html>
+<p>Evet. Yaz öğretiminde alınan dersler kayıtlara ve hesaplara normal dönem dersleri gibi geçer (Yaz Öğretimi Yönergesi Madde 7/e). Yalnızca yaz DNO'su, yarıyıl başarı denetiminde (sınamalı/başarısız belirlemesinde) dikkate alınmaz; GNO'ya dahildir.</p>
+              </div>
+            </details>
+            <details class="faq-item">
+              <summary data-i18n="g.rehber-gno-hesaplama.faq.q3">GNO en fazla kaç olabilir?</summary>
+              <div class="faq-answer" data-i18n="g.rehber-gno-hesaplama.faq.a3" data-i18n-html>
+<p>4.00. Bütün derslerden AA alındığında her kredi 4.00 katsayıyla girer ve bölme sonucu tam 4.00 çıkar; bunun üstü matematiksel olarak mümkün değildir.</p>
+              </div>
+            </details>
+          </div>
+
+            <div class="article-sources">
+              <h2 data-i18n="guide.sourcesTitle">Kaynaklar</h2>
+              <ol>
+              <li><a href="https://bogazici.edu.tr/tr/pages/bogazici-universitesi-lisans-egitim-ve-ogreti/657" target="_blank" rel="noopener noreferrer" data-i18n="g.rehber-gno-hesaplama.src1">Boğaziçi Üniversitesi Lisans Eğitim ve Öğretim Yönetmeliği (Resmî Gazete 11.06.2016, sayı 29739)</a></li>
+              <li><a href="https://advising.bogazici.edu.tr/tr/pages/sss-lisans/3393" target="_blank" rel="noopener noreferrer" data-i18n="g.rehber-gno-hesaplama.src2">Boğaziçi Üniversitesi Akademik Danışmanlık Ofisi — Lisans SSS</a></li>
+              <li><a href="https://bogazici.edu.tr/tr/pages/bogazici-universitesi-yaz-ogretimi-yonetmelig/659" target="_blank" rel="noopener noreferrer" data-i18n="g.rehber-gno-hesaplama.src3">Boğaziçi Üniversitesi Yaz Öğretimi Yönergesi</a></li>
+              </ol>
+              <p class="article-disclaimer" data-i18n="guide.disclaimer">Bu rehber, yürürlükteki yönetmelik ve yönerge metinlerinden yararlanılarak bağımsız bir öğrenci tarafından hazırlanmıştır; resmî bir üniversite yayını değildir. Yönetmelikler değişebilir, bölümler ek koşul koyabilir. Kararınızı etkileyecek bir konuda son sözü Kayıt İşleri Şube Müdürlüğü ve akademik danışmanınız söyler.</p>
+            </div>
+
+            <div class="article-cta">
+              <p data-i18n="g.rehber-gno-hesaplama.cta" data-i18n-html><strong>Kendi sayılarınızla deneyin</strong>Transkriptinizi aktarın; planlayıcı bu kuralları otomatik uygular ve her değişiklikte ortalamanızı yeniden hesaplar.</p>
+              <a href="planner.html" class="btn-action" data-i18n="g.rehber-gno-hesaplama.ctaBtn">Planlayıcıyı Aç</a>
+            </div>
+          </article>
+
+          <aside class="article-aside">
+            <nav class="toc" aria-label="İçindekiler">
+              <h2 data-i18n="guide.tocTitle">Bu makalede</h2>
+              <ol>
+              <li><a href="#iki-ortalama" data-i18n="g.rehber-gno-hesaplama.h.iki-ortalama">İki ortalama: DNO ve GNO</a></li>
+              <li><a href="#formul" data-i18n="g.rehber-gno-hesaplama.h.formul">Formül</a></li>
+              <li><a href="#yuvarlama" data-i18n="g.rehber-gno-hesaplama.h.yuvarlama">Yuvarlama kuralı</a></li>
+              <li><a href="#ornek-donem" data-i18n="g.rehber-gno-hesaplama.h.ornek-donem">Adım adım: bir dönemin DNO'su</a></li>
+              <li><a href="#ornek-gno" data-i18n="g.rehber-gno-hesaplama.h.ornek-gno">GNO, DNO'ların ortalaması değildir</a></li>
+              <li><a href="#tekrar-ve-gno" data-i18n="g.rehber-gno-hesaplama.h.tekrar-ve-gno">Tekrar edilen dersler hesaba nasıl girer?</a></li>
+              <li><a href="#sss" data-i18n="guide.faqTitle">Sıkça sorulan sorular</a></li>
+              </ol>
+            </nav>
+          </aside>
+        </div>
+
+        <div class="article-related">
+          <h2 data-i18n="guide.relatedTitle">İlgili rehberler</h2>
+          <div class="guide-grid">
+        <a href="rehber-not-sistemi.html" class="guide-card">
+          <span class="guide-tag"><span class="diamond"></span><span data-i18n="g.rehber-not-sistemi.tag">Temel kavramlar</span></span>
+          <h3 data-i18n="g.rehber-not-sistemi.title">Boğaziçi harf notu sistemi: katsayılar ve transkript işaretleri</h3>
+          <p data-i18n="g.rehber-not-sistemi.card">AA'dan F'ye katsayılar, P/F dersleri ve transkriptteki W, R, NC, I, E, NP gibi işaretlerin ortalamaya etkisi.</p>
+          <span class="guide-meta"><span data-i18n="g.rehber-not-sistemi.read">5 dk okuma</span></span>
+        </a>
+        <a href="rehber-ders-tekrari.html" class="guide-card">
+          <span class="guide-tag"><span class="diamond"></span><span data-i18n="g.rehber-ders-tekrari.tag">Yönetmelik kuralları</span></span>
+          <h3 data-i18n="g.rehber-ders-tekrari.title">Ders tekrarı: F, DD ve DC alınan dersler ortalamaya nasıl yansır?</h3>
+          <p data-i18n="g.rehber-ders-tekrari.card">Hangi ders zorunlu tekrar edilir, DD/DC tekrarının sınırları (6 ders, dönemde 1), "son not geçerli" kuralı ve tekrarın GNO'ya etkisinin hesabı.</p>
+          <span class="guide-meta"><span data-i18n="g.rehber-ders-tekrari.read">4 dk okuma</span></span>
+        </a>
+        <a href="rehber-ortalama-yukseltme.html" class="guide-card">
+          <span class="guide-tag"><span class="diamond"></span><span data-i18n="g.rehber-ortalama-yukseltme.tag">Hesap ve strateji</span></span>
+          <h3 data-i18n="g.rehber-ortalama-yukseltme.title">Ortalamayı yükseltmenin matematiği: hangi ders, hangi tekrar, ne kadar etki?</h3>
+          <p data-i18n="g.rehber-ortalama-yukseltme.card">Kredi biriktikçe azalan etki, tekrarın yeni derse üstünlüğü, altı DD/DC tekrar hakkını sıralama yöntemi ve hedef ortalama için gereken notun formülü.</p>
+          <span class="guide-meta"><span data-i18n="g.rehber-ortalama-yukseltme.read">4 dk okuma</span></span>
+        </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="assets/bu-logo.png" alt="Boğaziçi Üniversitesi logosu" width="34" height="34">
+        <div>
+          <strong data-i18n="brand.name">Boğaziçi GPA</strong>
+          <span data-i18n="brand.sub">Akademik Planlayıcı</span>
+        </div>
+      </div>
+      <div class="footer-cols">
+        <nav class="footer-col" aria-labelledby="footer-tools">
+          <h4 id="footer-tools" data-i18n="footer.tools">Araçlar</h4>
+          <a href="index.html" data-i18n="nav.home">Ana Sayfa</a>
+          <a href="planner.html" data-i18n="nav.planner">Ders Planlayıcı</a>
+          <a href="statistics.html" data-i18n="nav.stats">Analitik</a>
+          <a href="pdf_upload.html" data-i18n="nav.upload">Transkript Yükleyici</a>
+        </nav>
+        <nav class="footer-col" aria-labelledby="footer-guide">
+          <h4 id="footer-guide" data-i18n="nav.guide">Rehber</h4>
+          <a href="rehber-not-sistemi.html" data-i18n="g.rehber-not-sistemi.short">Harf notu sistemi</a>
+          <a href="rehber-gno-hesaplama.html" data-i18n="g.rehber-gno-hesaplama.short">GNO nasıl hesaplanır</a>
+          <a href="rehber-ders-tekrari.html" data-i18n="g.rehber-ders-tekrari.short">Ders tekrarı</a>
+          <a href="rehber-onur-listesi.html" data-i18n="g.rehber-onur-listesi.short">Onur listesi</a>
+          <a href="rehber-100luk-donusum.html" data-i18n="g.rehber-100luk-donusum.short">4'lükten 100'lüğe</a>
+          <a href="rehber.html" data-i18n="footer.allGuides">Tüm rehber →</a>
+        </nav>
+        <nav class="footer-col" aria-labelledby="footer-site">
+          <h4 id="footer-site" data-i18n="footer.site">Site</h4>
+          <a href="hakkinda.html" data-i18n="nav.about">Hakkında & İletişim</a>
+          <a href="gizlilik.html" data-i18n="nav.privacy">Gizlilik Politikası</a>
+          <a href="kullanim-kosullari.html" data-i18n="nav.terms">Kullanım Koşulları</a>
+        </nav>
+      </div>
+    </div>
+    <p class="footer-note" data-i18n="common.footerNote">
+      Bu proje Boğaziçi Üniversitesi ile bağlantılı değildir; bağımsız bir öğrenci aracıdır.
+      Tüm veriler yalnızca tarayıcınızda saklanır.
+    </p>
+  </footer>
+
+  <script src="i18n.js"></script>
+  <script src="i18n-content.js"></script>
+  <script src="i18n-guide-index.js"></script>
+  <script>
+    /* Bu makalenin İngilizce çevirisi. Türkçe metin HTML'de; sözlükte yalnızca 'en' vardır. */
+    GPAI18N.extend({
+  "g.rehber-gno-hesaplama.lead": {
+    "en": "Your average is not the average of your letters; it is a division weighted by credits. We explain the formula in Article 28 of the regulation, the rounding rule and the most common mistake — treating the GPA as the mean of your term averages — with numbers."
+  },
+  "g.rehber-gno-hesaplama.readMeta": {
+    "en": "<strong>Reading time:</strong> 4 minutes"
+  },
+  "g.rehber-gno-hesaplama.h.iki-ortalama": {
+    "en": "Two averages: term GPA and cumulative GPA"
+  },
+  "g.rehber-gno-hesaplama.b.iki-ortalama": {
+    "en": "<p>Two numbers are printed under each term of your transcript. The <strong>term GPA</strong> (DNO in Turkish; SPA on the English transcript) covers only the courses taken in that term. The <strong>cumulative GPA</strong> (GNO) is the cumulative average of every course you have taken as a student. Both are calculated at the end of every semester and summer term (Article 28/1).</p>\n<p>Where each one is used matters: graduation, honour lists, double-major and minor conditions look at the cumulative GPA; probation and failing status look at both the cumulative and the term GPA (Article 30). There is a special rule for summer: the summer term GPA is included in the cumulative GPA but is not taken into account in the semester standing checks.</p>"
+  },
+  "g.rehber-gno-hesaplama.h.formul": {
+    "en": "The formula"
+  },
+  "g.rehber-gno-hesaplama.b.formul": {
+    "en": "<p>The regulation defines the average like this: the coefficients of the grades obtained in the relevant courses are multiplied by each course's credits; these products are summed and divided by the total credits of the same courses (Article 28/2). In short:</p>\n<div class=\"example\"><p class=\"example-title\">Formula</p><p><strong>Average = Σ (coefficient × credits) ÷ Σ credits</strong></p><p>The sum runs over every course that enters the average: the term's courses for the term GPA, all terms' courses for the cumulative GPA. P, NC and W courses and non-credit courses are left out (Article 28/3–5).</p></div>\n<p>The formula has two consequences. First, a course's weight in the average is proportional to its credits: a 4-credit course has twice the say of a 2-credit course. Second, moving the cumulative GPA gets harder as credits accumulate: as the denominator grows, a single course's multiplier shrinks within the total. The strategic side of this second consequence is covered in the <a href=\"rehber-ortalama-yukseltme.html\">raising your GPA</a> article.</p>"
+  },
+  "g.rehber-gno-hesaplama.h.yuvarlama": {
+    "en": "The rounding rule"
+  },
+  "g.rehber-gno-hesaplama.b.yuvarlama": {
+    "en": "<p>The result of the division usually does not end at two decimals. The regulation defines the rounding explicitly: if the <strong>third decimal is less than 5</strong> it is dropped; if it is <strong>5 or greater</strong> the second decimal is increased by one; two decimals are used (Article 28/2). This is the standard rounding you learned at school — not \"always down\".</p>\n<div class=\"example\"><p class=\"example-title\">Example</p><p>Dividing 31.50 credit-points by 10 credits gives 3.15; no rounding needed. 31.50 ÷ 11 = 2.8636… → the third decimal is 3, so <strong>2.86</strong>. 33.00 ÷ 11 = 3.00. 32.00 ÷ 11 = 2.9090… → <strong>2.91</strong>.</p><p>At threshold values this rule becomes critical: 2.995 → 3.00 (above the honour line), 2.994 → 2.99 (below it).</p></div>\n<p>This tool rounds by exactly this rule; if a hand calculation gives you a different two-decimal result, you have most likely rounded an intermediate step too early. Rounding is done only once, at the very end.</p>"
+  },
+  "g.rehber-gno-hesaplama.h.ornek-donem": {
+    "en": "Step by step: one term's GPA"
+  },
+  "g.rehber-gno-hesaplama.b.ornek-donem": {
+    "en": "<p>Take a five-course autumn term. On each line we compute coefficient × credits, then add them up.</p>\n<div class=\"example\"><p class=\"example-title\">Autumn term</p><table><thead><tr><th>Course</th><th class=\"num\">Credits</th><th>Grade</th><th class=\"num\">Coefficient</th><th class=\"num\">Credits × coefficient</th></tr></thead>\n<tbody>\n<tr><td>MATH 101</td><td class=\"num\">4</td><td>CB</td><td class=\"num\">2.50</td><td class=\"num\">10.00</td></tr>\n<tr><td>PHYS 121</td><td class=\"num\">4</td><td>BB</td><td class=\"num\">3.00</td><td class=\"num\">12.00</td></tr>\n<tr><td>CMPE 150</td><td class=\"num\">3</td><td>AA</td><td class=\"num\">4.00</td><td class=\"num\">12.00</td></tr>\n<tr><td>TK 101</td><td class=\"num\">2</td><td>BA</td><td class=\"num\">3.50</td><td class=\"num\">7.00</td></tr>\n<tr><td>HTR 311</td><td class=\"num\">2</td><td>DC</td><td class=\"num\">1.50</td><td class=\"num\">3.00</td></tr>\n<tr><td><strong>Total</strong></td><td class=\"num\"><strong>15</strong></td><td></td><td></td><td class=\"num\"><strong>44.00</strong></td></tr>\n</tbody></table>\n<p>Term GPA = 44.00 ÷ 15 = 2.9333… → <strong>2.93</strong></p>\n<p>The plain average of the letters, (2.50+3.00+4.00+3.50+1.50) ÷ 5, would be 2.90. The difference is small but real: the highest grade came in a 3-credit course and the lowest in a 2-credit course, so the weighted average comes out slightly higher.</p></div>"
+  },
+  "g.rehber-gno-hesaplama.h.ornek-gno": {
+    "en": "The cumulative GPA is not the mean of term GPAs"
+  },
+  "g.rehber-gno-hesaplama.b.ornek-gno": {
+    "en": "<p>The most common mistake is trying to find the cumulative GPA by adding up the term GPAs and dividing by the number of terms. That only gives the right answer if you took exactly the same number of credits every term. The cumulative GPA is the total credit-points of all courses divided by the total credits of all courses — courses are counted, not terms.</p>\n<div class=\"example\"><p class=\"example-title\">Adding a second term</p><p>Suppose an 18-credit spring term follows the autumn term above (15 credits, 44.00 credit-points, term GPA 2.93): let the spring total be 63.00 credit-points (term GPA = 63.00 ÷ 18 = 3.50).</p>\n<p><strong>Wrong:</strong> (2.93 + 3.50) ÷ 2 = 3.215 → 3.22</p>\n<p><strong>Right:</strong> (44.00 + 63.00) ÷ (15 + 18) = 107.00 ÷ 33 = 3.2424… → <strong>3.24</strong></p>\n<p>The spring term carries more credits, so it influences the cumulative GPA more; a plain average of term GPAs cannot see that.</p></div>\n<p>So if you want to verify the cumulative GPA column on your transcript by hand, you must add up courses, not terms. That is exactly what this tool does: for every term end it re-sums all courses up to that point (applying the repeat rule) and computes the cumulative value.</p>"
+  },
+  "g.rehber-gno-hesaplama.h.tekrar-ve-gno": {
+    "en": "How do repeated courses enter the calculation?"
+  },
+  "g.rehber-gno-hesaplama.b.tekrar-ve-gno": {
+    "en": "<p>When you take a course a second time, only the <strong>last grade and credits</strong> count in the cumulative GPA; the earlier grade stays on the record but drops out of the total (Article 27/4). The credits are counted once. So if you retake a 4-credit course you failed and earn BB, 4 credits are not added to the denominator; only the coefficient of those 4 credits rises from 0 to 3.00.</p>\n<p>The term GPA behaves differently: each term is computed with its own grades. The repeated course enters that term's GPA with its new grade, while the old term's GPA stays as it was. All the details and a worked example are in the <a href=\"rehber-ders-tekrari.html\">course repeat</a> article.</p>"
+  },
+  "g.rehber-gno-hesaplama.faq.q1": {
+    "en": "My hand calculation differs from the transcript GPA by 0.01 — why?"
+  },
+  "g.rehber-gno-hesaplama.faq.a1": {
+    "en": "<p>Almost always it comes from the order of rounding: rounding term averages and then combining them, or rounding subtotals, creates the difference. The correct method is to sum all credit-points at full precision and round the division only once, at the end. If the difference is larger, you may have included the old grade of a repeated course in the sum.</p>"
+  },
+  "g.rehber-gno-hesaplama.faq.q2": {
+    "en": "Do summer school courses count in the cumulative GPA?"
+  },
+  "g.rehber-gno-hesaplama.faq.a2": {
+    "en": "<p>Yes. Courses taken in summer school enter the records and calculations like regular-term courses (Summer School Directive Article 7/e). Only the summer term GPA is left out of the semester standing check (probation/failing determination); it is included in the cumulative GPA.</p>"
+  },
+  "g.rehber-gno-hesaplama.faq.q3": {
+    "en": "What is the maximum possible GPA?"
+  },
+  "g.rehber-gno-hesaplama.faq.a3": {
+    "en": "<p>4.00. When every course is an AA, every credit enters with a coefficient of 4.00 and the division comes out at exactly 4.00; anything higher is mathematically impossible.</p>"
+  },
+  "g.rehber-gno-hesaplama.src1": {
+    "en": "Boğaziçi University Undergraduate Education Regulation (Official Gazette 11 June 2016, no. 29739)"
+  },
+  "g.rehber-gno-hesaplama.src2": {
+    "en": "Boğaziçi University Academic Advising Office — Undergraduate FAQ"
+  },
+  "g.rehber-gno-hesaplama.src3": {
+    "en": "Boğaziçi University Summer School Directive"
+  },
+  "g.rehber-gno-hesaplama.cta": {
+    "en": "<strong>Try it with your own numbers</strong>Import your transcript; the planner applies these rules automatically and recalculates your average after every change."
+  },
+  "g.rehber-gno-hesaplama.ctaBtn": {
+    "en": "Open Planner"
+  }
+});
+  </script>
+  <script src="ui.js"></script>
+</body>
+</html>
