@@ -452,7 +452,7 @@
 
 @media (max-width: 760px) {
   .main-container {
-    padding: 20px 12px 190px 12px;
+    padding: 20px 12px 150px 12px;
   }
 
   .sem-card {
@@ -464,13 +464,46 @@
     row-gap: 8px;
   }
 
+  /* 1. satır: tutamaç + ders kodu + sil; 2. satır: durum + not + kredi */
   .drag-handle { order: 0; }
-  .course-lesson { order: 1; flex: 1 1 auto; }
-  .course-delete { order: 2; margin-left: auto; }
-  .course-status { order: 3; flex: 1 1 42%; width: auto; }
-  .course-repeat { order: 4; flex: 1 1 50%; width: auto; }
-  .course-grade { order: 5; flex: 1 1 24%; width: auto; }
-  .course-credit { order: 6; flex: 1 1 24%; width: auto; }
+  .course-lesson { order: 1; flex: 1 1 calc(100% - 90px); min-width: 0; }
+  .course-delete { order: 2; margin-left: auto; min-width: 36px; min-height: 36px; }
+  .course-status { order: 3; flex: 2 1 0; min-width: 0; width: auto; }
+  .course-repeat { order: 4; flex: 2 1 0; min-width: 0; width: auto; }
+  .course-grade { order: 5; flex: 1 1 0; min-width: 0; width: auto; }
+  .course-credit { order: 6; flex: 1 1 0; min-width: 0; width: auto; }
+
+  /* Tekrar seçimi varken durum + tekrar bir satır, not + kredi bir satır */
+  .course-row:has(.course-repeat) .course-status,
+  .course-row:has(.course-repeat) .course-repeat { flex-basis: calc(50% - 4px); }
+  .course-row:has(.course-repeat) .course-grade,
+  .course-row:has(.course-repeat) .course-credit { flex-basis: calc(50% - 4px); }
+
+  /* iOS Safari 16px altındaki alanlara dokununca sayfayı yakınlaştırır */
+  .course-row input,
+  .course-row select,
+  .sem-name {
+    font-size: 16px;
+  }
+
+  .sem-header {
+    gap: 6px;
+  }
+
+  .sem-name {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .sem-delete {
+    order: 2;
+    min-width: 36px;
+    min-height: 36px;
+  }
+
+  .sem-chips {
+    order: 3;
+  }
 
   .empty-state {
     flex-direction: column;
@@ -478,13 +511,53 @@
     padding: 24px 16px;
   }
 
+  /* Alt çubuk: ekranın dörtte birini kaplamasın — iki sıkı satır */
   #fixed-bar {
-    padding: 10px 14px;
-    justify-content: center;
+    padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
+    gap: 6px 10px;
+    justify-content: space-between;
+  }
+
+  .totals {
+    gap: 4px 12px;
+    flex: 1 1 100%;
+    justify-content: space-between;
+  }
+
+  .total-stats {
+    gap: 4px 10px;
+    font-size: 0.74rem;
+  }
+
+  .bar-actions {
+    flex: 1 1 100%;
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+
+  #autosave-status {
+    margin-right: auto;
+    font-size: 0.72rem;
+  }
+
+  #fixed-bar button {
+    padding: 7px 12px;
+    font-size: 0.8rem;
   }
 
   #gpa-value {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 380px) {
+  /* Yer yoksa "Kaydedildi" gizlenir; kayıt hatası her zaman görünür kalır */
+  #autosave-status:not(.error) {
+    display: none;
+  }
+
+  .bar-actions {
+    justify-content: flex-end;
   }
 }
 

@@ -742,3 +742,43 @@ html.reveal-on .reveal.visible {
     max-width: none;
   }
 }
+
+/* Dar telefonlar: logo ve düğmeler tek satırda kalsın */
+@media (max-width: 480px) {
+  .navbar {
+    flex-wrap: nowrap;
+    padding: 8px 12px;
+  }
+
+  .logo {
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .logo img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .logo .logo-name {
+    font-size: 1.08rem;
+    white-space: nowrap;
+  }
+
+  .logo .logo-sub {
+    font-size: 0.58rem;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  .nav-buttons {
+    gap: 6px;
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 340px) {
+  .logo .logo-sub {
+    display: none;
+  }
+}

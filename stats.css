@@ -392,3 +392,283 @@ p.subtitle {
     text-align: center;
   }
 }
+
+@media (max-width: 560px) {
+  /* Özet kartları telefonda 2x2 */
+  .summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .summary-card {
+    padding: 14px 14px 16px;
+  }
+
+  .summary-card h3 {
+    font-size: 0.66rem;
+    letter-spacing: 0.05em;
+  }
+
+  .summary-card .value {
+    font-size: 1.5rem;
+  }
+
+  .summary-card .desc {
+    font-size: 0.75rem;
+  }
+
+  .stat-graph {
+    padding: 16px 12px;
+  }
+
+  .stat-graph-title {
+    align-items: flex-start;
+  }
+
+  /* iOS Safari 16px altındaki alanlara dokununca sayfayı yakınlaştırır */
+  .sim-input-group input,
+  .sim-input-group select {
+    font-size: 16px;
+  }
+}
+
+/* ---------- Ders alanlarına göre performans ---------- */
+.subject-lead {
+  margin: -6px 0 14px;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.subject-chart-wrap {
+  position: relative;
+  height: 260px;
+}
+
+.subject-chart-wrap[hidden] {
+  display: none;
+}
+
+/* Yükseklik alan sayısına göre JS'ten gelir; genel canvas sınırı uygulanmaz */
+.subject-chart-wrap canvas {
+  max-height: none !important;
+  height: 100% !important;
+}
+
+.analysis-text strong {
+  font-weight: 700;
+}
+
+.subject-compare {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.subject-compare[hidden] {
+  display: none;
+}
+
+.subject-compare-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+}
+
+.subject-pickers {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: end;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.subject-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  min-width: 0;
+}
+
+.subject-picker select {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.subject-picker select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.subject-vs {
+  padding-bottom: 11px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--text-muted);
+}
+
+.subject-compare-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.subject-col {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  min-width: 0;
+}
+
+.subject-col-name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.subject-col-gpa {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-top: 2px;
+}
+
+.subject-col-diff {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.subject-col-diff.up {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.subject-col-diff.down {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.subject-col-stats {
+  margin: 14px 0 0;
+  display: grid;
+  gap: 6px;
+  font-size: 0.84rem;
+}
+
+.subject-col-stats div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.subject-col-stats dt {
+  color: var(--text-muted);
+}
+
+.subject-col-stats dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.subject-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.subject-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  white-space: nowrap;
+}
+
+.subject-chip.grade-hi b { color: var(--success); }
+.subject-chip.grade-mid b { color: var(--warning); }
+.subject-chip.grade-lo b { color: var(--danger); }
+
+.subject-compare-verdict {
+  margin-top: 14px;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  text-align: center;
+}
+
+.subject-compare-verdict:empty {
+  display: none;
+}
+
+@media (max-width: 560px) {
+  .subject-pickers {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .subject-vs {
+    display: none;
+  }
+
+  .subject-picker select {
+    font-size: 16px;
+    padding: 9px 10px;
+  }
+
+  .subject-compare-grid {
+    gap: 8px;
+  }
+
+  .subject-col {
+    padding: 12px;
+  }
+
+  .subject-col-gpa {
+    font-size: 1.6rem;
+  }
+
+  .subject-col-diff {
+    font-size: 0.68rem;
+    padding: 2px 7px;
+    white-space: nowrap;
+  }
+
+  .subject-col-stats {
+    font-size: 0.76rem;
+  }
+
+  .subject-col-stats div {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .subject-col-stats dd {
+    text-align: left;
+  }
+}

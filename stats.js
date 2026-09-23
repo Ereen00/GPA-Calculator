@@ -56,6 +56,8 @@
       Chart.defaults.font.family = "'Inter', 'Segoe UI', system-ui, sans-serif";
       Chart.defaults.color = dark ? '#94a3b8' : '#64748b';
       Chart.defaults.borderColor = dark ? 'rgba(148, 163, 184, 0.16)' : 'rgba(15, 23, 42, 0.08)';
+      // Dar ekranda eğik yazılan ilk dönem etiketi soldan kırpılmasın
+      Chart.defaults.layout.padding = window.innerWidth < 600 ? { left: 16 } : 0;
     }
   }
   applyChartTheme();
@@ -369,7 +371,182 @@
     // --- 5. Render Functions ---
     renderSummaryCards(semesterMetrics, cumulativeGPA, reg);
     renderCharts(semNames, semesterMetrics, cumulativeGPA, reg, spaDiffs, topRepeated, statusCounts, hardest, easiest, allCards, seasonalAverages, loads, spas);
+    renderSubjects(GPACalc.bySubject(semesters.map(sem => ({ courses: sem }))), gpaStats.overall);
   }
+
+  // --- Ders alanlarına göre performans (MATH, CHEM, CMPE…) ---
+  const SUBJECT_CHART_MAX = 12;   // grafikte gösterilen en fazla alan (krediye göre)
+  const subjectState = { list: [], overall: null, a: null, b: null };
+
+  const fmt2 = (v) => v.toFixed(2);
+  const fmtCredit = (v) => String(Math.round(v * 10) / 10);
+  const escapeHtml = (str) => String(str).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+  const fill = (key, vars) => Object.keys(vars).reduce((text, k) => text.split('{' + k + '}').join(vars[k]), tr(key));
+
+  // GNO'yu grafiğe dikey kesikli çizgi olarak çizer
+  const gpaLinePlugin = {
+    id: 'gpaLine',
+    afterDatasetsDraw(chart, _args, opts) {
+      if (!opts || !isFinite(opts.value)) return;
+      const { ctx, chartArea, scales } = chart;
+      const x = scales.x.getPixelForValue(opts.value);
+      if (x < chartArea.left || x > chartArea.right) return;
+      ctx.save();
+      ctx.strokeStyle = opts.color;
+      ctx.lineWidth = 2;
+      ctx.setLineDash([5, 4]);
+      ctx.beginPath();
+      ctx.moveTo(x, chartArea.top);
+      ctx.lineTo(x, chartArea.bottom);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = opts.color;
+      ctx.font = "600 11px 'Inter', system-ui, sans-serif";
+      const alignRight = x > chartArea.right - 70;
+      ctx.textAlign = alignRight ? 'right' : 'left';
+      ctx.fillText(opts.label, x + (alignRight ? -5 : 5), chartArea.top - 6);
+      ctx.restore();
+    }
+  };
+
+  function renderSubjects(list, overall) {
+    subjectState.list = list;
+    subjectState.overall = overall;
+    const section = document.getElementById('subject-section');
+    const analysis = document.getElementById('subject-analysis');
+    const compare = document.getElementById('subject-compare');
+    const wrap = section.querySelector('.subject-chart-wrap');
+
+    if (!list.length) {
+      if (chartRegistry.subjectChart) { chartRegistry.subjectChart.destroy(); delete chartRegistry.subjectChart; }
+      wrap.hidden = true;
+      compare.hidden = true;
+      analysis.textContent = tr('stats.subject.none');
+      return;
+    }
+    wrap.hidden = false;
+
+    const gpa = overall.credits > 0 ? overall.points / overall.credits : 0;
+    const shown = list.slice(0, SUBJECT_CHART_MAX).sort((x, y) => y.gpa - x.gpa);
+    wrap.style.height = Math.max(160, shown.length * 34 + 70) + 'px';
+
+    makeChart('subjectChart', {
+      type: 'bar',
+      data: {
+        labels: shown.map(s => s.subject),
+        datasets: [{
+          label: tr('stats.subject.ds'),
+          data: shown.map(s => +s.gpa.toFixed(2)),
+          backgroundColor: shown.map(s => s.gpa >= gpa ? COLORS.green : COLORS.red),
+          borderRadius: 6,
+          maxBarThickness: 24
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        maintainAspectRatio: false,
+        layout: { padding: { top: 18 } },
+        plugins: {
+          legend: { display: false },
+          gpaLine: { value: gpa, label: fill('stats.subject.gpaLine', { g: fmt2(gpa) }), color: COLORS.slate },
+          tooltip: {
+            callbacks: {
+              label: (item) => {
+                const s = shown[item.dataIndex];
+                return fill('stats.subject.tooltip', { g: fmt2(s.gpa), n: s.courses.length, c: fmtCredit(s.credits) });
+              }
+            }
+          }
+        },
+        scales: {
+          x: { min: GRADE_MIN, max: GRADE_MAX, ticks: { stepSize: 0.5 } },
+          y: { grid: { display: false } }
+        }
+      },
+      plugins: [gpaLinePlugin]
+    });
+
+    // Analiz metni: en güçlü / en zayıf alan (tek dersli alanlar yanıltıcı olmasın diye
+    // mümkünse en az iki dersi olan alanlar arasından seçilir) ve zayıf alan hariç GNO
+    const pool = list.filter(s => s.courses.length >= 2);
+    const ranked = (pool.length >= 2 ? pool : list).slice().sort((x, y) => y.gpa - x.gpa);
+    const best = ranked[0], worst = ranked[ranked.length - 1];
+    let html = fill('stats.subject.count', { n: list.length });
+    if (list.length > SUBJECT_CHART_MAX) html += ' ' + fill('stats.subject.truncated', { n: SUBJECT_CHART_MAX });
+    if (ranked.length >= 2 && best.gpa > worst.gpa) {
+      html += ' ' + fill('stats.subject.best', { s: escapeHtml(best.subject), g: fmt2(best.gpa) });
+      html += ' ' + fill('stats.subject.worst', { s: escapeHtml(worst.subject), g: fmt2(worst.gpa) });
+      const restCredits = overall.credits - worst.credits;
+      if (restCredits > 0) {
+        const without = (overall.points - worst.points) / restCredits;
+        html += ' ' + fill('stats.subject.without', { s: escapeHtml(worst.subject), g: fmt2(without), d: (without >= gpa ? '+' : '') + fmt2(without - gpa) });
+      }
+    }
+    analysis.innerHTML = html;
+
+    // Karşılaştırma için en az iki alan gerekir
+    if (list.length < 2) { compare.hidden = true; return; }
+    compare.hidden = false;
+    const names = list.map(s => s.subject);
+    if (names.indexOf(subjectState.a) === -1) subjectState.a = names[0];
+    if (names.indexOf(subjectState.b) === -1 || subjectState.b === subjectState.a) {
+      subjectState.b = names.find(n => n !== subjectState.a);
+    }
+    fillSubjectSelect(document.getElementById('subject-a'), subjectState.a);
+    fillSubjectSelect(document.getElementById('subject-b'), subjectState.b);
+    renderSubjectCompare();
+  }
+
+  function fillSubjectSelect(select, selected) {
+    select.innerHTML = subjectState.list.map(s =>
+      `<option value="${escapeHtml(s.subject)}"${s.subject === selected ? ' selected' : ''}>${escapeHtml(s.subject)} (${fill('stats.subject.optionMeta', { n: s.courses.length, c: fmtCredit(s.credits) })})</option>`
+    ).join('');
+  }
+
+  function subjectColumn(s, gpa) {
+    const sorted = s.courses.slice().sort((x, y) => y.value - x.value);
+    const top = sorted[0], low = sorted[sorted.length - 1];
+    const diff = s.gpa - gpa;
+    const chips = s.courses.map(c =>
+      `<span class="subject-chip grade-${c.value >= 3 ? 'hi' : c.value >= 2 ? 'mid' : 'lo'}">${escapeHtml(c.lesson)} <b>${escapeHtml(c.grade)}</b></span>`
+    ).join('');
+    return `
+      <div class="subject-col">
+        <div class="subject-col-name">${escapeHtml(s.subject)}</div>
+        <div class="subject-col-gpa">${fmt2(s.gpa)}</div>
+        <div class="subject-col-diff ${diff >= 0 ? 'up' : 'down'}">${fill('stats.subject.vsGpa', { d: (diff >= 0 ? '+' : '') + fmt2(diff) })}</div>
+        <dl class="subject-col-stats">
+          <div><dt>${tr('stats.subject.courses')}</dt><dd>${s.courses.length}</dd></div>
+          <div><dt>${tr('stats.subject.credits')}</dt><dd>${fmtCredit(s.credits)}</dd></div>
+          <div><dt>${tr('stats.subject.top')}</dt><dd>${escapeHtml(top.lesson)} · ${escapeHtml(top.grade)}</dd></div>
+          <div><dt>${tr('stats.subject.low')}</dt><dd>${escapeHtml(low.lesson)} · ${escapeHtml(low.grade)}</dd></div>
+        </dl>
+        <div class="subject-chips">${chips}</div>
+      </div>`;
+  }
+
+  function renderSubjectCompare() {
+    const { list, overall } = subjectState;
+    const a = list.find(s => s.subject === subjectState.a);
+    const b = list.find(s => s.subject === subjectState.b);
+    const grid = document.getElementById('subject-compare-grid');
+    const verdict = document.getElementById('subject-compare-verdict');
+    if (!a || !b) { grid.innerHTML = ''; verdict.textContent = ''; return; }
+    const gpa = overall.credits > 0 ? overall.points / overall.credits : 0;
+    grid.innerHTML = subjectColumn(a, gpa) + subjectColumn(b, gpa);
+
+    if (a === b) { verdict.textContent = tr('stats.subject.same'); return; }
+    const d = a.gpa - b.gpa;
+    if (Math.abs(d) < 0.005) {
+      verdict.innerHTML = fill('stats.subject.equal', { a: escapeHtml(a.subject), b: escapeHtml(b.subject) });
+    } else {
+      const hi = d > 0 ? a : b, lo = d > 0 ? b : a;
+      verdict.innerHTML = fill('stats.subject.diff', { hi: escapeHtml(hi.subject), lo: escapeHtml(lo.subject), d: fmt2(Math.abs(d)) });
+    }
+  }
+
+  document.getElementById('subject-a').addEventListener('change', (e) => { subjectState.a = e.target.value; renderSubjectCompare(); });
+  document.getElementById('subject-b').addEventListener('change', (e) => { subjectState.b = e.target.value; renderSubjectCompare(); });
 
   function renderSummaryCards(metrics, cumGPA, reg) {
     const current = cumGPA[cumGPA.length - 1] || 0;

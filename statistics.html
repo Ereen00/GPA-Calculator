@@ -69,7 +69,7 @@
           <p>Grafiklerin tamamı tarayıcınızda, planlayıcıdaki verilerden üretilir. Henüz ders eklemediyseniz sayfa boş görünür; önce transkriptinizi aktarın ya da planlayıcıdan birkaç ders girin.</p>
         </div>
         <ul class="intro-facts">
-          <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"></path><path d="M7 15l3-4 3 2 4-6"></path></svg><span data-i18n="intro.stats.f1" data-i18n-html><strong>12 grafik.</strong> Trend, dağılım, kredi yükü ve ders bazlı kırılımlar.</span></li>
+          <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"></path><path d="M7 15l3-4 3 2 4-6"></path></svg><span data-i18n="intro.stats.f1" data-i18n-html><strong>13 grafik.</strong> Trend, dağılım, kredi yükü ve ders bazlı kırılımlar.</span></li>
           <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="4"></circle></svg><span data-i18n="intro.stats.f2" data-i18n-html><strong>Mezuniyet simülasyonu.</strong> Hedef ortalamanız için gereken notu hesaplar.</span></li>
           <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path></svg><span data-i18n="intro.stats.f3" data-i18n-html><strong>Veri kaynağı:</strong> planlayıcıdaki dersleriniz. Sunucuya sorgu gitmez.</span></li>
         </ul>
@@ -107,6 +107,24 @@
           <div class="stat-graph-title"><span data-i18n="stats.chart.trend.title">Akademik Performans Trendi (SPA vs Kümülatif GPA)</span> <span class="badge" data-i18n="stats.chart.trend.badge">Zaman Serisi</span></div>
           <canvas id="gpaChart"></canvas>
           <div id="trend-analysis" class="analysis-text" data-i18n="stats.waiting">Veri bekleniyor…</div>
+        </div>
+
+        <div class="stat-graph full-width subject-card" id="subject-section">
+          <div class="stat-graph-title"><span data-i18n="stats.subject.title">Ders Alanlarına Göre Performans</span> <span class="badge" data-i18n="stats.subject.badge">Alan Karşılaştırması</span></div>
+          <p class="subject-lead" data-i18n="stats.subject.lead">Ders kodunun harf kısmı (MATH, CHEM, CMPE…) bir alan sayılır: MATH101, MATH201 ve MATH301 aynı alanda, kredi ağırlıklı tek bir ortalamada birleşir. Tekrar ettiğiniz derslerde yalnızca ortalamaya sayılan son not kullanılır. Dikey çizgi genel ortalamanızı (GNO) gösterir.</p>
+          <div class="subject-chart-wrap"><canvas id="subjectChart"></canvas></div>
+          <div id="subject-analysis" class="analysis-text info" data-i18n="stats.waiting">Veri bekleniyor…</div>
+
+          <div class="subject-compare" id="subject-compare" hidden>
+            <div class="subject-compare-title" data-i18n="stats.subject.compareTitle">İki alanı yan yana karşılaştırın</div>
+            <div class="subject-pickers">
+              <label class="subject-picker"><span data-i18n="stats.subject.pickA">Birinci alan</span><select id="subject-a"></select></label>
+              <span class="subject-vs" aria-hidden="true">vs</span>
+              <label class="subject-picker"><span data-i18n="stats.subject.pickB">İkinci alan</span><select id="subject-b"></select></label>
+            </div>
+            <div class="subject-compare-grid" id="subject-compare-grid"></div>
+            <div class="subject-compare-verdict" id="subject-compare-verdict"></div>
+          </div>
         </div>
 
         <div class="stat-graph full-width">
@@ -251,7 +269,7 @@
       <div class="section-head">
         <span class="eyebrow"><span class="diamond"></span><span data-i18n="tg.stats.eyebrow">Kullanım rehberi</span></span>
         <h2 class="section-title" id="tool-guide-title" data-i18n="tg.stats.title">Grafikler ne anlatıyor?</h2>
-        <p class="section-lead" data-i18n="tg.stats.lead">On iki grafiğin her birinin hangi soruya cevap verdiği, nasıl hesaplandığı ve simülatörün formülü.</p>
+        <p class="section-lead" data-i18n="tg.stats.lead">On üç grafiğin her birinin hangi soruya cevap verdiği, nasıl hesaplandığı ve simülatörün formülü.</p>
       </div>
       <div class="prose">
 
@@ -267,6 +285,7 @@
 <thead><tr><th scope="col">Grafik</th><th scope="col">Cevapladığı soru</th><th scope="col">Nasıl hesaplanır</th></tr></thead>
 <tbody>
 <tr><td><strong>Akademik Performans Trendi</strong></td><td>Dönemlik ortalamam ve kümülatif ortalamam zaman içinde nereye gidiyor?</td><td>Üç çizgi: her dönemin SPA'sı, o dönem sonundaki kümülatif GPA (kesikli) ve SPA'ya uydurulmuş doğrusal trend; altındaki metin trendin eğimini "puan/dönem" olarak verir</td></tr>
+<tr><td><strong>Ders Alanlarına Göre Performans</strong></td><td>Matematik derslerimde mi yoksa kimya derslerimde mi daha başarılıyım?</td><td>Ders kodunun harf kısmı (MATH, CHEM…) alan sayılır; alandaki derslerin ortalamaya sayılan son notları kredi ağırlıklı ortalanır. Kesikli çizgi GNO'dur; üstündeki alanlar yeşil, altındakiler kırmızı. Altındaki araçla iki alanı ders sayısı, kredi, en iyi ve en düşük notla yan yana karşılaştırabilirsiniz</td></tr>
 <tr><td><strong>Dönemlere Göre Not Dağılımı</strong></td><td>Hangi dönemde hangi harflerden kaç tane aldım?</td><td>Dönem başına harf notu sayıları, yığılmış sütun</td></tr>
 <tr><td><strong>Dönemler Arası Değişim</strong></td><td>Bu dönem geçen döneme göre iyi mi kötü mü geçti?</td><td>Ardışık dönemlerin SPA farkı; pozitif sütun yükseliş</td></tr>
 <tr><td><strong>Performans Stabilitesi</strong></td><td>Notlarım ne kadar dalgalı?</td><td>Dönem içindeki not katsayılarının standart sapması; düşük değer tutarlılık demektir</td></tr>
@@ -368,7 +387,7 @@
     "en": "What the charts tell you"
   },
   "tg.stats.lead": {
-    "en": "Which question each of the twelve charts answers, how it is computed, and the simulator's formula."
+    "en": "Which question each of the thirteen charts answers, how it is computed, and the simulator's formula."
   },
   "tg.stats.h.ozet": {
     "en": "1. Summary cards"
@@ -380,7 +399,7 @@
     "en": "2. The charts one by one"
   },
   "tg.stats.b.grafikler": {
-    "en": "<div class=\"table-scroll\"><table class=\"grade-table\">\n<caption>All charts are produced in your browser from the planner data. For repeated courses, cumulative values use the \"last grade\" rule and term values use that term's own grades.</caption>\n<thead><tr><th scope=\"col\">Chart</th><th scope=\"col\">Question it answers</th><th scope=\"col\">How it is computed</th></tr></thead>\n<tbody>\n<tr><td><strong>Academic Performance Trend</strong></td><td>Where are my term average and cumulative average heading over time?</td><td>Three lines: each term's SPA, the cumulative GPA as of that term's end (dashed) and a linear trend fitted to the SPA; the text below gives the trend's slope in \"points/term\"</td></tr>\n<tr><td><strong>Grade Distribution by Term</strong></td><td>How many of each letter did I get in which term?</td><td>Letter grade counts per term, stacked columns</td></tr>\n<tr><td><strong>Term-over-Term Change</strong></td><td>Did this term go better or worse than the last?</td><td>Difference of SPA between consecutive terms; a positive bar is a rise</td></tr>\n<tr><td><strong>Performance Stability</strong></td><td>How volatile are my grades?</td><td>Standard deviation of grade coefficients within a term; a low value means consistency</td></tr>\n<tr><td><strong>Most Repeated Courses</strong></td><td>Which courses did I take more than once?</td><td>Number of attempts under the same course name (or substitution chain)</td></tr>\n<tr><td><strong>Withdrawals by Term</strong></td><td>When did I use my W rights?</td><td>Number of \"Withdrawn\" courses per term; subtract the total from five for your remaining rights</td></tr>\n<tr><td><strong>Hardest Courses</strong></td><td>Which courses did I pass with the lowest average?</td><td>Average coefficient over all attempts at the course, retakes included — the lowest</td></tr>\n<tr><td><strong>Strongest Courses</strong></td><td>Which courses am I best at?</td><td>Same computation, the highest</td></tr>\n<tr><td><strong>Overall Grade Distribution</strong></td><td>What percentage of all my grades are AA, BB…?</td><td>Letter grade counts over all courses, doughnut chart</td></tr>\n<tr><td><strong>Credits by Status</strong></td><td>How much of my credit is normal, retake, withdrawal?</td><td>Credit totals per status, pie chart</td></tr>\n<tr><td><strong>Credit Load vs Performance Correlation</strong></td><td>Does my average drop when I take more courses?</td><td>One point per term: credit load (x) and SPA (y); the text below interprets the Pearson correlation coefficient</td></tr>\n<tr><td><strong>Seasonal Performance and Load</strong></td><td>Do I perform differently in autumn, spring and summer?</td><td>The season is recognised from the term name; average SPA and average credit load per season</td></tr>\n</tbody></table></div>"
+    "en": "<div class=\"table-scroll\"><table class=\"grade-table\">\n<caption>All charts are produced in your browser from the planner data. For repeated courses, cumulative values use the \"last grade\" rule and term values use that term's own grades.</caption>\n<thead><tr><th scope=\"col\">Chart</th><th scope=\"col\">Question it answers</th><th scope=\"col\">How it is computed</th></tr></thead>\n<tbody>\n<tr><td><strong>Academic Performance Trend</strong></td><td>Where are my term average and cumulative average heading over time?</td><td>Three lines: each term's SPA, the cumulative GPA as of that term's end (dashed) and a linear trend fitted to the SPA; the text below gives the trend's slope in \"points/term\"</td></tr>\n<tr><td><strong>Performance by Subject Area</strong></td><td>Am I doing better in my math courses or my chemistry courses?</td><td>The letter part of the course code (MATH, CHEM…) is the subject area; the counted final grades of its courses are averaged by credit. The dashed line is your GPA; areas above it are green, below it red. The tool underneath compares two areas side by side by course count, credits, best and lowest grade</td></tr>\n<tr><td><strong>Grade Distribution by Term</strong></td><td>How many of each letter did I get in which term?</td><td>Letter grade counts per term, stacked columns</td></tr>\n<tr><td><strong>Term-over-Term Change</strong></td><td>Did this term go better or worse than the last?</td><td>Difference of SPA between consecutive terms; a positive bar is a rise</td></tr>\n<tr><td><strong>Performance Stability</strong></td><td>How volatile are my grades?</td><td>Standard deviation of grade coefficients within a term; a low value means consistency</td></tr>\n<tr><td><strong>Most Repeated Courses</strong></td><td>Which courses did I take more than once?</td><td>Number of attempts under the same course name (or substitution chain)</td></tr>\n<tr><td><strong>Withdrawals by Term</strong></td><td>When did I use my W rights?</td><td>Number of \"Withdrawn\" courses per term; subtract the total from five for your remaining rights</td></tr>\n<tr><td><strong>Hardest Courses</strong></td><td>Which courses did I pass with the lowest average?</td><td>Average coefficient over all attempts at the course, retakes included — the lowest</td></tr>\n<tr><td><strong>Strongest Courses</strong></td><td>Which courses am I best at?</td><td>Same computation, the highest</td></tr>\n<tr><td><strong>Overall Grade Distribution</strong></td><td>What percentage of all my grades are AA, BB…?</td><td>Letter grade counts over all courses, doughnut chart</td></tr>\n<tr><td><strong>Credits by Status</strong></td><td>How much of my credit is normal, retake, withdrawal?</td><td>Credit totals per status, pie chart</td></tr>\n<tr><td><strong>Credit Load vs Performance Correlation</strong></td><td>Does my average drop when I take more courses?</td><td>One point per term: credit load (x) and SPA (y); the text below interprets the Pearson correlation coefficient</td></tr>\n<tr><td><strong>Seasonal Performance and Load</strong></td><td>Do I perform differently in autumn, spring and summer?</td><td>The season is recognised from the term name; average SPA and average credit load per season</td></tr>\n</tbody></table></div>"
   },
   "tg.stats.h.simulator": {
     "en": "3. The graduation simulator"

@@ -74,8 +74,8 @@
     return key;
   }
 
-  /* [0..endIdx] dönem aralığı için tekrar kuralı uygulanmış kümülatif değerler */
-  function cumulative(semesters, endIdx) {
+  /* [0..endIdx] dönem aralığındaki kredili denemeleri tekrar grubuna göre toplar */
+  function groupAttempts(semesters, endIdx) {
     var alias = buildAliasMap(semesters, endIdx);
     var groups = new Map();
     for (var i = 0; i <= endIdx && i < semesters.length; i++) {
@@ -86,21 +86,34 @@
         groups.get(key).push({ course: course, semIdx: i });
       });
     }
+    return groups;
+  }
+
+  /* Bir grubun GPA'ya sayılan denemesi (yoksa null).
+     GPA'yı yalnızca SONUÇLANMIŞ denemeler belirler: geçerli (sayısal) notu olan
+     taken/repeated-with denemeleri. Devam eden (notsuz) veya çekilen (W) bir
+     tekrar, önceki notu SİLMEZ — resmi transkript davranışıyla birebir aynı. */
+  function countedAttempt(attempts) {
+    var concluded = attempts.filter(function (a) {
+      return countsForGpa(a.course.status) && !isNaN(gradeValue(a.course.grade));
+    });
+    if (!concluded.length) return null;
+    var latest = concluded[0];
+    concluded.forEach(function (a) {
+      if (a.semIdx > latest.semIdx) latest = a;
+      else if (a.semIdx === latest.semIdx && a.course.status === 'repeated with') latest = a;
+    });
+    return latest;
+  }
+
+  /* [0..endIdx] dönem aralığı için tekrar kuralı uygulanmış kümülatif değerler */
+  function cumulative(semesters, endIdx) {
+    var groups = groupAttempts(semesters, endIdx);
 
     var points = 0, credits = 0, attempted = 0, completed = 0;
     groups.forEach(function (attempts) {
-      // GPA'yı yalnızca SONUÇLANMIŞ denemeler belirler: geçerli (sayısal) notu olan
-      // taken/repeated-with denemeleri. Devam eden (notsuz) veya çekilen (W) bir
-      // tekrar, önceki notu SİLMEZ — resmi transkript davranışıyla birebir aynı.
-      var concluded = attempts.filter(function (a) {
-        return countsForGpa(a.course.status) && !isNaN(gradeValue(a.course.grade));
-      });
-      if (concluded.length > 0) {
-        var latest = concluded[0];
-        concluded.forEach(function (a) {
-          if (a.semIdx > latest.semIdx) latest = a;
-          else if (a.semIdx === latest.semIdx && a.course.status === 'repeated with') latest = a;
-        });
+      var latest = countedAttempt(attempts);
+      if (latest) {
         var c = latest.course;
         var cr = courseCredit(c);
         var g = gradeValue(c.grade);
@@ -173,9 +186,49 @@
     return { perSemester: perSemester, overall: overall, repeatedTargets: repeatedTargets };
   }
 
+  /* Ders kodunun alan öneki: "MATH 101" / "math101" -> "MATH", "TK221" -> "TK".
+     Harfle başlamayan adlar null döner (gruplanmaz). */
+  function subjectOf(lesson) {
+    var m = String(lesson || '').trim().toUpperCase().match(/^[A-ZÇĞİÖŞÜ]+/);
+    return m ? m[0] : null;
+  }
+
+  /* Ders alanlarına göre performans: kümülatif GPA'ya sayılan denemeler
+     (tekrar kuralı uygulanmış) ders kodunun önekine göre gruplanır. Tüm
+     alanların puan/kredi toplamı, önekli dersler için GPA ile birebir tutar.
+     Dönüş: [{ subject, gpa, points, credits, courses: [{ lesson, grade, credit, value }] }]
+     — krediye göre azalan sırada. */
+  function bySubject(semesters) {
+    var groups = groupAttempts(semesters, semesters.length - 1);
+    var subjects = new Map();
+    groups.forEach(function (attempts) {
+      var latest = countedAttempt(attempts);
+      if (!latest) return;
+      var c = latest.course;
+      var subject = subjectOf(c.lesson);
+      if (!subject) return;
+      var cr = courseCredit(c);
+      var g = gradeValue(c.grade);
+      if (!subjects.has(subject)) subjects.set(subject, { subject: subject, points: 0, credits: 0, courses: [] });
+      var s = subjects.get(subject);
+      s.points += g * cr;
+      s.credits += cr;
+      s.courses.push({ lesson: String(c.lesson).trim(), grade: c.grade, credit: cr, value: g });
+    });
+    var list = Array.from(subjects.values());
+    list.forEach(function (s) {
+      s.gpa = s.credits > 0 ? s.points / s.credits : 0;
+      s.courses.sort(function (a, b) { return a.lesson.localeCompare(b.lesson, 'en', { numeric: true }); });
+    });
+    list.sort(function (a, b) { return b.credits - a.credits || a.subject.localeCompare(b.subject); });
+    return list;
+  }
+
   global.GPACalc = {
     GRADE_MAP: GRADE_MAP,
     gradeValue: gradeValue,
-    computeAll: computeAll
+    computeAll: computeAll,
+    subjectOf: subjectOf,
+    bySubject: bySubject
   };
 })(typeof window !== 'undefined' ? window : globalThis);
