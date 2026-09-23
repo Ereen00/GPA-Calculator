@@ -114,6 +114,7 @@
           <div data-i18n="tg.planner.b.arayuz" data-i18n-html>
 <p>Her <strong>dönem</strong> bir karttır. Kart başlığına tıklayarak adını değiştirebilir (örneğin "2025-2026 Güz"), kartı sürükleyerek dönemlerin sırasını düzenleyebilirsiniz. Sıra önemlidir: kümülatif ortalama dönem sırasına göre hesaplanır ve tekrar edilen derslerde "son not" bu sıraya göre belirlenir.</p>
 <p>Her <strong>ders satırında</strong> dört alan vardır: ders kodu/adı, durum, not ve kredi. Kart altında o dönemin <strong>SPA</strong>'sı (dönem ortalaması) ile o dönem sonundaki <strong>kümülatif GPA</strong> görünür; ayrıca denenen ve tamamlanan kredi yazılır. Sayfanın altındaki çubuk bütün dönemlerin toplamını gösterir: genel ortalama, toplam kredi, denenen ve tamamlanan kredi.</p>
+<p><strong>Ders önerileri.</strong> Ders kodu alanına yazmaya başladığınızda en alakalı beş ders listelenir. Kodla ("math1", "cmpe 15"), İngilizce adla ("calculus") ya da Türkçe adla ("analiz", "organik kimya") arayabilirsiniz. Bir öneriyi seçtiğinizde kod alana yazılır; o satırın kredisini elle değiştirmediyseniz katalogdaki kredi de gelir. Kod, planınızdaki diğer derslerle aynı biçimde yazılır ("MATH 101" ya da "MATH101"), çünkü tekrar eşleştirmesi ders adına bakar. Öneri listesi Boğaziçi Üniversitesi Lisans Kataloğu'ndaki yaklaşık 1.500 dersten derlenmiştir. Katalog her dönem güncellenmeyebilir: yeni açılan ya da kodu değişen dersler listede olmayabilir, kredisi değişmiş olabilir. Bu yüzden krediyi transkriptinizle karşılaştırın. Listede olmayan bir dersi her zamanki gibi elle yazabilirsiniz; planınızda bir kez geçen ders sonraki satırlarda da önerilir.</p>
 <p>Her değişiklik anında yeniden hesaplanır ve tarayıcınıza otomatik kaydedilir; kaydetme durumu çubukta "Kaydedildi" olarak görünür.</p>
           </div>
 
@@ -261,7 +262,7 @@
     "en": "1. What is on the screen"
   },
   "tg.planner.b.arayuz": {
-    "en": "<p>Each <strong>term</strong> is a card. Click the card heading to rename it (for example \"2025-2026 Fall\") and drag the card to reorder terms. Order matters: the cumulative average is calculated in term order, and for repeated courses the \"last grade\" is determined by this order.</p>\n<p>Each <strong>course line</strong> has four fields: course code/name, status, grade and credits. Below the card you see that term's <strong>SPA</strong> (term average) and the <strong>cumulative GPA</strong> as of the end of that term, plus attempted and completed credits. The bar at the bottom of the page shows the totals across all terms: cumulative average, total credits, attempted and completed credits.</p>\n<p>Every change is recalculated instantly and saved automatically to your browser; the save state shows as \"Saved\" in the bar.</p>"
+    "en": "<p>Each <strong>term</strong> is a card. Click the card heading to rename it (for example \"2025-2026 Fall\") and drag the card to reorder terms. Order matters: the cumulative average is calculated in term order, and for repeated courses the \"last grade\" is determined by this order.</p>\n<p>Each <strong>course line</strong> has four fields: course code/name, status, grade and credits. Below the card you see that term's <strong>SPA</strong> (term average) and the <strong>cumulative GPA</strong> as of the end of that term, plus attempted and completed credits. The bar at the bottom of the page shows the totals across all terms: cumulative average, total credits, attempted and completed credits.</p>\n<p><strong>Course suggestions.</strong> As you start typing in the course code field, the five most relevant courses are listed. You can search by code (\"math1\", \"cmpe 15\"), by English name (\"calculus\") or by Turkish name (\"analiz\", \"organik kimya\"). Picking a suggestion fills in the code; unless you have edited that line's credits by hand, the catalogue credits are filled in too. The code is written in the same style as the other courses in your plan (\"MATH 101\" or \"MATH101\"), because retake matching looks at the course name. The list is compiled from about 1,500 courses in the Boğaziçi University Undergraduate Catalogue. The catalogue may not be updated every term: newly opened or renumbered courses may be missing and credits may have changed, so compare credits with your transcript. You can still type any course that is not on the list; once a course appears in your plan it is suggested on later lines too.</p>\n<p>Every change is recalculated instantly and saved automatically to your browser; the save state shows as \"Saved\" in the bar.</p>"
   },
   "tg.planner.h.durumlar": {
     "en": "2. Course statuses and their effect on the calculation"
@@ -302,6 +303,7 @@
 });
   </script>
   <script src="ui.js"></script>
+  <script src="course-suggest.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

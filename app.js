@@ -153,6 +153,35 @@
     scheduleSave();
   }
 
+  // ---------- Ders önerisi yardımcıları ----------
+  /* Öneriden seçilen kodu planın kendi biçimine uydurur ("MATH 101" / "MATH101").
+     Tekrar eşleştirmesi ders adına bakar; biçim karışırsa aynı ders iki ayrı ders sayılırdı. */
+  function formatCode(code, subject, number) {
+    var spaced = 0, joined = 0;
+    state.semesters.forEach(function (sem) {
+      sem.courses.forEach(function (c) {
+        var name = (c.lesson || '').trim();
+        if (/^[A-Za-zÇĞİÖŞÜçğıöşü]+\s+\d/.test(name)) spaced++;
+        else if (/^[A-Za-zÇĞİÖŞÜçğıöşü]+\d/.test(name)) joined++;
+      });
+    });
+    return joined > spaced ? subject + number : subject + ' ' + number;
+  }
+
+  /* Planda geçen ders kodları (katalogda olmayanlar da öneride çıksın);
+     yazılmakta olan satırın kendi değeri hariç */
+  function ownCourseCodes(current) {
+    var codes = [];
+    state.semesters.forEach(function (sem) {
+      sem.courses.forEach(function (c) {
+        if (c === current) return;
+        var name = (c.lesson || '').trim();
+        if (name && codes.indexOf(name) === -1) codes.push(name);
+      });
+    });
+    return codes;
+  }
+
   // ---------- Tekrar (yerine) aday listesi ----------
   function repeatCandidates(current) {
     var names = [];
@@ -183,6 +212,25 @@
       scheduleSave();
     });
     row.appendChild(lessonInput);
+
+    // Katalogdan ders önerisi: seçilen kod alana yazılır; kullanıcı bu satırın
+    // kredisini elle değiştirmediyse katalogdaki kredi de gelir
+    var creditEdited = false;
+    if (window.GPACourseSuggest) {
+      GPACourseSuggest.attach(lessonInput, {
+        format: formatCode,
+        extra: function () { return ownCourseCodes(course); },
+        onPick: function (item) {
+          course.lesson = lessonInput.value;
+          if (item.credit != null && !creditEdited) {
+            course.credit = String(item.credit);
+            creditInput.value = course.credit;
+          }
+          refreshComputed();
+          scheduleSave();
+        }
+      });
+    }
 
     var statusSel = el('select', { class: 'course-status', title: t('editor.statusTitle') });
     STATUS_OPTIONS.forEach(function (o) {
@@ -235,6 +283,7 @@
       value: course.credit, title: t('editor.creditTitle'), placeholder: t('editor.creditPlaceholder')
     });
     creditInput.addEventListener('input', function () {
+      creditEdited = true;
       course.credit = creditInput.value;
       refreshComputed();
       scheduleSave();
