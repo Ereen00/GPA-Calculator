@@ -617,3 +617,13 @@
     padding: 44px 24px;
   }
 }
+
+/* ---------- Hero altındaki "örnek veriyle dene" bağlantısı ---------- */
+.hero-demo { margin: 18px 0 0; font-size: 0.94rem; }
+.hero-demo a {
+  color: var(--text-muted);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+.hero-demo a:hover { color: var(--primary); border-bottom-color: currentColor; }

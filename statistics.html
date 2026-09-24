@@ -24,6 +24,18 @@
   <link rel="stylesheet" href="content.css">
   <link rel="stylesheet" href="guide.css">
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Bazı grafikler boş görünüyor; neden?", "acceptedAnswer": {"@type": "Answer", "text": "Grafik, verinizde ilgili durum yoksa boş kalır: hiç dersten çekilmediyseniz çekilme grafiği, hiç ders tekrar etmediyseniz tekrar grafiği boştur. Trend ve korelasyon grafikleri en az iki dönem ister."}}, {"@type": "Question", "name": "Korelasyon katsayısı ne anlama geliyor?", "acceptedAnswer": {"@type": "Answer", "text": "−1 ile +1 arasında bir sayıdır. Sıfıra yakınsa kredi yükü ile dönem ortalamanız arasında doğrusal bir ilişki yoktur; negatifse yük arttıkça ortalama düşme eğilimindedir; pozitifse tersi. Az sayıda dönemle hesaplanan katsayı gürültülüdür; dört-beş dönemden az veride yoruma temkinli yaklaşın."}}]}</script>
+  <meta name="description" content="Transkriptinizi 13 grafikle analiz edin: dönemlik ortalama trendi, harf notu dağılımı, kredi yükü ve mezuniyet simülasyonu. Tümü tarayıcınızda çalışır.">
+  <link rel="canonical" href="https://bogazicitranscriptmanager.vercel.app/statistics.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Boğaziçi GPA">
+  <meta property="og:title" content="Akademik Analitik – Boğaziçi GPA">
+  <meta property="og:description" content="Transkriptinizi 13 grafikle analiz edin: dönemlik ortalama trendi, harf notu dağılımı, kredi yükü ve mezuniyet simülasyonu. Tümü tarayıcınızda çalışır.">
+  <meta property="og:url" content="https://bogazicitranscriptmanager.vercel.app/statistics.html">
+  <meta property="og:image" content="https://bogazicitranscriptmanager.vercel.app/assets/hero-campus.webp">
+  <meta property="og:locale" content="tr_TR">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Akademik Analitik","url":"https://bogazicitranscriptmanager.vercel.app/statistics.html","applicationCategory":"EducationalApplication","operatingSystem":"Web","inLanguage":"tr","description":"Transkriptinizi 13 grafikle analiz edin: dönemlik ortalama trendi, harf notu dağılımı, kredi yükü ve mezuniyet simülasyonu. Tümü tarayıcınızda çalışır.","isPartOf":{"@type":"WebSite","name":"Boğaziçi GPA","url":"https://bogazicitranscriptmanager.vercel.app/"},"offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"},"publisher":{"@type":"Organization","name":"Boğaziçi GPA","url":"https://bogazicitranscriptmanager.vercel.app","logo":{"@type":"ImageObject","url":"https://bogazicitranscriptmanager.vercel.app/assets/bu-logo.png"}}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ana Sayfa","item":"https://bogazicitranscriptmanager.vercel.app/"},{"@type":"ListItem","position":2,"name":"Analitik","item":"https://bogazicitranscriptmanager.vercel.app/statistics.html"}]}</script>
   <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7872183586463318" crossorigin="anonymous"></script>
 </head>
@@ -79,6 +91,11 @@
 
   <main class="stats-container" id="main">
 
+  <div id="demo-banner" class="demo-banner" hidden>
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 8h.01M11 12h1v4h1"></path></svg>
+    <p data-i18n="demo.banner" data-i18n-html><strong>Örnek veri görüntülüyorsunuz.</strong> Bu kurgusal bir transkripttir; kendi derslerinizi girmek için örnek veriyi temizleyin.</p>
+    <button type="button" class="demo-clear" data-demo-clear data-i18n="demo.clear">Örnek veriyi temizle</button>
+  </div>
     <div id="stats-empty" class="stats-empty">
       <div class="empty-icon">
         <svg class="icon" viewBox="0 0 24 24" style="width:3rem;height:3rem;stroke-width:1.4"><path d="M3 3v18h18"></path><path d="M7 15l3-4 3 2 4-6"></path></svg>
@@ -88,6 +105,7 @@
       <div class="empty-actions">
         <a class="nav-btn" href="pdf_upload.html" data-i18n="stats.empty.cta1">PDF'den Aktar</a>
         <a class="nav-btn secondary" href="planner.html" data-i18n="stats.empty.cta2">Planlayıcıyı Aç</a>
+        <button type="button" class="nav-btn secondary" data-demo-load data-i18n="demo.try">Örnek veriyle dene</button>
       </div>
     </div>
 
@@ -373,6 +391,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="storage.js"></script>
+  <script src="demo-data.js"></script>
   <script src="i18n.js"></script>
   <script src="i18n-content.js"></script>
   <script src="i18n-guide-index.js"></script>

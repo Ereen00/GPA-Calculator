@@ -24,6 +24,18 @@
   <link rel="stylesheet" href="content.css">
   <link rel="stylesheet" href="guide.css">
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Bir dersi yanlışlıkla sildim; geri alabilir miyim?", "acceptedAnswer": {"@type": "Answer", "text": "Tek bir dersin silinmesi geri alınamaz; dersi yeniden ekleyin. Dönem silme işlemi onay ister. Büyük değişikliklerden önce JSON yedeği almak en güvenli yoldur."}}, {"@type": "Question", "name": "SPA ile kart altındaki GPA neden farklı?", "acceptedAnswer": {"@type": "Answer", "text": "SPA yalnızca o dönemin derslerinden hesaplanır; GPA ise ilk dönemden o dönemin sonuna kadar bütün derslerin kümülatif ortalamasıdır. İkisinin farkı normaldir ve transkriptteki DNO / GNO sütunlarına karşılık gelir. Ayrıntı: GNO nasıl hesaplanır."}}, {"@type": "Question", "name": "Ders adını yazmak zorunda mıyım?", "acceptedAnswer": {"@type": "Answer", "text": "Hesap için gerekli olanlar kredi ve nottur. Ders adı yalnızca tekrar eşlemesi için önemlidir: tekrar edilen dersle eski ders aynı adla yazılmalıdır ki araç ikisini gruplayabilsin."}}]}</script>
+  <meta name="description" content="Boğaziçi ders planlayıcı: derslerinizi dönem dönem düzenleyin, not senaryoları deneyin ve genel ortalamanızın nasıl değiştiğini anında görün. Veriler yalnızca tarayıcınızda saklanır.">
+  <link rel="canonical" href="https://bogazicitranscriptmanager.vercel.app/planner.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Boğaziçi GPA">
+  <meta property="og:title" content="Ders Planlayıcı – Boğaziçi GPA">
+  <meta property="og:description" content="Boğaziçi ders planlayıcı: derslerinizi dönem dönem düzenleyin, not senaryoları deneyin ve genel ortalamanızın nasıl değiştiğini anında görün. Veriler yalnızca tarayıcınızda saklanır.">
+  <meta property="og:url" content="https://bogazicitranscriptmanager.vercel.app/planner.html">
+  <meta property="og:image" content="https://bogazicitranscriptmanager.vercel.app/assets/hero-campus.webp">
+  <meta property="og:locale" content="tr_TR">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Ders Planlayıcı","url":"https://bogazicitranscriptmanager.vercel.app/planner.html","applicationCategory":"EducationalApplication","operatingSystem":"Web","inLanguage":"tr","description":"Boğaziçi ders planlayıcı: derslerinizi dönem dönem düzenleyin, not senaryoları deneyin ve genel ortalamanızın nasıl değiştiğini anında görün. Veriler yalnızca tarayıcınızda saklanır.","isPartOf":{"@type":"WebSite","name":"Boğaziçi GPA","url":"https://bogazicitranscriptmanager.vercel.app/"},"offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"},"publisher":{"@type":"Organization","name":"Boğaziçi GPA","url":"https://bogazicitranscriptmanager.vercel.app","logo":{"@type":"ImageObject","url":"https://bogazicitranscriptmanager.vercel.app/assets/bu-logo.png"}}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ana Sayfa","item":"https://bogazicitranscriptmanager.vercel.app/"},{"@type":"ListItem","position":2,"name":"Ders Planlayıcı","item":"https://bogazicitranscriptmanager.vercel.app/planner.html"}]}</script>
   <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7872183586463318" crossorigin="anonymous"></script>
 </head>
@@ -78,6 +90,11 @@
   </section>
 
   <main class="main-container" id="main">
+  <div id="demo-banner" class="demo-banner" hidden>
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 8h.01M11 12h1v4h1"></path></svg>
+    <p data-i18n="demo.banner" data-i18n-html><strong>Örnek veri görüntülüyorsunuz.</strong> Bu kurgusal bir transkripttir; kendi derslerinizi girmek için örnek veriyi temizleyin.</p>
+    <button type="button" class="demo-clear" data-demo-clear data-i18n="demo.clear">Örnek veriyi temizle</button>
+  </div>
     <div id="empty-state" class="empty-state" hidden>
       <div class="empty-state-icon">
         <svg class="icon" viewBox="0 0 24 24" style="width:2.4rem;height:2.4rem;stroke-width:1.4"><path d="M9 12l2 2 4-4"></path><circle cx="12" cy="12" r="9"></circle></svg>
@@ -90,6 +107,8 @@
         <svg class="icon" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"></path></svg>
         <span data-i18n="planner.empty.cta">PDF'den Aktar</span>
       </a>
+      <p class="demo-hint" data-i18n="demo.hint">Transkriptiniz yanınızda değil mi? Kurgusal bir öğrencinin 6 dönemlik transkriptini yükleyip aracın ne yaptığını hemen görebilirsiniz.</p>
+      <button type="button" class="nav-btn secondary" data-demo-load data-i18n="demo.try">Örnek veriyle dene</button>
     </div>
 
     <div id="semesters-container"></div>
@@ -242,6 +261,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
   <script src="storage.js"></script>
+  <script src="demo-data.js"></script>
   <script src="i18n.js"></script>
   <script src="i18n-content.js"></script>
   <script src="i18n-guide-index.js"></script>
